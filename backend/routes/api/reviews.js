@@ -8,7 +8,7 @@ const {
   reviewInvariant,
 } = require("../../services/error.server");
 
-router.get("/current", async (_, res) => {
+router.get("/current", verifyAuth, async (req, res) => {
   const userId = req.user.id;
 
   const reviews = await Review.findAll({ where: { userId } });
