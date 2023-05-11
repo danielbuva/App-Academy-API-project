@@ -1,15 +1,30 @@
-const router = require("express").Router();
-const { Spot, Review, Booking, User } = require("../../db/models");
-const { verifyAuth } = require("../../services/auth.server");
-const { Op } = require("sequelize");
 const {
   invariant,
   updateSpotInvariant,
   reviewInvariant,
 } = require("../../services/error.server");
+const { validateQuery } = require("../../services/validation.server");
+const { Spot, Review, Booking, User } = require("../../db/models");
+const { verifyAuth } = require("../../services/auth.server");
+const router = require("express").Router();
+const { Op } = require("sequelize");
 
-router.get("/", async (_, res) => {
-  const spots = await Spot.findAll();
+router.get("/", async (req, res, next) => {
+  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
+    req.query;
+
+  const options = validateQuery(
+    page,
+    size,
+    minLat,
+    maxLat,
+    minLng,
+    maxLng,
+    minPrice,
+    maxPrice
+  );
+
+  const spots = await Spot.findAll(options);
   res.json(spots);
 });
 
