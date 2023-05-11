@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SpotImage extends Model {
     static associate(models) {
-      SpotImage.models(models.Spot, { foreignKey: "spotId" });
+      SpotImage.belongsTo(models.Spot, { foreignKey: "spotId" });
     }
   }
   SpotImage.init(
