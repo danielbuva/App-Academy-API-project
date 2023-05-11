@@ -1,12 +1,7 @@
 const router = require("express").Router();
-const { Spot, Review, ReviewImage, User } = require("../../db/models");
+const { Review, ReviewImage } = require("../../db/models");
 const { verifyAuth } = require("../../services/auth.server");
-const { Op } = require("sequelize");
-const {
-  invariant,
-  updateSpotInvariant,
-  reviewInvariant,
-} = require("../../services/error.server");
+const { invariant } = require("../../services/error.server");
 
 router.get("/current", verifyAuth, async (req, res) => {
   const userId = req.user.id;
