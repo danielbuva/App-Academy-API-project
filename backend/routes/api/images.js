@@ -10,36 +10,44 @@ const { where } = require("sequelize");
 const { invariant } = require("../../services/error.server");
 const router = require("express").Router();
 
-router.delete("/spot-images", verifyAuth, async (req, res, next) => {
-  const userId = req.user.id;
-  const spotImage = await SpotImage.findByPk(req.params.imageId, {
-    include: {
-      model: Spot,
-      required: true,
-      include: { model: User, required: true, where: { id: userId } },
-    },
-  });
-  invariant(spotImage, "Spot Image couldn't be found", next);
+router.delete(
+  "/spot-images/:imageId",
+  verifyAuth,
+  async (req, res, next) => {
+    const userId = req.user.id;
+    const spotImage = await SpotImage.findByPk(req.params.imageId, {
+      include: {
+        model: Spot,
+        required: true,
+        include: { model: User, required: true, where: { id: userId } },
+      },
+    });
+    invariant(spotImage, "Spot Image couldn't be found", next);
 
-  await spotImage.destroy();
+    await spotImage.destroy();
 
-  res.json({ message: "Successfully deleted" });
-});
+    res.json({ message: "Successfully deleted" });
+  }
+);
 
-router.delete("review-images", verifyAuth, async (req, res, next) => {
-  const userId = req.user.id;
-  const reviewImage = await ReviewImage.findByPk(req.params.imageId, {
-    include: {
-      model: Review,
-      required: true,
-      include: { model: User, required: true, where: { id: userId } },
-    },
-  });
-  invariant(reviewImage, "Review Image couldn't be found", next);
+router.delete(
+  "review-images/:imageId",
+  verifyAuth,
+  async (req, res, next) => {
+    const userId = req.user.id;
+    const reviewImage = await ReviewImage.findByPk(req.params.imageId, {
+      include: {
+        model: Review,
+        required: true,
+        include: { model: User, required: true, where: { id: userId } },
+      },
+    });
+    invariant(reviewImage, "Review Image couldn't be found", next);
 
-  await reviewImage.destroy();
+    await reviewImage.destroy();
 
-  res.json({ message: "Successfully deleted" });
-});
+    res.json({ message: "Successfully deleted" });
+  }
+);
 
 module.exports = router;
