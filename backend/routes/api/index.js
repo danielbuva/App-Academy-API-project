@@ -8,6 +8,7 @@ const usersRouter = require("./users.js");
 const spotsRouter = require("./spots.js");
 const reviewsRouter = require("./reviews");
 const bookingsRouter = require("./bookings");
+const imagesRouter = require("./images");
 const router = require("express").Router();
 
 const returnUser = (req, res) => {
@@ -20,6 +21,7 @@ router.use("/users", usersRouter);
 router.use("/spots", spotsRouter);
 router.use("/reviews", reviewsRouter);
 router.use("/bookings", bookingsRouter);
+router.use(imagesRouter);
 
 router.get("/require-auth", verifyAuth, returnUser);
 
