@@ -39,7 +39,7 @@ const invariant = (condition, message, next) => {
   }
 };
 
-const invariants = (conditions, next) => {
+const updateSpotInvariant = (conditions, next) => {
   for (let i = 0; i < conditions.length; i++) {
     if (!conditions[i]) {
       next({
@@ -61,10 +61,25 @@ const invariants = (conditions, next) => {
   }
 };
 
+const reviewInvariant = (conditions, next) => {
+  for (let i = 0; i < conditions.length; i++) {
+    if (!conditions[i]) {
+      next({
+        message: "Bad Request",
+        errors: {
+          review: "Review text is required",
+          stars: "Stars must be an integer from 1 to 5",
+        },
+      });
+    }
+  }
+};
+
 module.exports = {
   notFoundHandler,
   sqlValidationHandler,
   errorFormatter,
   invariant,
-  invariants,
+  updateSpotInvariant,
+  reviewInvariant,
 };
