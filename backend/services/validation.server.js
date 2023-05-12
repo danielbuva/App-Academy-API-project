@@ -56,11 +56,11 @@ const validateQuery = (
     errorResult.errors.maxPrice =
       "Maximum price must be greater than or equal to 0";
   }
-  if (errorResult.errors.length > 0) {
+  if (Object.keys(errors).length > 0) {
     next(errorResult);
     return;
   }
-  
+
   let options = { where: {} };
 
   page = page ?? 1;
