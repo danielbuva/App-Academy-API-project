@@ -3,7 +3,11 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static associate(models) {
-      Spot.belongsToMany(models.User, { through: models.Bookings });
+      Spot.belongsToMany(models.User, {
+        through: models.Bookings,
+        foreignKey: "spotId",
+        otherKey: "userId",
+      });
       Spot.hasMany(models.Review, { onDelete: "CASCADE", hooks: true });
       Spot.belongsTo(models.User, { foreignKey: "ownerId" });
     }
