@@ -1,7 +1,7 @@
-const router = require("express").Router();
 const { Review, ReviewImage } = require("../../db/models");
 const { verifyAuth } = require("../../services/auth.server");
 const { invariant } = require("../../services/error.server");
+const router = require("express").Router();
 
 router.get("/current", verifyAuth, async (req, res) => {
   const userId = req.user.id;

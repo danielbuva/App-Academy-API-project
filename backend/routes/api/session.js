@@ -1,6 +1,5 @@
+const { login, validateLogin } = require("../../services/auth.server");
 const express = require("express");
-const { login } = require("../../services/auth.server");
-const { validateLogin } = require("../../services/validator.server");
 const router = express.Router();
 
 router.post("/", validateLogin, login);

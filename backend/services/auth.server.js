@@ -1,9 +1,11 @@
-const jwt = require("jsonwebtoken");
+const { handleValidationErrors } = require("./validation.server");
 const { jwtConfig, isProduction } = require("../config");
-const { User } = require("../db/models");
-const { secret, expiresIn } = jwtConfig;
 const { hashSync, compareSync } = require("bcryptjs");
 const { check } = require("express-validator");
+const { User } = require("../db/models");
+const jwt = require("jsonwebtoken");
+
+const { secret, expiresIn } = jwtConfig;
 
 const setTokenCookie = (res, user) => {
   const token = jwt.sign(
@@ -119,10 +121,43 @@ const login = async (req, res, next) => {
   return res.json({ user });
 };
 
+const validateLogin = [
+  check("credential")
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Please provide a valid email or username."),
+  check("password")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a password."),
+  handleValidationErrors,
+];
+
+const validateSignup = [
+  check("email")
+    .exists({ checkFalsy: true })
+    .isEmail()
+    .withMessage("Please provide a valid email."),
+  check("username")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 4 })
+    .withMessage("Please provide a username with at least 4 characters."),
+  check("username")
+    .not()
+    .isEmail()
+    .withMessage("Username cannot be an email."),
+  check("password")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 6 })
+    .withMessage("Password must be 6 characters or more."),
+  handleValidationErrors,
+];
+
 module.exports = {
   restoreSession,
   verifyAuth,
   restoreCsrf,
   signup,
   login,
+  validateLogin,
+  validateSignup,
 };

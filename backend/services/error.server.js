@@ -2,7 +2,7 @@ const { ValidationError } = require("sequelize");
 
 const { isProduction } = require("../config");
 
-const notFoundHandler = (_, _, next) => {
+const notFoundHandler = (_, __, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";
   err.errors = { message: "The requested resource couldn't be found." };
@@ -10,7 +10,7 @@ const notFoundHandler = (_, _, next) => {
   next(err);
 };
 
-const sqlValidationHandler = (err, _, _, next) => {
+const sqlValidationHandler = (err, _, __, next) => {
   if (err instanceof ValidationError) {
     let errors = {};
     for (let error of err.errors) {
@@ -22,7 +22,7 @@ const sqlValidationHandler = (err, _, _, next) => {
   next(err);
 };
 
-const errorFormatter = (err, _, res, _) => {
+const errorFormatter = (err, _, res, __) => {
   res.status(err.status || 500);
   console.error(err);
   res.json({

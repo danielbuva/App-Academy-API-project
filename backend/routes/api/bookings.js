@@ -1,8 +1,7 @@
-const router = require("express").Router();
-const { Booking } = require("../../db/models");
 const { verifyAuth } = require("../../services/auth.server");
-const { Op } = require("sequelize");
 const { invariant } = require("../../services/error.server");
+const { Booking } = require("../../db/models");
+const router = require("express").Router();
 
 router.get("/current", verifyAuth, async (req, res) => {
   const userId = req.user.id;

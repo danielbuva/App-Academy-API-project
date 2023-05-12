@@ -1,4 +1,3 @@
-const { verifyAuth } = require("../../services/auth.server");
 const {
   SpotImage,
   ReviewImage,
@@ -6,7 +5,7 @@ const {
   Review,
   User,
 } = require("../../db/models");
-const { where } = require("sequelize");
+const { verifyAuth } = require("../../services/auth.server");
 const { invariant } = require("../../services/error.server");
 const router = require("express").Router();
 

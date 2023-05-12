@@ -1,5 +1,4 @@
-const { validateSignup } = require("../../services/validator.server");
-const { signup } = require("../../services/auth.server");
+const { signup, validateSignup } = require("../../services/auth.server");
 const router = require("express").Router();
 
 router.post("/", validateSignup, signup);
