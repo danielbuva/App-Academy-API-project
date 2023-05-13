@@ -18,14 +18,6 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        spotId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        userId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
         startDate: {
           type: Sequelize.DATE,
           allowNull: false,

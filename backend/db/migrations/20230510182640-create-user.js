@@ -1,5 +1,4 @@
 "use strict";
-require("dotenv").config();
 
 let options = {};
 if (process.env.NODE_ENV === "production" && process.env.SCHEMA) {

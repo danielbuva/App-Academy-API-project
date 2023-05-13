@@ -18,10 +18,6 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        spotId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
         url: {
           type: Sequelize.STRING,
           allowNull: false,
