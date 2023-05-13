@@ -1,5 +1,4 @@
 "use strict";
-require("dotenv").config();
 
 let schema;
 if (process.env.NODE_ENV === "production" && process.env.SCHEMA) {
@@ -19,6 +18,7 @@ module.exports = {
           table: "Spots",
           field: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
         schema,
@@ -34,6 +34,7 @@ module.exports = {
           table: "Users",
           field: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
         schema,
@@ -49,6 +50,7 @@ module.exports = {
           table: "Users",
           field: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
         schema,
@@ -64,6 +66,7 @@ module.exports = {
           table: "Spots",
           field: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
       }
@@ -78,6 +81,7 @@ module.exports = {
           table: "Spots",
           field: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
         schema,
@@ -93,6 +97,7 @@ module.exports = {
           table: "Users",
           field: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
         schema,
@@ -108,6 +113,7 @@ module.exports = {
           table: "Reviews",
           field: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
         schema,

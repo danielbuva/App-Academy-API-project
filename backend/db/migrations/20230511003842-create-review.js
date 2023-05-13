@@ -18,19 +18,6 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        spotId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        userId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: "Users",
-            key: "id",
-          },
-          onDelete: "cascade",
-        },
         review: {
           type: Sequelize.STRING,
           allowNull: false,
