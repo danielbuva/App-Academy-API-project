@@ -10,88 +10,109 @@ if (process.env.NODE_ENV === "production" && process.env.SCHEMA) {
 module.exports = {
   async up(queryInterface) {
     console.log("Started adding constraints...");
-    await queryInterface.addConstraint("Bookings", {
-      type: "foreign key",
-      fields: ["spotId"],
-      references: {
-        table: "Spots",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-      schema,
-    });
+    await queryInterface.addConstraint(
+      { tableName: "Bookings", schema },
+      {
+        type: "foreign key",
+        fields: ["spotId"],
+        references: {
+          table: "Spots",
+          field: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        schema,
+      }
+    );
     console.log("Constraint added for Bookings (spots)...");
-    await queryInterface.addConstraint("Bookings", {
-      type: "foreign key",
-      fields: ["userId"],
-      references: {
-        table: "Users",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-      schema,
-    });
+    await queryInterface.addConstraint(
+      { tableName: "Bookings", schema },
+      {
+        type: "foreign key",
+        fields: ["userId"],
+        references: {
+          table: "Users",
+          field: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        schema,
+      }
+    );
     console.log("Constraint added for Bookings (user)...");
-    await queryInterface.addConstraint("Spots", {
-      type: "foreign key",
-      fields: ["ownerId"],
-      references: {
-        table: "Users",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-      schema,
-    });
+    await queryInterface.addConstraint(
+      { tableName: "Spots", schema },
+      {
+        type: "foreign key",
+        fields: ["ownerId"],
+        references: {
+          table: "Users",
+          field: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        schema,
+      }
+    );
     console.log("Constraint added for Spots...");
-    await queryInterface.addConstraint("SpotImages", {
-      type: "foreign key",
-      fields: ["spotId"],
-      references: {
-        table: "Spots",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
+    await queryInterface.addConstraint(
+      { tableName: "SpotImages", schema },
+      {
+        type: "foreign key",
+        fields: ["spotId"],
+        references: {
+          table: "Spots",
+          field: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }
+    );
     console.log("Constraint added for SpotImages...");
-    await queryInterface.addConstraint("Reviews", {
-      type: "foreign key",
-      fields: ["spotId"],
-      references: {
-        table: "Spots",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-      schema,
-    });
+    await queryInterface.addConstraint(
+      { tableName: "Reviews", schema },
+      {
+        type: "foreign key",
+        fields: ["spotId"],
+        references: {
+          table: "Spots",
+          field: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        schema,
+      }
+    );
     console.log("Constraint added for Reviews(spots)...");
-    await queryInterface.addConstraint("Reviews", {
-      type: "foreign key",
-      fields: ["userId"],
-      references: {
-        table: "Users",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-      schema,
-    });
+    await queryInterface.addConstraint(
+      { tableName: "Reviews", schema },
+      {
+        type: "foreign key",
+        fields: ["userId"],
+        references: {
+          table: "Users",
+          field: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        schema,
+      }
+    );
     console.log("Constraint added for Reviews (event)...");
-    await queryInterface.addConstraint("ReviewImages", {
-      type: "foreign key",
-      fields: ["reviewId"],
-      references: {
-        table: "Reviews",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-      schema,
-    });
+    await queryInterface.addConstraint(
+      { tableName: "ReviewImages", schema },
+      {
+        type: "foreign key",
+        fields: ["reviewId"],
+        references: {
+          table: "Reviews",
+          field: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+        schema,
+      }
+    );
     console.log("Constraint added for ReviewImages...");
     console.log("Finished adding constraints...");
   },
