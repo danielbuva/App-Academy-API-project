@@ -19,7 +19,7 @@ const handleValidationErrors = (req, _res, next) => {
   next();
 };
 
-const validateQuery = (
+const validateQuery = ({
   page,
   size,
   minLat,
@@ -27,8 +27,8 @@ const validateQuery = (
   minLng,
   maxLng,
   minPrice,
-  maxPrice
-) => {
+  maxPrice,
+}) => {
   let errorResult = { errors: {}, message: "Bad Request", status: 400 };
   if (page && page < 1) {
     errorResult.errors.page = "Page must be greater than or equal to 1";
