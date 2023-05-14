@@ -11,8 +11,18 @@ module.exports = (sequelize, DataTypes) => {
     {
       spotId: { type: DataTypes.INTEGER, allowNull: false },
       userId: { type: DataTypes.INTEGER, allowNull: false },
-      startDate: { type: DataTypes.DATE, allowNull: false },
-      endDate: { type: DataTypes.DATE, allowNull: false },
+      startDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          isBeforeEndDate(value) {
+            if (value > this.endDate) {
+              throw new Error("Start date must be before end date");
+            }
+          },
+        },
+      },
+      endDate: { type: DataTypes.DATEONLY, allowNull: false },
     },
     {
       sequelize,

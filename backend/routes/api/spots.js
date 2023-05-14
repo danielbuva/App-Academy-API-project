@@ -151,8 +151,8 @@ router.put("/:spotId", verifyAuth, async (req, res) => {
     price,
   } = req.body;
 
-  const spot = await Spot.findByPk(req.params.spotId, {
-    where: { ownerId: req.user.id },
+  const spot = await Spot.findOne({
+    where: { ownerId: req.user.id, id: req.params.spotId },
   });
 
   invariant(spot);
@@ -212,22 +212,24 @@ router.get("/:spotId/reviews", async (req, res) => {
   res.json({ Reviews });
 });
 
-router.post("/:spotId/reviews", verifyAuth, async (req, res) => {
+router.post("/:spotId/reviews", verifyAuth, async (req, res, next) => {
   const { review, stars } = req.body;
-  const { spotId } = req.params;
+  const spotId = parseInt(req.params.spotId);
   const userId = req.user.id;
-  reviewInvariant([review, stars]);
+  console.log({ review, stars });
+  reviewInvariant({ review, stars });
 
   const spot = await Spot.findByPk(spotId, {
     attributes: ["id"],
   });
-  invariant(spot.id);
+  console.log({ spot });
+  invariant(spot);
 
   const reviewExists = await Review.findOne({
     where: { spotId, userId },
   });
 
-  if (reviewExists.id) {
+  if (reviewExists) {
     return next({
       message: "User already has a review for this spot",
     });
@@ -235,7 +237,7 @@ router.post("/:spotId/reviews", verifyAuth, async (req, res) => {
 
   const newReview = await Review.create({ review, stars, spotId, userId });
 
-  res.json(newReview);
+  res.status(201).json(newReview);
 });
 
 router.get("/:spotId/bookings", verifyAuth, async (req, res, next) => {
@@ -244,21 +246,21 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res, next) => {
   let options;
 
   const userIsTheOwner = await Spot.findAll({
-    where: { ownerId: userId, spotId },
+    where: { ownerId: userId, id: spotId },
   });
 
   if (userIsTheOwner.id) {
     options = { where: { spotId }, include: User };
   } else {
     options = {
-      where: { spotId, userId },
+      where: { spotId },
       attributes: ["spotId", "startDate", "endDate"],
     };
   }
-  const bookings = await Booking.findAll(options);
-  invariant(bookings.id);
+  const Bookings = await Booking.findAll(options);
+  invariant(Bookings);
 
-  res.json(bookings);
+  res.json({ Bookings });
 });
 
 router.post("/:spotId/bookings", verifyAuth, async (req, res, next) => {
@@ -266,11 +268,10 @@ router.post("/:spotId/bookings", verifyAuth, async (req, res, next) => {
   const { startDate, endDate } = req.body;
   const { spotId } = req.params;
 
-  const spot = await Spot.findByPk(spotId);
-  invariant(spot.id);
+  const spot = await Spot.findOne({ where: { id: spotId } });
+  invariant(spot);
 
   // maybe add this to booking model validations -.-
-
   const bookingConflicts = await Booking.findAll({
     where: {
       spotId,
@@ -303,13 +304,17 @@ router.post("/:spotId/bookings", verifyAuth, async (req, res, next) => {
     },
   });
 
-  if (bookingConflicts.id) {
-    next({
-      message: "Bad Request",
+  // clarify if they want all errors or specific errors
+  // waiting on answer
+  if (bookingConflicts.length) {
+    return next({
+      status: 403,
+      message:
+        "Sorry, this spot is already booked for the specified dates",
       errors: {
-        endDate: "endDate cannot come before startDate",
+        startDate: "Start date conflicts with an existing booking",
+        endDate: "End date conflicts with an existing booking",
       },
-      status: 400,
     });
   }
 

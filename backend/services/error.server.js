@@ -61,17 +61,16 @@ const updateSpotInvariant = (conditions, next) => {
   }
 };
 
-const reviewInvariant = (conditions, next) => {
-  for (let i = 0; i < conditions.length; i++) {
-    if (!conditions[i]) {
-      throw {
-        message: "Bad Request",
-        errors: {
-          review: "Review text is required",
-          stars: "Stars must be an integer from 1 to 5",
-        },
-      };
-    }
+const reviewInvariant = ({ review, stars }) => {
+  let errorResult = { errors: {}, message: "Bad Request", status: 400 };
+  if (!review) {
+    errorResult.errors.review = "Review text is required";
+  }
+  if (!stars || stars > 5 || stars < 1) {
+    errorResult.errors.stars = "Stars must be an integer from 1 to 5";
+  }
+  if (Object.keys(errorResult.errors).length > 0) {
+    throw errorResult;
   }
 };
 
