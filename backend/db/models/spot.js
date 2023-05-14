@@ -8,13 +8,33 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "spotId",
         otherKey: "userId",
       });
-      Spot.hasMany(models.Review, { onDelete: "CASCADE", hooks: true });
-      Spot.belongsTo(models.User, { foreignKey: "ownerId" });
+      Spot.hasMany(models.Review, {
+        foreignKey: "spotId",
+        onDelete: "CASCADE",
+        hooks: true,
+      });
+      Spot.belongsTo(models.User, {
+        foreignKey: "ownerId",
+        onDelete: "CASCADE",
+      });
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: "spotId",
+        otherKey: "id",
+      });
     }
   }
   Spot.init(
     {
-      ownerId: { type: DataTypes.INTEGER, allowNull: false },
+      ownerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       address: { type: DataTypes.STRING, allowNull: false },
       city: { type: DataTypes.STRING, allowNull: false },
       state: { type: DataTypes.STRING, allowNull: false },
