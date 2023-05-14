@@ -4,6 +4,7 @@ const { hashSync, compareSync } = require("bcryptjs");
 const { check } = require("express-validator");
 const { User } = require("../db/models");
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -70,12 +71,20 @@ const restoreCsrf = (req, res) => {
 };
 
 const signup = async (req, res) => {
-  const { email, password, username } = req.body;
+  const { firstName, lastName, email, password, username } = req.body;
   const hashedPassword = hashSync(password);
-  const data = await User.create({ email, username, hashedPassword });
+  const data = await User.create({
+    firstName,
+    lastName,
+    email,
+    username,
+    hashedPassword,
+  });
 
   const user = {
     id: data.id,
+    firstName: data.firstName,
+    lastName: data.lastName,
     email: data.email,
     username: data.username,
   };
@@ -112,6 +121,8 @@ const login = async (req, res, next) => {
 
   const user = {
     id: data.id,
+    firstName: data.firstName,
+    lastName: data.lastName,
     email: data.email,
     username: data.username,
   };
