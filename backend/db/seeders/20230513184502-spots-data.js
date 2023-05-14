@@ -1,6 +1,7 @@
 "use strict";
 const spots = [
   {
+    id: 1,
     ownerId: 1,
     address: "101 Snake Eyes Dr.",
     city: "Denver",
@@ -14,6 +15,7 @@ const spots = [
     price: 1000000,
   },
   {
+    id: 2,
     ownerId: 2,
     address: "420 W Riverside Ave #113",
     city: "Seattle",
@@ -27,6 +29,7 @@ const spots = [
     price: 690000,
   },
   {
+    id: 3,
     ownerId: 3,
     address: "1969 Isabel St",
     city: "Los Angeles",
@@ -54,12 +57,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete(options, {
-      name: {
-        [Sequelize.Op.in]: [
-          "Pair of Dice",
-          "Home Away From Home",
-          "cool house",
-        ],
+      id: {
+        [Sequelize.Op.in]: [1, 2, 3],
       },
     });
   },
