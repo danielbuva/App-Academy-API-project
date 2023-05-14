@@ -96,7 +96,7 @@ router.post("/", verifyAuth, async (req, res, next) => {
     price,
   });
 
-  res.json(newSpot);
+  res.status(201).json(newSpot);
 });
 
 router.post("/:spotId/images", verifyAuth, async (req, res) => {
