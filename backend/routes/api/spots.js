@@ -9,7 +9,7 @@ const { verifyAuth } = require("../../services/auth.server");
 const router = require("express").Router();
 const { Op } = require("sequelize");
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
@@ -24,8 +24,8 @@ router.get("/", async (req, res, next) => {
     maxPrice
   );
 
-  const spots = await Spot.findAll(options);
-  res.json(spots);
+  const Spots = await Spot.findAll(options);
+  res.json({ Spots });
 });
 
 router.get("/current", verifyAuth, async (req, res) => {
