@@ -38,12 +38,12 @@ const reviews = [
   {
     id: 8,
     reviewId: 8,
-    url: 5,
+    url: "https://imgur.com/oPR4BiX",
   },
   {
     id: 9,
     reviewId: 9,
-    url: 5,
+    url: "https://imgur.com/XaxjQUm",
   },
 ];
 
