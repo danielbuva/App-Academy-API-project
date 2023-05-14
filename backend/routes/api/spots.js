@@ -4,6 +4,7 @@ const {
   Booking,
   User,
   SpotImage,
+  ReviewImage,
 } = require("../../db/models");
 const {
   invariant,
@@ -195,13 +196,20 @@ router.get("/:spotId/reviews", async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId, {
     attributes: ["id"],
   });
-  invariant(spot.id);
+  invariant(spot);
 
-  const review = await Review.findOne({
+  const Reviews = await Review.findAll({
     where: { spotId: spot.id },
+    include: [
+      { model: User, attributes: ["id", "firstName", "lastName"] },
+      {
+        model: ReviewImage,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
+    ],
   });
 
-  res.json(review);
+  res.json({ Reviews });
 });
 
 router.post("/:spotId/reviews", verifyAuth, async (req, res) => {
