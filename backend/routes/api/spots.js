@@ -217,7 +217,7 @@ router.post("/:spotId/reviews", verifyAuth, async (req, res) => {
     where: { spotId, userId },
   });
 
-  if (reviewExists) {
+  if (reviewExists.id) {
     return next({
       message: "User already has a review for this spot",
     });
@@ -237,7 +237,7 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res, next) => {
     where: { ownerId: userId, spotId },
   });
 
-  if (userIsTheOwner) {
+  if (userIsTheOwner.id) {
     options = { where: { spotId }, include: User };
   } else {
     options = {
@@ -293,7 +293,7 @@ router.post("/:spotId/bookings", verifyAuth, async (req, res, next) => {
     },
   });
 
-  if (bookingConflicts) {
+  if (bookingConflicts.id) {
     next({
       message: "Bad Request",
       errors: {
