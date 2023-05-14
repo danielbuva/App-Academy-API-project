@@ -4,16 +4,22 @@ const {
   reviewInvariant,
 } = require("../../services/error.server");
 const { validateQuery } = require("../../services/validation.server");
-const { Spot, Review, Booking, User } = require("../../db/models");
+const {
+  Spot,
+  Review,
+  Booking,
+  User,
+  SpotImage,
+} = require("../../db/models");
 const { verifyAuth } = require("../../services/auth.server");
 const router = require("express").Router();
-const { Op } = require("sequelize");
+const { Op, fn, col } = require("sequelize");
 
 router.get("/", async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-  const options = validateQuery(
+  const options = validateQuery({
     page,
     size,
     minLat,
@@ -21,8 +27,8 @@ router.get("/", async (req, res) => {
     minLng,
     maxLng,
     minPrice,
-    maxPrice
-  );
+    maxPrice,
+  });
 
   const Spots = await Spot.findAll(options);
   res.json({ Spots });
@@ -37,8 +43,23 @@ router.get("/current", verifyAuth, async (req, res) => {
 });
 
 router.get("/:spotId", async (req, res) => {
-  const spot = await Spot.findAll({
-    where: { id: req.params.spotId },
+  const spot = await Spot.findByPk(req.params.spotId, {
+    include: [
+      { model: SpotImage },
+      { model: Review, attributes: [] },
+      {
+        model: User,
+        attributes: ["id", "username", "email"],
+        as: "Owner",
+      },
+    ],
+    attributes: {
+      include: [
+        [fn("count", col("Reviews.stars")), "numRating"],
+        [fn("AVG", col("Reviews.stars")), "avgStarRating"],
+      ],
+      group: ["Spot.id"],
+    },
   });
 
   res.json(spot);
