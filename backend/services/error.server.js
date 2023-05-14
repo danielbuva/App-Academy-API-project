@@ -4,7 +4,7 @@ const { isProduction } = require("../config");
 
 const invariant = (condition, message = "Spot couldn't be found") => {
   if (!condition) {
-    throw { status: 404, /*title: "Resource Not Found",*/ message };
+    throw { status: 404, title: "Resource Not Found", message };
   }
 };
 

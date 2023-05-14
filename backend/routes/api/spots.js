@@ -123,8 +123,7 @@ router.post("/:spotId/images", verifyAuth, async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
 
   if (!spot) {
-    res.status(404);
-    return res.json({ message: "Spot couldn't be found" });
+    return res.status(404).json({ message: "Spot couldn't be found" });
   }
   if (url) {
     spot.url = url;
@@ -151,11 +150,11 @@ router.put("/:spotId", verifyAuth, async (req, res) => {
     price,
   } = req.body;
 
-  const spot = await Spot.findByPk(req.params.id, {
+  const spot = await Spot.findByPk(req.params.spotId, {
     where: { ownerId: req.user.id },
   });
 
-  invariant(spot.id);
+  invariant(spot);
   updateSpotInvariant([
     address,
     city,
@@ -167,16 +166,17 @@ router.put("/:spotId", verifyAuth, async (req, res) => {
     price,
   ]);
 
-  spot.address = address;
-  spot.city = city;
-  spot.state = state;
-  spot.country = country;
-  spot.lat = lat;
-  spot.lng = lng;
-  spot.name = name;
-  spot.description = description;
-  spot.price = price;
-  await spot.save();
+  await spot.update({
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+  });
 
   res.json(spot);
 });
