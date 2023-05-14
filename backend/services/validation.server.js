@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { Op } = require("sequelize");
+const { Op, literal } = require("sequelize");
 
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
@@ -61,7 +61,25 @@ const validateQuery = (
     return;
   }
 
-  let options = { where: {} };
+  let options = {
+    where: {},
+    attributes: {
+      include: [
+        [
+          literal(
+            "(SELECT AVG(stars) FROM Reviews WHERE Reviews.spotId = Spot.id)"
+          ),
+          "avgRating",
+        ],
+        [
+          literal(
+            "(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id ORDER BY createdAt DESC LIMIT 1)"
+          ),
+          "previewImage",
+        ],
+      ],
+    },
+  };
 
   page = page ?? 1;
   size = size ?? 20;
