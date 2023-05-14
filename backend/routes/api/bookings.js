@@ -1,16 +1,36 @@
 const { verifyAuth } = require("../../services/auth.server");
 const { invariant } = require("../../services/error.server");
-const { Booking } = require("../../db/models");
+const { Booking, Spot } = require("../../db/models");
+const { literal } = require("sequelize");
 const router = require("express").Router();
 
 router.get("/current", verifyAuth, async (req, res) => {
   const userId = req.user.id;
 
-  const bookings = await Booking.findAll({ where: { userId } });
-  res.json(bookings);
+  const Bookings = await Booking.findAll({
+    where: { userId },
+    attributes: { include: ["id"] },
+    include: [
+      {
+        model: Spot,
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "description"],
+          include: [
+            [
+              literal(
+                "(SELECT MAX(`SpotImages`.`url`) FROM `SpotImages` WHERE `Spot`.`id` = `SpotImages`.`SpotId`)"
+              ),
+              "previewImage",
+            ],
+          ],
+        },
+      },
+    ],
+  });
+  res.json({ Bookings });
 });
 
-router.put("/:bookingId", verifyAuth, async (req, res, next) => {
+router.put("/:bookingId", verifyAuth, async (req, res) => {
   const { startDate, endDate } = req.body;
   const userId = req.user.id;
 
@@ -22,7 +42,7 @@ router.put("/:bookingId", verifyAuth, async (req, res, next) => {
     where: { userId },
   });
 
-  invariant(booking, "Booking couldn't be found", next);
+  invariant(booking, "Booking couldn't be found");
 
   booking.startDate = startDate;
   booking.endDate = endDate;
@@ -31,12 +51,12 @@ router.put("/:bookingId", verifyAuth, async (req, res, next) => {
   res.json(booking);
 });
 
-router.delete("/:bookingId", verifyAuth, async (req, res, next) => {
+router.delete("/:bookingId", verifyAuth, async (req, res) => {
   const userId = req.user.id;
   const booking = await Booking.findByPk(req.params.bookingId, {
     where: userId,
   });
-  invariant(booking, "Booking coudn't be found", next);
+  invariant(booking, "Booking coudn't be found");
 
   if (booking.startDate === "") {
     //@TODO: add handling for bookings that have started already
