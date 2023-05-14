@@ -182,8 +182,10 @@ router.put("/:spotId", verifyAuth, async (req, res) => {
 });
 
 router.delete("/:spotId", verifyAuth, async (req, res) => {
-  const spot = await Spot.findByPk(req.params.spotId);
-  invariant(spot.id);
+  const spot = await Spot.findOne({
+    where: { ownerId: req.user.id, id: req.params.spotId },
+  });
+  invariant(spot);
   await spot.destroy();
 
   res.json({ message: "Successfully deleted" });
