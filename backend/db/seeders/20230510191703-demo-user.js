@@ -10,24 +10,30 @@ module.exports = {
   up: async (queryInterface) => {
     options.tableName = "Users";
     try {
-      console.log("Starting seeding...");
+      console.log("Start seeding...");
       await queryInterface.bulkInsert(
         options,
         [
           {
             id: 1,
+            firstName: "demo",
+            lastName: "user",
             email: "demo@user.io",
             username: "Demo-lition",
             hashedPassword: bcrypt.hashSync("password"),
           },
           {
             id: 2,
+            firstName: "fake",
+            lastName: "user",
             email: "user1@user.io",
             username: "FakeUser1",
             hashedPassword: bcrypt.hashSync("password2"),
           },
           {
             id: 3,
+            firstName: "fakedemo",
+            lastName: "user",
             email: "user2@user.io",
             username: "FakeUser2",
             hashedPassword: bcrypt.hashSync("password3"),

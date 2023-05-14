@@ -20,12 +20,13 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init(
     {
+      firstName: { type: DataTypes.STRING, allowNull: false },
+      lastName: { type: DataTypes.STRING, allowNull: false },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           len: [4, 30],
-          isNotEmail: true,
           isNotEmailC(value) {
             if (Validator.isEmail(value)) {
               throw new Error("Cannot be an email.");
