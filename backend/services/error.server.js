@@ -2,6 +2,12 @@ const { ValidationError } = require("sequelize");
 
 const { isProduction } = require("../config");
 
+const invariant = (condition, message = "Spot couldn't be found") => {
+  if (!condition) {
+    throw { status: 404, /*title: "Resource Not Found",*/ message };
+  }
+};
+
 const notFoundHandler = (_, __, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";
@@ -33,16 +39,10 @@ const errorFormatter = (err, _, res, __) => {
   });
 };
 
-const invariant = (condition, message, next) => {
-  if (!condition) {
-    next({ status: 404, title: "Resource Not Found", message });
-  }
-};
-
 const updateSpotInvariant = (conditions, next) => {
   for (let i = 0; i < conditions.length; i++) {
     if (!conditions[i]) {
-      next({
+      throw {
         status: 400,
         message: "Bad Request",
         errors: {
@@ -56,7 +56,7 @@ const updateSpotInvariant = (conditions, next) => {
           description: "Description is required",
           price: "Price per day is required",
         },
-      });
+      };
     }
   }
 };
@@ -64,13 +64,13 @@ const updateSpotInvariant = (conditions, next) => {
 const reviewInvariant = (conditions, next) => {
   for (let i = 0; i < conditions.length; i++) {
     if (!conditions[i]) {
-      next({
+      throw {
         message: "Bad Request",
         errors: {
           review: "Review text is required",
           stars: "Stars must be an integer from 1 to 5",
         },
-      });
+      };
     }
   }
 };
