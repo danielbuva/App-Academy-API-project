@@ -16,5 +16,8 @@
     "ycshiyp"
   ],
   "author": "dani",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/csurf": "^1.11.2"
+  }
 }
