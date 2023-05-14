@@ -38,7 +38,7 @@ router.get("/current", verifyAuth, async (req, res) => {
 
 router.get("/:spotId", async (req, res) => {
   const spot = await Spot.findAll({
-    where: { id: req.params.id },
+    where: { id: req.params.spotId },
   });
 
   res.json(spot);
