@@ -1,65 +1,59 @@
 "use strict";
-const reviews = [
+
+const { Spot, User, Review } = require("../models");
+
+const data = [
   {
-    id: 1,
-    spotId: 3,
-    userId: 1,
+    address: "1969 Isabel St",
+    email: "demo@user.io",
     review: "cool place",
     stars: 5,
   },
   {
-    id: 2,
-    spotId: 2,
-    userId: 1,
+    address: "420 W Riverside Ave #113",
+    email: "demo@user.io",
     review: "cozy place",
     stars: 5,
   },
   {
-    id: 3,
-    spotId: 1,
-    userId: 1,
+    address: "101 Snake Eyes Dr.",
+    email: "demo@user.io",
     review: "sick place",
     stars: 5,
   },
   {
-    id: 4,
-    spotId: 3,
-    userId: 2,
+    address: "1969 Isabel St",
+    email: "user1@user.io",
     review: "burr",
     stars: 5,
   },
   {
-    id: 5,
-    spotId: 2,
-    userId: 2,
+    address: "420 W Riverside Ave #113",
+    email: "user1@user.io",
     review: "homey",
     stars: 5,
   },
   {
-    id: 6,
-    spotId: 1,
-    userId: 2,
+    address: "101 Snake Eyes Dr.",
+    email: "user1@user.io",
     review: "dope place",
     stars: 5,
   },
   {
-    id: 7,
-    spotId: 3,
-    userId: 3,
+    address: "1969 Isabel St",
+    email: "user2@user.io",
     review: "chill place",
     stars: 5,
   },
   {
-    id: 8,
-    spotId: 2,
-    userId: 3,
+    address: "420 W Riverside Ave #113",
+    email: "user2@user.io",
     review: "warm place",
     stars: 5,
   },
   {
-    id: 9,
-    spotId: 1,
-    userId: 3,
+    address: "101 Snake Eyes Dr.",
+    email: "user2@user.io",
     review: "peachy place",
     stars: 5,
   },
@@ -72,14 +66,39 @@ if (process.env.NODE_ENV === "production") {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface) {
-    await queryInterface.bulkInsert(options, reviews);
+  async up() {
+    for (let i = 0; i < data.length; i++) {
+      const user = await User.findOne({
+        attributes: ["id"],
+        where: { email: data[i].email },
+      });
+      const spot = await Spot.findOne({
+        attributes: ["id"],
+        where: { address: data[i].address },
+      });
+      await Review.create({
+        spotId: spot.id,
+        userId: user.id,
+        review: data[i].review,
+        stars: data[i].stars,
+      });
+    }
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete(options, {
-      id: {
-        [Sequelize.Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      review: {
+        [Sequelize.Op.in]: [
+          "peachy place",
+          "warm place",
+          "chill place",
+          "dope place",
+          "homey",
+          "burr",
+          "cozy place",
+          "cool place",
+          "sick place",
+        ],
       },
     });
   },

@@ -1,28 +1,14 @@
 "use strict";
 
-const { Op } = require("sequelize");
-const { Users } = require("../models");
+const { User, Spot } = require("../models");
 
-const getUserIds = async () => {
-  const users = await Users.findAll({
-    attributes: ["id"],
-    where: {
-      [Op.or]: [
-        { email: "user2@user.io" },
-        { email: "user1@user.io" },
-        { email: "demo@user.io" },
-      ],
-    },
-  });
-  const ids = users.map(({ id }) => id);
-  return ids;
-};
-
-const userIds = getUserIds();
+let options = { tableName: "Spots" };
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA;
+}
 
 const spots = [
   {
-    ownerId: userIds[0],
     address: "101 Snake Eyes Dr.",
     city: "Denver",
     state: "Colorado",
@@ -35,7 +21,6 @@ const spots = [
     price: 1000000,
   },
   {
-    ownerId: userIds[1],
     address: "420 W Riverside Ave #113",
     city: "Seattle",
     state: "Washington",
@@ -48,7 +33,6 @@ const spots = [
     price: 690000,
   },
   {
-    ownerId: userIds[2],
     address: "1969 Isabel St",
     city: "Los Angeles",
     state: "California",
@@ -62,15 +46,27 @@ const spots = [
   },
 ];
 
-let options = { tableName: "Spots" };
-if (process.env.NODE_ENV === "production") {
-  options.schema = process.env.SCHEMA;
-}
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface) {
-    await queryInterface.bulkInsert(options, spots);
+  async up() {
+    const user = await User.findOne({
+      attributes: ["id"],
+      where: { email: "lilykay@gmail.com" },
+    });
+    for (let i = 0; i < spots.length; i++) {
+      await Spot.create({
+        ownerId: user.id,
+        address: spots[i].address,
+        city: spots[i].city,
+        state: spots[i].state,
+        country: spots[i].country,
+        lat: spots[i].lat,
+        lng: spots[i].lng,
+        name: spots[i].name,
+        description: spots[i].description,
+        price: spots[i].price,
+      });
+    }
   },
 
   async down(queryInterface, Sequelize) {

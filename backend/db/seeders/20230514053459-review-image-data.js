@@ -1,48 +1,42 @@
 "use strict";
-const reviews = [
+
+const { Review, ReviewImage } = require("../models");
+
+const data = [
   {
-    id: 1,
-    reviewId: 1,
+    review: "cool place",
     url: "https://imgur.com/zMyxoiN",
   },
   {
-    id: 2,
-    reviewId: 2,
+    review: "cozy place",
     url: "https://imgur.com/1U1Zr7I",
   },
   {
-    id: 3,
-    reviewId: 3,
+    review: "sick place",
     url: "https://imgur.com/StkDcOy",
   },
   {
-    id: 4,
-    reviewId: 4,
+    review: "burr",
     url: "https://imgur.com/TEMGYjY",
   },
   {
-    id: 5,
-    reviewId: 5,
+    review: "homey",
     url: "https://imgur.com/Uschheg",
   },
   {
-    id: 6,
-    reviewId: 6,
+    review: "dope place",
     url: "https://imgur.com/pqggrK0",
   },
   {
-    id: 7,
-    reviewId: 7,
+    review: "chill place",
     url: "https://imgur.com/mX6tqVa",
   },
   {
-    id: 8,
-    reviewId: 8,
+    review: "warm place",
     url: "https://imgur.com/oPR4BiX",
   },
   {
-    id: 9,
-    reviewId: 9,
+    review: "peachy place",
     url: "https://imgur.com/XaxjQUm",
   },
 ];
@@ -54,14 +48,30 @@ if (process.env.NODE_ENV === "production") {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface) {
-    await queryInterface.bulkInsert(options, reviews);
+  async up() {
+    for (let i = 0; i < data.length; i++) {
+      const review = await Review.findOne({
+        attributes: ["id"],
+        where: { review: data[i].review },
+      });
+      await ReviewImage.create({ reviewId: review.id, url: data[i].url });
+    }
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete(options, {
-      id: {
-        [Sequelize.Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      url: {
+        [Sequelize.Op.in]: [
+          "https://imgur.com/XaxjQUm",
+          "https://imgur.com/oPR4BiX",
+          "https://imgur.com/mX6tqVa",
+          "https://imgur.com/pqggrK0",
+          "https://imgur.com/TEMGYjY",
+          "https://imgur.com/Uschheg",
+          "https://imgur.com/StkDcOy",
+          "https://imgur.com/1U1Zr7I",
+          "https://imgur.com/zMyxoiN",
+        ],
       },
     });
   },
