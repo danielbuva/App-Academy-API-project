@@ -31,17 +31,22 @@ router.delete("/spot-images/:imageId", verifyAuth, async (req, res) => {
 
 router.delete("review-images/:imageId", verifyAuth, async (req, res) => {
   const userId = req.user.id;
-  const reviewImage = await ReviewImage.findByPk(req.params.imageId, {
+  const reviewImage = await ReviewImage.findOne({
+    where: {
+      [Op.and]: [
+        { id: req.params.imageId },
+        { "$Review.userId$": userId },
+      ],
+    },
     include: {
       model: Review,
       required: true,
-      include: { model: User, required: true, where: { id: userId } },
+      attributes: [],
     },
   });
   invariant(reviewImage, "Review Image couldn't be found");
 
   await reviewImage.destroy();
-
   res.json({ message: "Successfully deleted" });
 });
 
