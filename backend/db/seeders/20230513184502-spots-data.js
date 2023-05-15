@@ -1,8 +1,28 @@
 "use strict";
+
+const { Op } = require("sequelize");
+const { Users } = require("../models");
+
+const getUserIds = async () => {
+  const users = await Users.findAll({
+    attributes: ["id"],
+    where: {
+      [Op.or]: [
+        { email: "user2@user.io" },
+        { email: "user1@user.io" },
+        { email: "demo@user.io" },
+      ],
+    },
+  });
+  const ids = users.map(({ id }) => id);
+  return ids;
+};
+
+const userIds = getUserIds();
+
 const spots = [
   {
-    id: 1,
-    ownerId: 1,
+    ownerId: userIds[0],
     address: "101 Snake Eyes Dr.",
     city: "Denver",
     state: "Colorado",
@@ -15,8 +35,7 @@ const spots = [
     price: 1000000,
   },
   {
-    id: 2,
-    ownerId: 2,
+    ownerId: userIds[1],
     address: "420 W Riverside Ave #113",
     city: "Seattle",
     state: "Washington",
@@ -29,8 +48,7 @@ const spots = [
     price: 690000,
   },
   {
-    id: 3,
-    ownerId: 3,
+    ownerId: userIds[2],
     address: "1969 Isabel St",
     city: "Los Angeles",
     state: "California",
@@ -57,8 +75,12 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete(options, {
-      id: {
-        [Sequelize.Op.in]: [1, 2, 3],
+      address: {
+        [Sequelize.Op.in]: [
+          "1969 Isabel St",
+          "420 W Riverside Ave #113",
+          "101 Snake Eyes Dr.",
+        ],
       },
     });
   },

@@ -15,7 +15,6 @@ module.exports = {
         options,
         [
           {
-            id: 1,
             firstName: "demo",
             lastName: "user",
             email: "demo@user.io",
@@ -23,7 +22,6 @@ module.exports = {
             hashedPassword: bcrypt.hashSync("password"),
           },
           {
-            id: 2,
             firstName: "fake",
             lastName: "user",
             email: "user1@user.io",
@@ -31,7 +29,6 @@ module.exports = {
             hashedPassword: bcrypt.hashSync("password2"),
           },
           {
-            id: 3,
             firstName: "fakedemo",
             lastName: "user",
             email: "user2@user.io",
@@ -50,12 +47,10 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     options.tableName = "Users";
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(
-      options,
-      {
-        id: { [Op.in]: [1, 2, 3] },
+    return queryInterface.bulkDelete(options, {
+      email: {
+        [Op.in]: ["demo@user.io", "user1@user.io", "user2@user.io"],
       },
-      {}
-    );
+    });
   },
 };
