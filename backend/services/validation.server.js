@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const { Op, literal } = require("sequelize");
-const { isProduction } = require("./config");
+const { isProduction } = require("../config");
 const schema = isProduction ? "ycshiyp." : "";
 
 const handleValidationErrors = (req, _res, next) => {
