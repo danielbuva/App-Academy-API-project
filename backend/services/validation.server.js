@@ -1,5 +1,7 @@
 const { validationResult } = require("express-validator");
 const { Op, literal } = require("sequelize");
+const { isProduction } = require("./config");
+const schema = isProduction ? "ycshiyp." : "";
 
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
@@ -66,13 +68,13 @@ const validateQuery = ({
       include: [
         [
           literal(
-            "(SELECT AVG(stars) FROM Reviews WHERE Reviews.spotId = Spot.id)"
+            `(SELECT AVG(stars) FROM Reviews WHERE ${schema}Reviews.spotId = Spot.id)`
           ),
           "avgRating",
         ],
         [
           literal(
-            "(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id ORDER BY createdAt DESC LIMIT 1)"
+            `(SELECT url FROM SpotImages WHERE ${schema}SpotImages.spotId = Spot.id ORDER BY createdAt DESC LIMIT 1)`
           ),
           "previewImage",
         ],
