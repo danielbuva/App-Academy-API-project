@@ -74,6 +74,7 @@ const signup = async (req, res) => {
   const { firstName, lastName, email, password, username } = req.body;
   const hashedPassword = hashSync(password);
   const data = await User.create({
+    id: 4,
     firstName,
     lastName,
     email,
