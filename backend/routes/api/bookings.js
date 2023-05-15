@@ -1,15 +1,13 @@
 const { verifyAuth } = require("../../services/auth.server");
 const { invariant } = require("../../services/error.server");
 const { Booking, Spot } = require("../../db/models");
-const { literal, Op, fn } = require("sequelize");
-const { today } = require("../../utils");
+const { literal, Op } = require("sequelize");
 const router = require("express").Router();
+const { today } = require("../../utils");
 
 router.get("/current", verifyAuth, async (req, res) => {
-  const userId = req.user.id;
-
   const Bookings = await Booking.findAll({
-    where: { userId },
+    where: { userId: req.user.id },
     attributes: { include: ["id"] },
     include: [
       {
@@ -89,7 +87,6 @@ router.put("/:bookingId", verifyAuth, async (req, res) => {
   }
 
   await booking.update({ startDate, endDate });
-
   res.json(booking);
 });
 

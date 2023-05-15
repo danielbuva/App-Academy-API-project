@@ -3,7 +3,6 @@ const {
   ReviewImage,
   Spot,
   Review,
-  User,
 } = require("../../db/models");
 const { verifyAuth } = require("../../services/auth.server");
 const { invariant } = require("../../services/error.server");
