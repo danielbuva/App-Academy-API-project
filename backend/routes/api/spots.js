@@ -121,21 +121,18 @@ router.post("/", verifyAuth, async (req, res) => {
 
 router.post("/:spotId/images", verifyAuth, async (req, res) => {
   const { url, preview } = req.body;
-  const spot = await Spot.findByPk(req.params.spotId);
+  const spotId = req.params.spotId;
+  const spot = await Spot.findOne({
+    where: { id: spotId, ownerId: req.user.id },
+  });
+  invariant(spot);
 
-  if (!spot) {
-    return res.status(404).json({ message: "Spot couldn't be found" });
-  }
-  if (url) {
-    spot.url = url;
-  }
-  if (preview) {
-    spot.preview = preview;
-  }
-
-  await spot.save();
-
-  res.json({ id: spot.id, url, preview });
+  const newImage = await SpotImage.create({ spotId, url, preview });
+  res.json({
+    id: newImage.id,
+    url: newImage.url,
+    preview: newImage.preview,
+  });
 });
 
 router.put("/:spotId", verifyAuth, async (req, res) => {
