@@ -80,8 +80,6 @@ router.put("/:bookingId", verifyAuth, async (req, res) => {
     },
   });
 
-  console.log({ bookingConflicts });
-
   if (bookingConflicts) {
     return res.status(403).json({
       message:
