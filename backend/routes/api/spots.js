@@ -122,7 +122,7 @@ router.post("/", verifyAuth, async (req, res) => {
     price,
   } = req.body;
 
-  updateSpotInvariant([
+  updateSpotInvariant({
     address,
     city,
     country,
@@ -131,7 +131,7 @@ router.post("/", verifyAuth, async (req, res) => {
     name,
     description,
     price,
-  ]);
+  });
 
   const newSpot = await Spot.create({
     ownerId: req.user.id,

@@ -1,5 +1,4 @@
 const { ValidationError } = require("sequelize");
-
 const { isProduction } = require("../config");
 
 const invariant = (condition, message = "Spot couldn't be found") => {
@@ -39,25 +38,43 @@ const errorFormatter = (err, _, res, __) => {
   });
 };
 
-const updateSpotInvariant = (conditions, next) => {
-  for (let i = 0; i < conditions.length; i++) {
-    if (!conditions[i]) {
-      throw {
-        status: 400,
-        message: "Bad Request",
-        errors: {
-          address: "Street address is required",
-          city: "City is required",
-          state: "State is required",
-          country: "Country is required",
-          lat: "Latitude is not valid",
-          lng: "Longitude is not valid",
-          name: "Name must be less than 50 characters",
-          description: "Description is required",
-          price: "Price per day is required",
-        },
-      };
-    }
+const updateSpotInvariant = ({
+  address,
+  city,
+  country,
+  lat,
+  lng,
+  name,
+  description,
+  price,
+}) => {
+  let errorResult = { errors: {}, message: "Bad Request", status: 400 };
+  if (!address) {
+    errorResult.errors.address = "Street address is required";
+  }
+  if (!city) {
+    errorResult.errors.city = "City is required";
+  }
+  if (!country) {
+    errorResult.errors.country = "Country is required";
+  }
+  if (!lat) {
+    errorResult.errors.lat = "Latitude is not valid";
+  }
+  if (!lng) {
+    errorResult.errors.lng = "Longitude is not valid";
+  }
+  if (!name) {
+    errorResult.errors.name = "Name must be less than 50 characters";
+  }
+  if (!description) {
+    errorResult.errors.description = "Description is required";
+  }
+  if (!price) {
+    errorResult.errors.price = "Price per day is required";
+  }
+  if (Object.keys(errorResult.errors).length > 0) {
+    throw errorResult;
   }
 };
 
