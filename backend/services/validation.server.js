@@ -68,13 +68,13 @@ const validateQuery = ({
       include: [
         [
           literal(
-            `(SELECT AVG(stars) FROM ${schema}Reviews WHERE ${schema}Reviews.spotId = Spot.id)`
+            `(SELECT AVG(stars) FROM Reviews WHERE Reviews.spotId = Spot.id)`
           ),
           "avgRating",
         ],
         [
           literal(
-            `(SELECT url FROM ${schema}SpotImages WHERE ${schema}SpotImages.spotId = Spot.id ORDER BY createdAt DESC LIMIT 1)`
+            `(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id ORDER BY createdAt DESC LIMIT 1)`
           ),
           "previewImage",
         ],
