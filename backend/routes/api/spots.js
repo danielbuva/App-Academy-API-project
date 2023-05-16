@@ -31,7 +31,35 @@ router.get("/", async (req, res) => {
     maxPrice,
   });
 
-  const Spots = await Spot.findAll(options);
+  const spots = await Spot.findAll(options);
+
+  const avgRatings = await Review.findAll({
+    attributes: ["spotId", [fn("AVG", col("stars")), "avgRating"]],
+    group: ["spotId"],
+  });
+
+  const spotImages = await SpotImage.findAll({
+    attributes: ["spotId", "url"],
+    order: [["createdAt", "DESC"]],
+  });
+
+  const Spots = spots.map((spot) => {
+    const spotId = spot.id;
+
+    const avgRatingObj = avgRatings.find(
+      (rating) => rating.spotId === spotId
+    );
+    const avgRating = avgRatingObj ? avgRatingObj.get("avgRating") : null;
+
+    const imageObj = spotImages.find((image) => image.spotId === spotId);
+    const previewImage = imageObj ? imageObj.get("url") : null;
+
+    return {
+      ...spot.toJSON(),
+      avgRating,
+      previewImage,
+    };
+  });
   res.json({ Spots });
 });
 
