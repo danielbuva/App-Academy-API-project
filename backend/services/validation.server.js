@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator");
+const { Review, SpotImage } = require("../db/models");
 const { Op, literal } = require("sequelize");
-const { isProduction } = require("../config");
-const schema = isProduction ? "ycshiyp." : "";
 
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
@@ -80,6 +79,10 @@ const validateQuery = ({
         ],
       ],
     },
+    include: [
+      { model: Review, attributes: [] },
+      { model: SpotImage, attributes: [] },
+    ],
   };
 
   page = page ?? 1;
