@@ -10,10 +10,14 @@ const {
   invariant,
   updateSpotInvariant,
   reviewInvariant,
+  checkAuthorization,
 } = require("../../services/error.server");
-const { validateQuery } = require("../../services/validation.server");
+const {
+  validateQuery,
+  validateBooking,
+} = require("../../services/validation.server");
 const { verifyAuth } = require("../../services/auth.server");
-const { Op, fn, col } = require("sequelize");
+const { fn, col } = require("sequelize");
 const router = require("express").Router();
 
 router.get("/", async (req, res) => {
@@ -152,10 +156,10 @@ router.post("/", verifyAuth, async (req, res) => {
 router.post("/:spotId/images", verifyAuth, async (req, res) => {
   const { url, preview } = req.body;
   const spotId = req.params.spotId;
-  const spot = await Spot.findOne({
-    where: { id: spotId, ownerId: req.user.id },
-  });
+
+  const spot = await Spot.findByPk(spotId);
   invariant(spot);
+  checkAuthorization(spot.ownerId === req.user.id);
 
   const newImage = await SpotImage.create({ spotId, url, preview });
   res.json({
@@ -178,12 +182,11 @@ router.put("/:spotId", verifyAuth, async (req, res) => {
     price,
   } = req.body;
 
-  const spot = await Spot.findOne({
-    where: { ownerId: req.user.id, id: req.params.spotId },
-  });
-
+  const spot = await Spot.findByPk(req.params.spotId);
   invariant(spot);
-  updateSpotInvariant([
+  checkAuthorization(spot.ownerId === req.user.id);
+
+  updateSpotInvariant({
     address,
     city,
     country,
@@ -192,7 +195,7 @@ router.put("/:spotId", verifyAuth, async (req, res) => {
     name,
     description,
     price,
-  ]);
+  });
 
   await spot.update({
     address,
@@ -210,12 +213,11 @@ router.put("/:spotId", verifyAuth, async (req, res) => {
 });
 
 router.delete("/:spotId", verifyAuth, async (req, res) => {
-  const spot = await Spot.findOne({
-    where: { ownerId: req.user.id, id: req.params.spotId },
-  });
+  const spot = await Spot.findByPk(req.params.spotId);
   invariant(spot);
-  await spot.destroy();
+  checkAuthorization(spot.ownerId === req.user.id);
 
+  await spot.destroy();
   res.json({ message: "Successfully deleted" });
 });
 
@@ -272,7 +274,7 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res, next) => {
   const { spotId } = req.params;
   let options;
 
-  const userIsTheOwner = await Spot.findAll({
+  const userIsTheOwner = await Spot.find({
     where: { ownerId: userId, id: spotId },
   });
 
@@ -291,59 +293,14 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res, next) => {
 });
 
 router.post("/:spotId/bookings", verifyAuth, async (req, res, next) => {
-  const userId = req.user.id;
   const { startDate, endDate } = req.body;
-  const { spotId } = req.params;
+  const spotId = req.paramsspotId;
+  const userId = req.user.id;
 
-  const spot = await Spot.findOne({ where: { id: spotId } });
+  const spot = await Spot.findByPk(spotId);
   invariant(spot);
-
-  // maybe add this to booking model validations -.-
-  const bookingConflicts = await Booking.findAll({
-    where: {
-      spotId,
-      [Op.or]: [
-        {
-          startDate: {
-            [Op.between]: [startDate, endDate],
-          },
-        },
-        {
-          endDate: {
-            [Op.between]: [startDate, endDate],
-          },
-        },
-        {
-          [Op.and]: [
-            {
-              startDate: {
-                [Op.lte]: startDate,
-              },
-            },
-            {
-              endDate: {
-                [Op.gte]: endDate,
-              },
-            },
-          ],
-        },
-      ],
-    },
-  });
-
-  // clarify if they want all errors or specific errors
-  // waiting on answer
-  if (bookingConflicts.length) {
-    return next({
-      status: 403,
-      message:
-        "Sorry, this spot is already booked for the specified dates",
-      errors: {
-        startDate: "Start date conflicts with an existing booking",
-        endDate: "End date conflicts with an existing booking",
-      },
-    });
-  }
+  checkAuthorization(spot.ownerId !== userId);
+  validateBooking(startDate, endDate, spotId);
 
   const newBooking = await Booking.create({
     spotId,

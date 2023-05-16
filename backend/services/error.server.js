@@ -91,11 +91,18 @@ const reviewInvariant = ({ review, stars }) => {
   }
 };
 
+const checkAuthorization = (condition) => {
+  if (!condition) {
+    throw { status: 403, message: "Forbidden" };
+  }
+};
+
 module.exports = {
-  notFoundHandler,
-  sqlValidationHandler,
+  checkAuthorization,
   errorFormatter,
   invariant,
-  updateSpotInvariant,
+  notFoundHandler,
   reviewInvariant,
+  sqlValidationHandler,
+  updateSpotInvariant,
 };

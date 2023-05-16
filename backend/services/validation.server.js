@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const { Op } = require("sequelize");
+const { Booking } = require("../db/models");
 
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
@@ -100,4 +101,38 @@ const validateQuery = ({
   return options;
 };
 
-module.exports = { handleValidationErrors, validateQuery };
+const validateBooking = async (startDate, endDate, spotId) => {
+  let errorResult = {
+    errors: {},
+    message: "Sorry, this spot is already booked for the specified dates",
+    status: 403,
+  };
+  
+  const bookingsBySpotId = await Booking.findAll({ where: { spotId } });
+
+  for (let i = 0; i < bookingsBySpotId.length; i++) {
+    const startDateConflicts =
+      startDate > bookingsBySpotId[i].startDate &&
+      startDate < bookingsBySpotId[i].endDate;
+    const endDateConflicts =
+      endDate < bookingsBySpotId[i].endDate &&
+      endDate > bookingsBySpotId[i].startDate;
+    if (startDateConflicts) {
+      errorResult.errors.startDate =
+        "Start date conflicts with an existing booking";
+    }
+    if (endDateConflicts) {
+      errorResult.errors.endDate =
+        "End date conflicts with an existing booking";
+    }
+  }
+  if (Object.keys(errorResult.errors).length > 0) {
+    throw errorResult;
+  }
+};
+
+module.exports = {
+  handleValidationErrors,
+  validateBooking,
+  validateQuery,
+};

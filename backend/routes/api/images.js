@@ -5,45 +5,41 @@ const {
   Review,
 } = require("../../db/models");
 const { verifyAuth } = require("../../services/auth.server");
-const { invariant } = require("../../services/error.server");
+const {
+  invariant,
+  checkAuthorization,
+} = require("../../services/error.server");
 const router = require("express").Router();
 const { Op } = require("sequelize");
 
 router.delete("/spot-images/:imageId", verifyAuth, async (req, res) => {
-  const userId = req.user.id;
   const spotImage = await SpotImage.findOne({
     attributes: ["id"],
     where: {
-      [Op.and]: [{ id: req.params.imageId }, { "$Spot.ownerId$": userId }],
-    },
-    include: {
-      model: Spot,
-      required: true,
-      attributes: [],
+      id: req.params.imageId,
     },
   });
   invariant(spotImage, "Spot Image couldn't be found");
+
+  const spot = await Spot.findOne({
+    where: { id: spotImage.spotId, ownerId: req.user.id },
+  });
+  checkAuthorization(spot);
 
   await spotImage.destroy();
   res.json({ message: "Successfully deleted" });
 });
 
 router.delete("review-images/:imageId", verifyAuth, async (req, res) => {
-  const userId = req.user.id;
   const reviewImage = await ReviewImage.findOne({
-    where: {
-      [Op.and]: [
-        { id: req.params.imageId },
-        { "$Review.userId$": userId },
-      ],
-    },
-    include: {
-      model: Review,
-      required: true,
-      attributes: [],
-    },
+    where: { id: req.params.imageId },
   });
   invariant(reviewImage, "Review Image couldn't be found");
+
+  const review = await Review.findOne({
+    where: { id: reviewImage.reviewId, userId: req.user.id },
+  });
+  checkAuthorization(review);
 
   await reviewImage.destroy();
   res.json({ message: "Successfully deleted" });
