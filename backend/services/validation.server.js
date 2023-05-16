@@ -67,22 +67,20 @@ const validateQuery = ({
       include: [
         [
           literal(
-            `(SELECT AVG(stars) FROM Reviews WHERE Reviews.spotId = Spot.id)`
+            "(SELECT AVG(stars) FROM Reviews WHERE Reviews.spotId = Spot.id)"
           ),
           "avgRating",
         ],
         [
           literal(
-            `(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id ORDER BY createdAt DESC LIMIT 1)`
+            "(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id ORDER BY createdAt DESC LIMIT 1)"
           ),
           "previewImage",
         ],
       ],
     },
-    include: [
-      { model: Review, attributes: [] },
-      { model: SpotImage, attributes: [] },
-    ],
+    subQuery: false,
+    distinct: true,
   };
 
   page = page ?? 1;
