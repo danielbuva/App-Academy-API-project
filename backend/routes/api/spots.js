@@ -49,7 +49,9 @@ router.get("/", async (req, res) => {
     const avgRatingObj = avgRatings.find(
       (rating) => rating.spotId === spotId
     );
-    const avgRating = avgRatingObj ? avgRatingObj.get("avgRating") : null;
+    const avgRating = avgRatingObj
+      ? avgRatingObj.get("avgRating").toFixed(1)
+      : null;
 
     const imageObj = spotImages.find((image) => image.spotId === spotId);
     const previewImage = imageObj ? imageObj.get("url") : null;
