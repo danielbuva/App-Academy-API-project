@@ -22,7 +22,7 @@ router.delete("/spot-images/:imageId", verifyAuth, async (req, res) => {
   res.json({ message: "Successfully deleted" });
 });
 
-router.delete("review-images/:imageId", verifyAuth, async (req, res) => {
+router.delete("/review-images/:imageId", verifyAuth, async (req, res) => {
   const reviewImage = await ReviewImage.findByPk(req.params.imageId);
   invariant(reviewImage, "Review Image couldn't be found");
 
