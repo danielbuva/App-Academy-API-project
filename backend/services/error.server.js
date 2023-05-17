@@ -41,6 +41,7 @@ const errorFormatter = (err, _, res, __) => {
 const validSpot = ({
   address,
   city,
+  state,
   country,
   lat,
   lng,
@@ -54,6 +55,9 @@ const validSpot = ({
   }
   if (!city) {
     errorResult.errors.city = "City is required";
+  }
+  if (!state) {
+    errorResult.errors.state = "State is Required";
   }
   if (!country) {
     errorResult.errors.country = "Country is required";
@@ -74,7 +78,17 @@ const validSpot = ({
     errorResult.errors.price = "Price per day is required";
   }
   throwIfError(errorResult);
-  return { address, city, lat, lng, name, description, price };
+  return {
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+  };
 };
 
 const reviewInvariant = ({ review, stars }) => {
@@ -104,6 +118,8 @@ const throwError = (status, message, nested = false) => {
   const error = new Error();
   if (nested) {
     error.errors = { message };
+  } else {
+    error.message = message;
   }
   error.status = status;
   throw error;
