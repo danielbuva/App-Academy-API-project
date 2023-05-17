@@ -195,7 +195,6 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res) => {
   let options;
 
   const spot = await Spot.findByPk(spotId);
-  console.log({ spot });
   invariant(spot);
 
   const userIsTheOwner = spot.ownerId === req.user.id;
@@ -234,8 +233,9 @@ router.post("/:spotId/bookings", verifyAuth, async (req, res) => {
     endDate,
   });
 
-  //add ID !!!!!!!!!!!
-  console.log("newBookingId", newBooking);
+  await newBooking.reload({
+    attributes: { include: ["id"] },
+  });
 
   res.json(newBooking);
 });
