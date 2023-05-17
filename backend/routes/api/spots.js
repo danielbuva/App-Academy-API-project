@@ -90,6 +90,7 @@ router.get("/:spotId", async (req, res) => {
       include: [
         [fn("count", col("Reviews.stars")), "numRating"],
         [fn("AVG", col("Reviews.stars")), "avgStarRating"],
+        "id",
       ],
       group: ["Spot.id"],
     },
