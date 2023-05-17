@@ -1,19 +1,19 @@
-const { Review, ReviewImage } = require("../../db/models");
-const { verifyAuth } = require("../../services/auth.server");
 const {
   invariant,
   checkAuthorization,
+  throwIfError,
 } = require("../../services/error.server");
+const { verifyAuth } = require("../../services/auth.server");
+const { Review, ReviewImage } = require("../../db/models");
+const { throwError } = require("../../services/validation.server");
 const router = require("express").Router();
 
 router.get("/current", verifyAuth, async (req, res) => {
-  const userId = req.user.id;
-
-  const reviews = await Review.findAll({ where: { userId } });
+  const reviews = await Review.findAll({ where: { userId: req.user.id } });
   res.json(reviews);
 });
 
-router.post("/:reviewId/images", verifyAuth, async (req, res, next) => {
+router.post("/:reviewId/images", verifyAuth, async (req, res) => {
   const reviewId = req.params.reviewId;
 
   const review = await Review.findByPk(reviewId, {
@@ -24,9 +24,10 @@ router.post("/:reviewId/images", verifyAuth, async (req, res, next) => {
 
   const images = await ReviewImage.Count({ where: { reviewId } });
   if (images === 10) {
-    return res.status(403).json({
-      message: "Maximum number of images for this resource was reached",
-    });
+    throwError(
+      403,
+      "Maximum number of images for this resource was reached"
+    );
   }
 
   const newReview = await ReviewImage.create({
@@ -47,9 +48,7 @@ router.put("/:reviewId", verifyAuth, async (req, res) => {
   if (!stars) {
     errorResult.errors.stars = "Stars must be an integer from 1 to 5";
   }
-  if (Object.keys(errorResult.errors).length > 0) {
-    throw errorResult;
-  }
+  throwIfError(errorResult);
 
   const reviewToUpdate = await Review.findByPk(req.params.reviewId);
   invariant(reviewToUpdate, "Review couldn't be found");

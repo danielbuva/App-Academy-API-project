@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
-const { Op } = require("sequelize");
+const { throwIfError } = require("./error.server");
 const { Booking } = require("../db/models");
+const { setOptions } = require("../utils");
 
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
@@ -57,48 +58,18 @@ const validateQuery = ({
     errorResult.errors.maxPrice =
       "Maximum price must be greater than or equal to 0";
   }
-  if (Object.keys(errorResult.errors).length > 0) {
-    throw errorResult;
-  }
+  throwIfError(errorResult);
 
-  let options = { where: {} };
-
-  page = page ?? 1;
-  size = size ?? 20;
-  options.limit = size;
-  options.offset = (page - 1) * size;
-
-  if (minLat && maxLat) {
-    options.where.lat = {
-      [Op.and]: [{ [Op.gte]: minLat }, { [Op.lte]: maxLat }],
-    };
-  } else if (minLat) {
-    options.where.lat = { [Op.gte]: minLat };
-  } else if (maxLat) {
-    options.where.lat = { [Op.lte]: maxLat };
-  }
-
-  if (minLng && maxLng) {
-    options.where.lng = {
-      [Op.and]: [{ [Op.gte]: minLng }, { [Op.lte]: maxLng }],
-    };
-  } else if (minLng) {
-    options.where.lng = { [Op.gte]: minLng };
-  } else if (maxLng) {
-    options.where.lng = { [Op.lte]: maxLng };
-  }
-
-  if (minPrice && maxPrice) {
-    options.where.price = {
-      [Op.and]: [{ [Op.gte]: minPrice }, { [Op.lte]: maxPrice }],
-    };
-  } else if (minPrice) {
-    options.where.price = { [Op.gte]: minPrice };
-  } else if (maxPrice) {
-    options.where.price = { [Op.lte]: maxPrice };
-  }
-
-  return options;
+  return setOptions({
+    page,
+    size,
+    minLat,
+    maxLat,
+    minLng,
+    maxLng,
+    minPrice,
+    maxPrice,
+  });
 };
 
 const validateBooking = async (startDate, endDate, spotId) => {
@@ -107,7 +78,7 @@ const validateBooking = async (startDate, endDate, spotId) => {
     message: "Sorry, this spot is already booked for the specified dates",
     status: 403,
   };
-  
+
   const bookingsBySpotId = await Booking.findAll({ where: { spotId } });
 
   for (let i = 0; i < bookingsBySpotId.length; i++) {
@@ -126,13 +97,18 @@ const validateBooking = async (startDate, endDate, spotId) => {
         "End date conflicts with an existing booking";
     }
   }
-  if (Object.keys(errorResult.errors).length > 0) {
-    throw errorResult;
-  }
+  throwIfError(errorResult);
+};
+
+const throwError = (status, message) => {
+  const error = new Error(message);
+  error.status = status;
+  throw error;
 };
 
 module.exports = {
   handleValidationErrors,
+  throwError,
   validateBooking,
   validateQuery,
 };

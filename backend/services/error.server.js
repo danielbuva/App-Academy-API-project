@@ -38,7 +38,7 @@ const errorFormatter = (err, _, res, __) => {
   });
 };
 
-const updateSpotInvariant = ({
+const validSpot = ({
   address,
   city,
   country,
@@ -73,9 +73,8 @@ const updateSpotInvariant = ({
   if (!price) {
     errorResult.errors.price = "Price per day is required";
   }
-  if (Object.keys(errorResult.errors).length > 0) {
-    throw errorResult;
-  }
+  throwIfError(errorResult);
+  return { address, city, lat, lng, name, description, price };
 };
 
 const reviewInvariant = ({ review, stars }) => {
@@ -86,9 +85,7 @@ const reviewInvariant = ({ review, stars }) => {
   if (!stars || stars > 5 || stars < 1) {
     errorResult.errors.stars = "Stars must be an integer from 1 to 5";
   }
-  if (Object.keys(errorResult.errors).length > 0) {
-    throw errorResult;
-  }
+  throwIfError(errorResult);
 };
 
 const checkAuthorization = (condition) => {
@@ -97,12 +94,29 @@ const checkAuthorization = (condition) => {
   }
 };
 
+const throwIfError = (errorResult) => {
+  if (Object.keys(errorResult.errors).length > 0) {
+    throw errorResult;
+  }
+};
+
+const throwError = (status, message, nested = false) => {
+  const error = new Error();
+  if (nested) {
+    error.errors = { message };
+  }
+  error.status = status;
+  throw error;
+};
+
 module.exports = {
   checkAuthorization,
+  throwError,
+  throwIfError,
   errorFormatter,
   invariant,
   notFoundHandler,
   reviewInvariant,
   sqlValidationHandler,
-  updateSpotInvariant,
+  validSpot,
 };

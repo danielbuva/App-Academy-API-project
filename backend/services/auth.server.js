@@ -1,12 +1,12 @@
 const { handleValidationErrors } = require("./validation.server");
 const { jwtConfig, isProduction } = require("../config");
 const { hashSync, compareSync } = require("bcryptjs");
+const { throwIfError } = require("./error.server");
 const { check } = require("express-validator");
 const { User } = require("../db/models");
+const { secret, expiresIn } = jwtConfig;
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
-
-const { secret, expiresIn } = jwtConfig;
 
 const setTokenCookie = (res, user) => {
   const token = jwt.sign(
@@ -70,9 +70,46 @@ const restoreCsrf = (req, res) => {
   });
 };
 
+const getAllUsers = async (_, res) => {
+  const users = await User.findAll();
+  res.json(users);
+};
+
+const getUser = (req, res) => {
+  const { user } = req;
+  if (user) {
+    const data = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+    };
+    return res.json({
+      user: data,
+    });
+  } else return res.json({ user: null });
+};
+
 const signup = async (req, res) => {
+  let errorResult = {
+    errors: {},
+    message: "User already exists",
+    status: 500,
+  };
   const { firstName, lastName, email, password, username } = req.body;
   const hashedPassword = hashSync(password);
+
+  const emailExists = await User.findOne({ where: { email } });
+  if (emailExists) {
+    errorResult.errors.email = "User with that email already exists";
+  }
+  const usernameExists = await User.findOne({ where: { username } });
+  if (usernameExists) {
+    errorResult.errors.username = "User with that username already exists";
+  }
+  throwIfError(errorResult);
+
   const data = await User.create({
     firstName,
     lastName,
@@ -132,6 +169,11 @@ const login = async (req, res, next) => {
   return res.json({ user });
 };
 
+const logout = (_, res) => {
+  res.clearCookie("token");
+  return res.json({ message: "success" });
+};
+
 const validateLogin = [
   check("credential")
     .exists({ checkFalsy: true })
@@ -170,11 +212,13 @@ const validateSignup = [
 ];
 
 module.exports = {
-  restoreSession,
-  verifyAuth,
   restoreCsrf,
-  signup,
-  login,
-  validateLogin,
-  validateSignup,
+  restoreSession,
+  session: {
+    getUser,
+    login: [validateLogin, login],
+    logout,
+  },
+  user: { getAllUsers, signup: [validateSignup, signup] },
+  verifyAuth,
 };

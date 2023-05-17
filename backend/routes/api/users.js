@@ -1,12 +1,8 @@
-const { signup, validateSignup } = require("../../services/auth.server");
+const { user } = require("../../services/auth.server");
 const router = require("express").Router();
-const { User } = require("../../db/models");
 
-router.post("/", validateSignup, signup);
+router.post("/", user.signup);
 
-router.get("/", async (_, res) => {
-  const users = await User.findAll();
-  res.json(users);
-});
+router.get("/", user.getAllUsers);
 
 module.exports = router;

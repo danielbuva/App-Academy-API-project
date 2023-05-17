@@ -1,5 +1,8 @@
+const {
+  invariant,
+  checkAuthorization,
+} = require("../../services/error.server");
 const { verifyAuth } = require("../../services/auth.server");
-const { invariant } = require("../../services/error.server");
 const { Booking, Spot } = require("../../db/models");
 const { literal, Op } = require("sequelize");
 const router = require("express").Router();
@@ -39,10 +42,8 @@ router.put("/:bookingId", verifyAuth, async (req, res) => {
   });
   invariant(booking, "Booking couldn't be found");
   if (booking.endDate >= today()) {
-    return res
-      .status(403)
-      .json({ message: "Past bookings can't be modified" });
-  }
+    throwError(403, "Past bookings can't be modified");
+  } 
   const bookingConflicts = await Booking.findOne({
     where: {
       [Op.or]: [
@@ -91,23 +92,17 @@ router.put("/:bookingId", verifyAuth, async (req, res) => {
 });
 
 router.delete("/:bookingId", verifyAuth, async (req, res, next) => {
-  const userId = req.user.id;
-  const booking = await Booking.findOne({
-    where: {
-      [Op.or]: [{ userId }, { "$Spot.ownerId$": userId }],
-      id: req.params.bookingId,
-    },
-    include: [{ model: Spot, attributes: [] }],
-  });
+  const booking = await Booking.findByPl(req.params.bookingId);
   invariant(booking, "Booking coudn't be found");
+  checkAuthorization(booking.userId === req.user.id);
 
-  if (booking.startDate <= today() && booking.endDate >= today()) {
-    return next({
-      message: "Bookings that have been started can't be deleted",
-      status: 403,
-    });
+  const bookingConflicts =
+    booking.startDate <= today() && booking.endDate >= today();
+
+  if (bookingConflicts) {
+    throwError(402, "Bookings that have been started can't be deleted");
   }
-
+    
   await booking.destroy();
   res.json({ message: "Successfully deleted" });
 });

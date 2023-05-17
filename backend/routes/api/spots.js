@@ -8,40 +8,27 @@ const {
 } = require("../../db/models");
 const {
   invariant,
-  updateSpotInvariant,
+  validSpot,
   reviewInvariant,
   checkAuthorization,
 } = require("../../services/error.server");
 const {
   validateQuery,
   validateBooking,
+  throwError,
 } = require("../../services/validation.server");
 const { verifyAuth } = require("../../services/auth.server");
-const { fn, col } = require("sequelize");
 const router = require("express").Router();
+const { fn, col } = require("sequelize");
 
 router.get("/", async (req, res) => {
-  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
-    req.query;
-
-  const options = validateQuery({
-    page,
-    size,
-    minLat,
-    maxLat,
-    minLng,
-    maxLng,
-    minPrice,
-    maxPrice,
-  });
-
+  const options = validateQuery(req.query);
   const spots = await Spot.findAll(options);
 
   const avgRatings = await Review.findAll({
     attributes: ["spotId", [fn("AVG", col("stars")), "avgRating"]],
     group: ["spotId"],
   });
-
   const spotImages = await SpotImage.findAll({
     attributes: ["spotId", "url"],
     order: [["createdAt", "DESC"]],
@@ -53,9 +40,7 @@ router.get("/", async (req, res) => {
     const avgRatingObj = avgRatings.find(
       (rating) => rating.spotId === spotId
     );
-    const avgRating = avgRatingObj
-      ? avgRatingObj.get("avgRating").toFixed(1)
-      : null;
+    const avgRating = avgRatingObj ? avgRatingObj.get("avgRating") : null;
 
     const imageObj = spotImages.find((image) => image.spotId === spotId);
     const previewImage = imageObj ? imageObj.get("url") : null;
@@ -66,6 +51,7 @@ router.get("/", async (req, res) => {
       previewImage,
     };
   });
+
   res.json({ Spots });
 });
 
@@ -89,7 +75,8 @@ router.get("/current", verifyAuth, async (req, res) => {
 });
 
 router.get("/:spotId", async (req, res) => {
-  const spot = await Spot.findByPk(req.params.spotId, {
+  const spot = await Spot.findOne({
+    where: { id: req.params.spotId },
     include: [
       { model: SpotImage },
       { model: Review, attributes: [] },
@@ -107,47 +94,15 @@ router.get("/:spotId", async (req, res) => {
       group: ["Spot.id"],
     },
   });
-
   invariant(spot.id);
 
   res.json(spot);
 });
 
 router.post("/", verifyAuth, async (req, res) => {
-  const {
-    address,
-    city,
-    state,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price,
-  } = req.body;
-
-  updateSpotInvariant({
-    address,
-    city,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price,
-  });
-
   const newSpot = await Spot.create({
     ownerId: req.user.id,
-    address,
-    city,
-    state,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price,
+    ...validSpot(req.body),
   });
 
   res.status(201).json(newSpot);
@@ -170,43 +125,12 @@ router.post("/:spotId/images", verifyAuth, async (req, res) => {
 });
 
 router.put("/:spotId", verifyAuth, async (req, res) => {
-  const {
-    address,
-    city,
-    state,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price,
-  } = req.body;
-
   const spot = await Spot.findByPk(req.params.spotId);
   invariant(spot);
   checkAuthorization(spot.ownerId === req.user.id);
 
-  updateSpotInvariant({
-    address,
-    city,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price,
-  });
-
   await spot.update({
-    address,
-    city,
-    state,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price,
+    ...validSpot(req.body),
   });
 
   res.json(spot);
@@ -245,13 +169,11 @@ router.post("/:spotId/reviews", verifyAuth, async (req, res, next) => {
   const { review, stars } = req.body;
   const spotId = parseInt(req.params.spotId);
   const userId = req.user.id;
-  console.log({ review, stars });
   reviewInvariant({ review, stars });
 
   const spot = await Spot.findByPk(spotId, {
     attributes: ["id"],
   });
-  console.log({ spot });
   invariant(spot);
 
   const reviewExists = await Review.findOne({
@@ -259,9 +181,7 @@ router.post("/:spotId/reviews", verifyAuth, async (req, res, next) => {
   });
 
   if (reviewExists) {
-    return next({
-      message: "User already has a review for this spot",
-    });
+    throwError(500, "User already has a review for this spot");
   }
 
   const newReview = await Review.create({ review, stars, spotId, userId });
@@ -269,16 +189,16 @@ router.post("/:spotId/reviews", verifyAuth, async (req, res, next) => {
   res.status(201).json(newReview);
 });
 
-router.get("/:spotId/bookings", verifyAuth, async (req, res, next) => {
+router.get("/:spotId/bookings", verifyAuth, async (req, res) => {
   const userId = req.user.id;
   const { spotId } = req.params;
   let options;
 
-  const userIsTheOwner = await Spot.find({
+  const userIsTheOwner = await Spot.findOne({
     where: { ownerId: userId, id: spotId },
   });
 
-  if (userIsTheOwner.id) {
+  if (userIsTheOwner) {
     options = { where: { spotId }, include: User };
   } else {
     options = {
@@ -292,7 +212,7 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res, next) => {
   res.json({ Bookings });
 });
 
-router.post("/:spotId/bookings", verifyAuth, async (req, res, next) => {
+router.post("/:spotId/bookings", verifyAuth, async (req, res) => {
   const { startDate, endDate } = req.body;
   const spotId = req.paramsspotId;
   const userId = req.user.id;
