@@ -5,7 +5,7 @@ const {
 } = require("../../services/auth.server");
 const sessionRouter = require("./session.js");
 const usersRouter = require("./users.js");
-const spotsRouter = require("./spots.js");
+const spotsRouter = require("./spots");
 const reviewsRouter = require("./reviews");
 const bookingsRouter = require("./bookings");
 const imagesRouter = require("./images");

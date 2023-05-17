@@ -14,20 +14,24 @@ const {
 const { verifyAuth } = require("../../services/auth.server");
 const router = require("express").Router();
 
-router.get("/current", verifyAuth, async (req, res) => {
-  const reviews = await Review.findAll({
-    where: { userId: req.user.id },
-    include: [
-      { model: User, attributes: ["id", "firstName", "lastName"] },
-      { model: Spot, attributes: { exclude: ["createdAt", "updatedAt"] } },
-      { model: ReviewImage, attributes: ["id", "url"] },
-    ],
-  });
-
-  const spotImages = await SpotImage.findAll({
-    attributes: ["spotId", "url"],
-    order: [["createdAt", "DESC"]],
-  });
+const getCurrentUsersReviews = async (req, res) => {
+  const [reviews, spotImages] = await Promise.all([
+    Review.findAll({
+      where: { userId: req.user.id },
+      include: [
+        { model: User, attributes: ["id", "firstName", "lastName"] },
+        {
+          model: Spot,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+        { model: ReviewImage, attributes: ["id", "url"] },
+      ],
+    }),
+    SpotImage.findAll({
+      attributes: ["spotId", "url"],
+      order: [["createdAt", "DESC"]],
+    }),
+  ]);
 
   const Reviews = reviews.map((review) => {
     const spotId = review.Spot.id;
@@ -45,9 +49,9 @@ router.get("/current", verifyAuth, async (req, res) => {
   });
 
   res.json({ Reviews });
-});
+};
 
-router.post("/:reviewId/images", verifyAuth, async (req, res) => {
+const addReviewImageByReviewId = async (req, res) => {
   const reviewId = req.params.reviewId;
 
   const review = await Review.findByPk(reviewId, {
@@ -70,9 +74,9 @@ router.post("/:reviewId/images", verifyAuth, async (req, res) => {
   });
 
   res.json({ id: newReview.id, url: newReview.url });
-});
+};
 
-router.put("/:reviewId", verifyAuth, async (req, res) => {
+const editReviewbyReviewId = async (req, res) => {
   const errorResult = { errors: {}, message: "Bad Request", status: 400 };
   const { review, stars } = req.body;
 
@@ -93,15 +97,20 @@ router.put("/:reviewId", verifyAuth, async (req, res) => {
   await reviewToUpdate.save();
 
   res.json(reviewToUpdate);
-});
+};
 
-router.delete("/:reviewId", verifyAuth, async (req, res) => {
+const deleteReviewByReviewId = async (req, res) => {
   const review = await Review.findByPk(req.params.reviewId);
   invariant(review, "Review couldn't be found");
   checkAuthorization(review.userId === req.user.id);
 
   await review.destroy();
   res.json({ message: "Successfully deleted" });
-});
+};
+
+router.get("/current", [verifyAuth, getCurrentUsersReviews]);
+router.post("/:reviewId/images", [verifyAuth, addReviewImageByReviewId]);
+router.put("/:reviewId", [verifyAuth, editReviewbyReviewId]);
+router.delete("/:reviewId", [verifyAuth, deleteReviewByReviewId]);
 
 module.exports = router;
