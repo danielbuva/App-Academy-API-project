@@ -16,7 +16,7 @@ router.delete("/spot-images/:imageId", verifyAuth, async (req, res) => {
   invariant(spotImage, "Spot Image couldn't be found");
 
   const spot = await Spot.findByPk(spotImage.spotId);
-  checkAuthorization(spot);
+  checkAuthorization(spot.ownerId === req.user.id);
 
   await spotImage.destroy();
   res.json({ message: "Successfully deleted" });
@@ -27,7 +27,7 @@ router.delete("review-images/:imageId", verifyAuth, async (req, res) => {
   invariant(reviewImage, "Review Image couldn't be found");
 
   const review = await Review.findByPk(reviewImage.reviewId);
-  checkAuthorization(review);
+  checkAuthorization(review.userId === req.user.id);
 
   await reviewImage.destroy();
   res.json({ message: "Successfully deleted" });
