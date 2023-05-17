@@ -11,11 +11,11 @@ const {
   validSpot,
   reviewInvariant,
   checkAuthorization,
+  throwError,
 } = require("../../services/error.server");
 const {
   validateQuery,
   validateBooking,
-  throwError,
 } = require("../../services/validation.server");
 const { verifyAuth } = require("../../services/auth.server");
 const router = require("express").Router();
@@ -78,7 +78,7 @@ router.get("/:spotId", async (req, res) => {
   const spot = await Spot.findOne({
     where: { id: req.params.spotId },
     include: [
-      { model: SpotImage },
+      { model: SpotImage, attributes: ["id", "url", "preview"] },
       { model: Review, attributes: [] },
       {
         model: User,
@@ -199,7 +199,12 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res) => {
   });
 
   if (userIsTheOwner) {
-    options = { where: { spotId }, include: User };
+    options = {
+      where: { spotId },
+      include: [
+        { model: User, attributes: ["id", "firstName", "lastName"] },
+      ],
+    };
   } else {
     options = {
       where: { spotId },
@@ -214,13 +219,13 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res) => {
 
 router.post("/:spotId/bookings", verifyAuth, async (req, res) => {
   const { startDate, endDate } = req.body;
-  const spotId = req.paramsspotId;
+  const spotId = req.params.spotId;
   const userId = req.user.id;
 
   const spot = await Spot.findByPk(spotId);
   invariant(spot);
   checkAuthorization(spot.ownerId !== userId);
-  validateBooking(startDate, endDate, spotId);
+  await validateBooking(startDate, endDate, spotId);
 
   const newBooking = await Booking.create({
     spotId,
@@ -228,6 +233,9 @@ router.post("/:spotId/bookings", verifyAuth, async (req, res) => {
     startDate,
     endDate,
   });
+
+  //add ID !!!!!!!!!!!
+  console.log("newBookingId", newBooking.id);
 
   res.json(newBooking);
 });
