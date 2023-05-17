@@ -44,10 +44,10 @@ const validateQuery = ({
   if (minLat && isNaN(parseInt(minLat))) {
     errorResult.errors.minLat = "Minimum latitude is invalid";
   }
-  if (minLng && isNaN(parseInt(minLng)) < 1) {
+  if (minLng && isNaN(parseInt(minLng))) {
     errorResult.errors.minLng = "Minimum longitude is invalid";
   }
-  if (maxLng && isNaN(parseInt(maxLng)) < 1) {
+  if (maxLng && isNaN(parseInt(maxLng))) {
     errorResult.errors.maxLng = "Maximum longitude is invalid";
   }
   if (minPrice && minPrice < 0) {
