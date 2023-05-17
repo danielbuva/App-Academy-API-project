@@ -75,29 +75,41 @@ router.get("/current", verifyAuth, async (req, res) => {
 });
 
 router.get("/:spotId", async (req, res) => {
+  const spotId = req.params.spotId;
   const spot = await Spot.findOne({
-    where: { id: req.params.spotId },
-    include: [
-      { model: SpotImage, attributes: ["id", "url", "preview"] },
-      { model: Review, attributes: [] },
-      {
-        model: User,
-        attributes: ["id", "username", "email"],
-        as: "Owner",
-      },
-    ],
-    attributes: {
-      include: [
-        [fn("count", col("Reviews.stars")), "numRating"],
-        [fn("AVG", col("Reviews.stars")), "avgStarRating"],
-        "id",
-      ],
-      group: ["Spot.id"],
-    },
+    where: { id: spotId },
   });
-  invariant(spot.id);
+  invariant(spot);
 
-  res.json(spot);
+  const SpotImages = await SpotImage.findAll({
+    where: { spotId },
+    attributes: ["id", "url", "preview"],
+  });
+
+  const reviews = await Review.findAll({
+    where: { spotId },
+    attributes: ["stars"],
+  });
+
+  const numRating = reviews.length;
+  const avgStarRating =
+    numRating > 0
+      ? reviews.reduce((sum, review) => sum + review.stars, 0) / numRating
+      : 0;
+
+  const Owner = await User.findOne({
+    where: { id: spot.ownerId },
+    attributes: ["id", "username", "email"],
+    as: "Owner",
+  });
+
+  res.json({
+    ...spot.toJSON(),
+    numRating,
+    avgStarRating,
+    SpotImages,
+    Owner,
+  });
 });
 
 router.post("/", verifyAuth, async (req, res) => {
