@@ -22,7 +22,7 @@ router.get("/current", verifyAuth, async (req, res) => {
           include: [
             [
               literal(
-                "(SELECT MAX(`SpotImages`.`url`) FROM `SpotImages` WHERE `Spot`.`id` = `SpotImages`.`SpotId`)"
+                '(SELECT MAX(url) FROM "SpotImages" WHERE "Spot"."id" = "SpotImages"."spotId")'
               ),
               "previewImage",
             ],
