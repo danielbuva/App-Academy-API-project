@@ -2,14 +2,20 @@ const {
   invariant,
   checkAuthorization,
   throwIfError,
+  throwError,
 } = require("../../services/error.server");
+const {
+  Review,
+  ReviewImage,
+  Spot,
+  SpotImage,
+  User,
+} = require("../../db/models");
 const { verifyAuth } = require("../../services/auth.server");
-const { Review, ReviewImage, Spot, User } = require("../../db/models");
-const { throwError } = require("../../services/validation.server");
 const router = require("express").Router();
 
 router.get("/current", verifyAuth, async (req, res) => {
-  const Reviews = await Review.findAll({
+  const reviews = await Review.findAll({
     where: { userId: req.user.id },
     include: [
       { model: User, attributes: ["id", "firstName", "lastName"] },
@@ -17,6 +23,27 @@ router.get("/current", verifyAuth, async (req, res) => {
       { model: ReviewImage, attributes: ["id", "url"] },
     ],
   });
+
+  const spotImages = await SpotImage.findAll({
+    attributes: ["spotId", "url"],
+    order: [["createdAt", "DESC"]],
+  });
+
+  const Reviews = reviews.map((review) => {
+    const spotId = review.Spot.id;
+
+    const imageObj = spotImages.find((image) => image.spotId === spotId);
+    const previewImage = imageObj ? imageObj.get("url") : null;
+
+    return {
+      ...review.toJSON(),
+      Spot: {
+        ...review.Spot.toJSON(),
+        previewImage,
+      },
+    };
+  });
+
   res.json({ Reviews });
 });
 
