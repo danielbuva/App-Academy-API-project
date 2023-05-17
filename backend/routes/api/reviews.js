@@ -4,13 +4,20 @@ const {
   throwIfError,
 } = require("../../services/error.server");
 const { verifyAuth } = require("../../services/auth.server");
-const { Review, ReviewImage } = require("../../db/models");
+const { Review, ReviewImage, Spot, User } = require("../../db/models");
 const { throwError } = require("../../services/validation.server");
 const router = require("express").Router();
 
 router.get("/current", verifyAuth, async (req, res) => {
-  const reviews = await Review.findAll({ where: { userId: req.user.id } });
-  res.json(reviews);
+  const Reviews = await Review.findAll({
+    where: { userId: req.user.id },
+    include: [
+      { model: User, attributes: ["id", "firstName", "lastName"] },
+      { model: Spot, attributes: { exclude: ["createdAt", "updatedAt"] } },
+      { model: ReviewImage, attributes: ["id", "url"] },
+    ],
+  });
+  res.json({ Reviews });
 });
 
 router.post("/:reviewId/images", verifyAuth, async (req, res) => {
@@ -22,7 +29,7 @@ router.post("/:reviewId/images", verifyAuth, async (req, res) => {
   invariant(review, "Review couldn't be found");
   checkAuthorization(review.userId === req.user.id);
 
-  const images = await ReviewImage.Count({ where: { reviewId } });
+  const images = await ReviewImage.count({ where: { reviewId } });
   if (images === 10) {
     throwError(
       403,
@@ -35,7 +42,7 @@ router.post("/:reviewId/images", verifyAuth, async (req, res) => {
     url: req.body.url,
   });
 
-  res.json(newReview);
+  res.json({ id: newReview.id, url: newReview.url });
 });
 
 router.put("/:reviewId", verifyAuth, async (req, res) => {
