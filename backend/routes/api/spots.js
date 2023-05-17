@@ -191,14 +191,14 @@ router.post("/:spotId/reviews", verifyAuth, async (req, res, next) => {
 });
 
 router.get("/:spotId/bookings", verifyAuth, async (req, res) => {
-  const userId = req.user.id;
-  const { spotId } = req.params;
+  const spotId = req.params.spotId;
   let options;
 
-  const userIsTheOwner = await Spot.findOne({
-    where: { ownerId: userId, id: spotId },
-  });
+  const spot = await Spot.findByPk(spotId);
+  console.log({ spot });
+  invariant(spot);
 
+  const userIsTheOwner = spot.ownerId === req.user.id;
   if (userIsTheOwner) {
     options = {
       where: { spotId },
@@ -212,9 +212,8 @@ router.get("/:spotId/bookings", verifyAuth, async (req, res) => {
       attributes: ["spotId", "startDate", "endDate"],
     };
   }
-  const Bookings = await Booking.findAll(options);
-  invariant(Bookings);
 
+  const Bookings = await Booking.findAll(options);
   res.json({ Bookings });
 });
 
@@ -236,7 +235,7 @@ router.post("/:spotId/bookings", verifyAuth, async (req, res) => {
   });
 
   //add ID !!!!!!!!!!!
-  console.log("newBookingId", newBooking.id);
+  console.log("newBookingId", newBooking);
 
   res.json(newBooking);
 });
