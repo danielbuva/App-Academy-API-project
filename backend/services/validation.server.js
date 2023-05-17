@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { throwIfError } = require("./error.server");
+const { throwIfError, throwError } = require("./error.server");
 const { Booking } = require("../db/models");
 const { setOptions } = require("../utils");
 
@@ -72,22 +72,29 @@ const validateQuery = ({
   });
 };
 
-const validateBooking = async (startDate, endDate, spotId) => {
+const validateBooking = async (startDate, endDate, spotId, editing) => {
   let errorResult = {
     errors: {},
     message: "Sorry, this spot is already booked for the specified dates",
     status: 403,
   };
 
+  if (startDate >= endDate) {
+    errorResult.errors.endDate =
+      "endDate cannot be on or before startDate";
+    throwIfError(errorResult);
+  }
+
   const bookingsBySpotId = await Booking.findAll({ where: { spotId } });
 
   for (let i = 0; i < bookingsBySpotId.length; i++) {
+    let booking = bookingsBySpotId[i];
     const startDateConflicts =
-      startDate > bookingsBySpotId[i].startDate &&
-      startDate < bookingsBySpotId[i].endDate;
+      startDate >= booking.startDate && startDate <= booking.endDate;
     const endDateConflicts =
-      endDate < bookingsBySpotId[i].endDate &&
-      endDate > bookingsBySpotId[i].startDate;
+      endDate <= booking.endDate && endDate >= booking.startDate;
+    const bothDateConflicts =
+      endDate >= booking.endDate && startDate <= booking.startDate;
     if (startDateConflicts) {
       errorResult.errors.startDate =
         "Start date conflicts with an existing booking";
@@ -96,19 +103,21 @@ const validateBooking = async (startDate, endDate, spotId) => {
       errorResult.errors.endDate =
         "End date conflicts with an existing booking";
     }
+    if (bothDateConflicts) {
+      errorResult.errors.startDate =
+        "Start date conflicts with an existing booking";
+      errorResult.errors.endDate =
+        "End date conflicts with an existing booking";
+    }
+    throwIfError(errorResult);
   }
-  throwIfError(errorResult);
-};
-
-const throwError = (status, message) => {
-  const error = new Error(message);
-  error.status = status;
-  throw error;
+  if (editing && editing >= today()) {
+    throwError(403, "Past bookings can't be modified");
+  }
 };
 
 module.exports = {
   handleValidationErrors,
-  throwError,
   validateBooking,
   validateQuery,
 };
