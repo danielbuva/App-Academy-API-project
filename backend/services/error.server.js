@@ -93,10 +93,10 @@ const validSpot = ({
 
 const reviewInvariant = ({ review, stars }) => {
   let errorResult = { errors: {}, message: "Bad Request", status: 400 };
-  if (!review) {
+  if (!review || review.trim() === "") {
     errorResult.errors.review = "Review text is required";
   }
-  if (!stars || stars > 5 || stars < 1) {
+  if (!stars || stars > 5 || stars < 1 || !Number.isInteger(stars)) {
     errorResult.errors.stars = "Stars must be an integer from 1 to 5";
   }
   throwIfError(errorResult);
@@ -108,21 +108,31 @@ const checkAuthorization = (condition) => {
   }
 };
 
-const throwIfError = (errorResult) => {
-  if (Object.keys(errorResult.errors).length > 0) {
-    throw errorResult;
+const throwIfError = (result) => {
+  if (Object.keys(result.errors).length > 0) {
+    throw result;
   }
 };
 
-const throwError = (status, message, nested = false) => {
+const throwError = (status, message) => {
   const error = new Error();
-  if (nested) {
-    error.errors = { message };
-  } else {
-    error.message = message;
-  }
+  error.message = message;
   error.status = status;
   throw error;
+};
+
+const returnError = (err, res) => {
+  if (!err) {
+    throw Error("return error function needs error object");
+  }
+  if (!res) {
+    throw Error("return error function needs response object");
+  }
+  console.error(err);
+  res.status(err.status || 500).json({
+    message: err.message || "server error oops",
+    errors: err.errors || undefined,
+  });
 };
 
 module.exports = {
@@ -132,6 +142,7 @@ module.exports = {
   errorFormatter,
   invariant,
   notFoundHandler,
+  returnError,
   reviewInvariant,
   sqlValidationHandler,
   validSpot,
