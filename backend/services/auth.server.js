@@ -1,8 +1,10 @@
-const { handleValidationErrors } = require("./validation.server");
+const {
+  throwIfError,
+  throwError,
+  returnError,
+} = require("./error.server");
 const { jwtConfig, isProduction } = require("../config");
 const { hashSync, compareSync } = require("bcryptjs");
-const { throwIfError } = require("./error.server");
-const { check } = require("express-validator");
 const { User } = require("../db/models");
 const { secret, expiresIn } = jwtConfig;
 const jwt = require("jsonwebtoken");
@@ -91,134 +93,156 @@ const getUser = (req, res) => {
   } else return res.json({ user: null });
 };
 
-const signup = async (req, res) => {
-  let errorResult = {
-    errors: {},
-    message: "User already exists",
-    status: 500,
-  };
-  const { firstName, lastName, email, password, username } = req.body;
-  const hashedPassword = hashSync(password);
-
-  const emailExists = await User.findOne({ where: { email } });
-  if (emailExists) {
-    errorResult.errors.email = "User with that email already exists";
-  }
-  const usernameExists = await User.findOne({ where: { username } });
-  if (usernameExists) {
-    errorResult.errors.username = "User with that username already exists";
-  }
-  throwIfError(errorResult);
-
-  const data = await User.create({
-    firstName,
-    lastName,
-    email,
-    username,
-    hashedPassword,
-  });
-
-  const user = {
-    id: data.id,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    email: data.email,
-    username: data.username,
-  };
-
-  setTokenCookie(res, user);
-
-  return res.json({ user });
-};
-
-const login = async (req, res, next) => {
-  const { credential, password } = req.body;
-
-  const data = await User.unscoped().findOne({
-    where: {
-      [Op.or]: {
-        username: credential,
-        email: credential,
-      },
-    },
-  });
-
-  const passwordMatch = compareSync(
-    password,
-    data.hashedPassword.toString()
-  );
-
-  if (!data || !passwordMatch) {
-    const err = new Error("Login failed");
-    err.status = 401;
-    err.title = "Login failed";
-    err.errors = { credential: "The provided credentials were invalid." };
-    return next(err);
-  }
-
-  const user = {
-    id: data.id,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    email: data.email,
-    username: data.username,
-  };
-
-  setTokenCookie(res, user);
-
-  return res.json({ user });
-};
-
 const logout = (_, res) => {
   res.clearCookie("token");
   return res.json({ message: "success" });
 };
 
-const validateLogin = [
-  check("credential")
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage("Please provide a valid email or username."),
-  check("password")
-    .exists({ checkFalsy: true })
-    .withMessage("Please provide a password."),
-  handleValidationErrors,
-];
+const validLogin = ({ credential, password }) => {
+  let errorResult = {
+    message: "Invalid credentials",
+    errors: {},
+    status: 500,
+  };
+  if (!credential) {
+    errorResult.errors.credential = "Email or username is required";
+  }
+  if (!password) {
+    errorResult.errors.password = "Password is required";
+  }
+  throwIfError(errorResult);
+  return { credential, password };
+};
 
-const validateSignup = [
-  check("firstName")
-    .exists({ checkFalsy: true })
-    .withMessage("First Name is required"),
-  check("lastName")
-    .exists({ checkFalsy: true })
-    .withMessage("Last Name is required"),
-  check("email")
-    .exists({ checkFalsy: true })
-    .isEmail()
-    .withMessage("Please provide a valid email."),
-  check("username")
-    .exists({ checkFalsy: true })
-    .isLength({ min: 4 })
-    .withMessage("Please provide a username with at least 4 characters."),
-  check("username")
-    .not()
-    .isEmail()
-    .withMessage("Username cannot be an email."),
-  check("password")
-    .exists({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage("Password must be 6 characters or more."),
-  handleValidationErrors,
-];
+const login = async (req, res) => {
+  try {
+    const { credential, password } = validLogin(req.body);
+
+    const data = await User.unscoped().findOne({
+      where: {
+        [Op.or]: {
+          username: credential,
+          email: credential,
+        },
+      },
+    });
+
+    const passwordMatch = compareSync(
+      password,
+      data.hashedPassword.toString()
+    );
+
+    if (!data || !passwordMatch) {
+      throwError(401, "Invalid credentials");
+    }
+
+    const user = {
+      id: data.id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      username: data.username,
+    };
+
+    setTokenCookie(res, user);
+    return res.json({ user });
+  } catch (err) {
+    returnError(err, res);
+  }
+};
+
+const checkIfAvailable = async ({ email, username }) => {
+  let errorResult = {
+    message: "User already exists",
+    errors: {},
+    status: 500,
+  };
+  const [emailExists, usernameExists] = await Promise.all([
+    User.findOne({ where: { email } }),
+    User.findOne({ where: { username } }),
+  ]);
+
+  if (emailExists) {
+    errorResult.errors.email = "User with that email already exists";
+  }
+
+  if (usernameExists) {
+    errorResult.errors.username = "User with that username already exists";
+  }
+
+  throwIfError(errorResult);
+  return { email, username };
+};
+
+const validSignUp = async ({
+  firstName,
+  lastName,
+  email,
+  password,
+  username,
+}) => {
+  let errorResult = {
+    message: "Bad Request",
+    errors: {},
+    status: 400,
+  };
+  if (!firstName) {
+    errorResult.errors.firstName = "First Name is required";
+  }
+  if (!lastName) {
+    errorResult.errors.lastName = "Last Name is required";
+  }
+  if (!email) {
+    errorResult.errors.email = "Invalid email";
+  }
+  if (!password) {
+    errorResult.errors.password = "Password is required";
+  }
+  if (!username) {
+    errorResult.errors.username = "Username is required";
+  }
+  throwIfError(errorResult);
+  await checkIfAvailable({ email, username });
+  return { firstName, lastName, email, password, username };
+};
+
+const signup = async (req, res) => {
+  try {
+    const { firstName, lastName, email, password, username } =
+      await validSignUp(req.body);
+
+    const hashedPassword = hashSync(password);
+    const data = await User.create({
+      firstName,
+      lastName,
+      email,
+      username,
+      hashedPassword,
+    });
+
+    const user = {
+      id: data.id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      username: data.username,
+    };
+
+    setTokenCookie(res, user);
+    return res.json({ user });
+  } catch (err) {
+    returnError(err, res);
+  }
+};
 
 module.exports = {
   restoreCsrf,
   restoreSession,
   session: {
     getUser,
-    login: [validateLogin, login],
+    login,
     logout,
   },
-  user: { getAllUsers, signup: [validateSignup, signup] },
+  user: { getAllUsers, signup },
   verifyAuth,
 };
