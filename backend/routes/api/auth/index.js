@@ -1,4 +1,4 @@
 module.exports = {
-  sessionsRouter: require("./session"),
+  sessionRouter: require("./session"),
   usersRouter: require("./users"),
 };

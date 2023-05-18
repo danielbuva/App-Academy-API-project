@@ -2,7 +2,6 @@ const {
   restoreCsrf,
   restoreSession,
 } = require("../../services/auth.server");
-const { returnUser } = require("../../utils");
 const bookingsRouter = require("./bookings");
 const { sessionRouter } = require("./auth");
 const reviewsRouter = require("./reviews");
@@ -10,6 +9,7 @@ const router = require("express").Router();
 const { usersRouter } = require("./auth");
 const imagesRouter = require("./images");
 const spotsRouter = require("./spots");
+const { returnUser } = require("../../utils");
 
 router.use(restoreSession);
 router.use("/bookings", bookingsRouter);

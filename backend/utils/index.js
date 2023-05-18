@@ -1,4 +1,3 @@
-const { verifyAuth } = require("../services/auth.server");
 const { Op } = require("sequelize");
 
 const today = () => {
@@ -97,7 +96,7 @@ fetch("/api/users", {
 */
 module.exports = {
   remapToAddSpotImage,
+  returnUser,
   setOptions,
   today,
-  returnUser: [verifyAuth, returnUser],
 };
