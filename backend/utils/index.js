@@ -1,3 +1,4 @@
+const { verifyAuth } = require("../services/auth.server");
 const { Op } = require("sequelize");
 
 const today = () => {
@@ -55,6 +56,27 @@ const setOptions = ({
   return options;
 };
 
+const remapToAddSpotImage = (table, spotImages) => {
+  return table.map((record) => {
+    const imageObj = spotImages.find(
+      (image) => image.spotId === record.spotId
+    );
+    const previewImage = imageObj ? imageObj.get("url") : null;
+
+    return {
+      ...table.toJSON(),
+      Spot: {
+        ...table.Spot.toJSON(),
+        previewImage,
+      },
+    };
+  });
+};
+
+const returnUser = (req, res) => {
+  return res.json(req.user);
+};
+
 /*
 fetch("/api/users", {
   method: "POST",
@@ -73,4 +95,9 @@ fetch("/api/users", {
   .then((res) => res.json())
   .then((data) => console.log(data));
 */
-module.exports = { today, setOptions };
+module.exports = {
+  remapToAddSpotImage,
+  setOptions,
+  today,
+  returnUser: [verifyAuth, returnUser],
+};

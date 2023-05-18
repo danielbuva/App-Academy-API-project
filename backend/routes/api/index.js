@@ -1,32 +1,26 @@
 const {
   restoreCsrf,
   restoreSession,
-  verifyAuth,
 } = require("../../services/auth.server");
-const sessionRouter = require("./session.js");
-const usersRouter = require("./users.js");
-const spotsRouter = require("./spots");
-const reviewsRouter = require("./reviews");
+const { returnUser } = require("../../utils");
 const bookingsRouter = require("./bookings");
-const imagesRouter = require("./images");
+const { sessionRouter } = require("./auth");
+const reviewsRouter = require("./reviews");
 const router = require("express").Router();
-
-const returnUser = (req, res) => {
-  return res.json(req.user);
-};
+const { usersRouter } = require("./auth");
+const imagesRouter = require("./images");
+const spotsRouter = require("./spots");
 
 router.use(restoreSession);
+router.use("/bookings", bookingsRouter);
 router.use("/session", sessionRouter);
+router.use("/reviews", reviewsRouter);
 router.use("/users", usersRouter);
 router.use("/spots", spotsRouter);
-router.use("/reviews", reviewsRouter);
-router.use("/bookings", bookingsRouter);
 router.use(imagesRouter);
 
-router.get("/require-auth", verifyAuth, returnUser);
-
+router.get("/require-auth", returnUser);
 router.get("/csrf/restore", restoreCsrf);
-
 router.post("/test", function (req, res) {
   res.json({ requestBody: req.body });
 });

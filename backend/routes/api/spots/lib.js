@@ -19,9 +19,9 @@ const {
 } = require("../../../services/validation.server");
 const { verifyAuth } = require("../../../services/auth.server");
 
-const { fn, col } = require("sequelize");
-
 const { validSpot } = require("../../../services/error.server");
+
+const { fn, col } = require("sequelize");
 
 const addSpotImage = async (req, res) => {
   const { url, preview } = req.body;

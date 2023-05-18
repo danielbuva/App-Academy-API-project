@@ -6,12 +6,12 @@ const {
 const cookieParser = require("cookie-parser");
 const { isProduction } = require("./config");
 const express = require("express");
+const routes = require("./routes");
 const morgan = require("morgan");
 const helmet = require("helmet");
 require("express-async-errors");
 const csurf = require("csurf");
 const cors = require("cors");
-const routes = require("./routes");
 
 const app = express();
 

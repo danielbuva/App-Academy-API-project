@@ -1,55 +1,11 @@
 const {
-  invariant,
   checkAuthorization,
-  throwIfError,
+  invariant,
   throwError,
-} = require("../../services/error.server");
-const {
-  Review,
-  ReviewImage,
-  Spot,
-  SpotImage,
-  User,
-} = require("../../db/models");
-const { verifyAuth } = require("../../services/auth.server");
-const router = require("express").Router();
-
-const getCurrentUsersReviews = async (req, res) => {
-  const [reviews, spotImages] = await Promise.all([
-    Review.findAll({
-      where: { userId: req.user.id },
-      include: [
-        { model: User, attributes: ["id", "firstName", "lastName"] },
-        {
-          model: Spot,
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-        },
-        { model: ReviewImage, attributes: ["id", "url"] },
-      ],
-    }),
-    SpotImage.findAll({
-      attributes: ["spotId", "url"],
-      order: [["createdAt", "DESC"]],
-    }),
-  ]);
-
-  const Reviews = reviews.map((review) => {
-    const spotId = review.Spot.id;
-
-    const imageObj = spotImages.find((image) => image.spotId === spotId);
-    const previewImage = imageObj ? imageObj.get("url") : null;
-
-    return {
-      ...review.toJSON(),
-      Spot: {
-        ...review.Spot.toJSON(),
-        previewImage,
-      },
-    };
-  });
-
-  res.json({ Reviews });
-};
+  throwIfError,
+} = require("../../../services/error.server");
+const { Review, ReviewImage, SpotImage } = require("../../../db/models");
+const { remapToAddSpotImage } = require("../../../utils");
 
 const addReviewImageByReviewId = async (req, res) => {
   const reviewId = req.params.reviewId;
@@ -108,9 +64,34 @@ const deleteReviewByReviewId = async (req, res) => {
   res.json({ message: "Successfully deleted" });
 };
 
-router.get("/current", [verifyAuth, getCurrentUsersReviews]);
-router.post("/:reviewId/images", [verifyAuth, addReviewImageByReviewId]);
-router.put("/:reviewId", [verifyAuth, editReviewbyReviewId]);
-router.delete("/:reviewId", [verifyAuth, deleteReviewByReviewId]);
+const getCurrentUsersReviews = async (req, res) => {
+  const [reviews, spotImages] = await Promise.all([
+    Review.findAll({
+      where: { userId: req.user.id },
+      include: [
+        { model: User, attributes: ["id", "firstName", "lastName"] },
+        {
+          model: Spot,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+        { model: ReviewImage, attributes: ["id", "url"] },
+      ],
+    }),
+    SpotImage.findAll({
+      attributes: ["spotId", "url"],
+      order: [["createdAt", "DESC"]],
+    }),
+  ]);
 
-module.exports = router;
+  const Reviews = remapToAddSpotImage(reviews, spotImages);
+  res.json({ Reviews });
+};
+
+module.exports = {
+  getCurrentUsersReviews,
+  review: {
+    addImage: addReviewImageByReviewId,
+    edit: editReviewbyReviewId,
+    delete: deleteReviewByReviewId,
+  },
+};
