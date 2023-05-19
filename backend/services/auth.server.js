@@ -126,11 +126,14 @@ const login = async (req, res) => {
         },
       },
     });
-
-    const passwordMatch = compareSync(
-      password,
-      data.hashedPassword.toString()
-    );
+    
+    let passwordMatch;
+    if (data) {
+      passwordMatch = compareSync(
+        password,
+        data.hashedPassword.toString()
+      );
+    }
 
     if (!data || !passwordMatch) {
       throwError(401, "Invalid credentials");
