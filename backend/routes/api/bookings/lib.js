@@ -2,6 +2,7 @@ const {
   checkAuthorization,
   invariant,
   throwError,
+  returnError,
 } = require("../../../services/error.server");
 const { validateBooking } = require("../../../services/validation.server");
 const { Booking, Spot, SpotImage } = require("../../../db/models");
@@ -13,34 +14,44 @@ const getValidBooking = async (req) => {
     where: { id: req.params.bookingId },
   });
   invariant(booking, "Booking couldn't be found");
+  console.log("booking found, checking auth...");
   checkAuthorization(booking.userId === req.user.id);
 
   return booking;
 };
 
 const deleteBookingById = async (req, res) => {
-  const booking = await getValidBooking(req);
-  const bookingConflicts =
-    booking.startDate <= today() && booking.endDate >= today();
+  try {
+    const booking = await getValidBooking(req);
+    const bookingConflicts =
+      booking.startDate <= today() && booking.endDate >= today();
 
-  if (bookingConflicts) {
-    throwError(402, "Bookings that have been started can't be deleted");
+    if (bookingConflicts) {
+      throwError(402, "Bookings that have been started can't be deleted");
+    }
+
+    await booking.destroy();
+    res.json({ message: "Successfully deleted" });
+  } catch (err) {
+    returnError(err, res);
   }
-
-  await booking.destroy();
-  res.json({ message: "Successfully deleted" });
 };
 
 const editBookingById = async (req, res) => {
   const { startDate, endDate } = req.body;
-  const booking = await getValidBooking(req);
+  try {
+    console.log("trying...");
+    const booking = await getValidBooking(req);
 
-  await Promise.all([
-    validateBooking(startDate, endDate, booking.spotId, booking.endDate),
-    booking.update(req.body),
-  ]);
+    await Promise.all([
+      validateBooking(startDate, endDate, booking.spotId, booking.endDate),
+      booking.update(req.body),
+    ]);
 
-  res.json(booking);
+    res.json(booking);
+  } catch (err) {
+    returnError(err, res);
+  }
 };
 
 const getCurrentUsersBookings = async (req, res) => {
