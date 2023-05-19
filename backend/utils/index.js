@@ -60,7 +60,7 @@ const remapToAddSpotImage = (table, spotImages) => {
     const imageObj = spotImages.find(
       (image) => image.spotId === record.spotId
     );
-    const previewImage = imageObj ? imageObj.get("url") : null;
+    const previewImage = imageObj ? imageObj.url : null;
 
     return {
       ...record.toJSON(),
