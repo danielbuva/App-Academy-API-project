@@ -7,10 +7,19 @@ const {
 const { validateBooking } = require("../../../services/validation.server");
 const { Booking, Spot, SpotImage } = require("../../../db/models");
 const { today, remapToAddSpotImage } = require("../../../utils");
+const { verifyAuth } = require("../../../services/auth.server");
 
 const getValidBooking = async (req) => {
   const booking = await Booking.findOne({
-    attributes: ["id", "userId", "startDate", "endDate"],
+    attributes: [
+      "id",
+      "userId",
+      "startDate",
+      "endDate",
+      "spotId",
+      "createdAt",
+      "updatedAt",
+    ],
     where: { id: req.params.bookingId },
   });
   invariant(booking, "Booking couldn't be found");
@@ -37,15 +46,17 @@ const deleteBookingById = async (req, res) => {
 };
 
 const editBookingById = async (req, res) => {
-  const { startDate, endDate } = req.body;
   try {
     const booking = await getValidBooking(req);
 
-    await Promise.all([
-      validateBooking(startDate, endDate, booking.spotId, booking.endDate),
-      booking.update(req.body),
-    ]);
+    await validateBooking(
+      booking.startDate,
+      booking.endDate,
+      booking.spotId,
+      booking.id
+    );
 
+    await booking.update(req.body);
     res.json(booking);
   } catch (err) {
     returnError(err, res);
@@ -75,8 +86,8 @@ const getCurrentUsersBookings = async (req, res) => {
 
 module.exports = {
   bookings: {
-    delete: deleteBookingById,
-    edit: editBookingById,
+    delete: [verifyAuth, deleteBookingById],
+    edit: [verifyAuth, editBookingById],
   },
   getCurrentUsersBookings,
 };

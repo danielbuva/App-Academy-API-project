@@ -1,7 +1,8 @@
 const { validationResult } = require("express-validator");
 const { throwIfError, throwError } = require("./error.server");
 const { Booking } = require("../db/models");
-const { setOptions } = require("../utils");
+const { setOptions, today } = require("../utils");
+const { Op } = require("sequelize");
 
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
@@ -72,20 +73,31 @@ const validateQuery = ({
   });
 };
 
-const validateBooking = async (startDate, endDate, spotId, editing) => {
+const validateBooking = async (startDate, endDate, spotId, bookingId) => {
+  if (bookingId && endDate <= today()) {
+    throwError(403, "Past bookings can't be modified");
+  }
+
+  if (startDate >= endDate) {
+    throw {
+      message: "Bad Request",
+      status: 400,
+      errors: { endDate: "endDate cannot be on or before startDate" },
+    };
+  }
+
   let errorResult = {
     errors: {},
     message: "Sorry, this spot is already booked for the specified dates",
     status: 403,
   };
 
-  if (startDate >= endDate) {
-    errorResult.errors.endDate =
-      "endDate cannot be on or before startDate";
-    throwIfError(errorResult);
+  let where = { spotId };
+  if (bookingId) {
+    where = { spotId, [Op.not]: bookingId };
   }
 
-  const bookingsBySpotId = await Booking.findAll({ where: { spotId } });
+  const bookingsBySpotId = await Booking.findAll({ where });
 
   for (let i = 0; i < bookingsBySpotId.length; i++) {
     let booking = bookingsBySpotId[i];
@@ -110,9 +122,6 @@ const validateBooking = async (startDate, endDate, spotId, editing) => {
         "End date conflicts with an existing booking";
     }
     throwIfError(errorResult);
-  }
-  if (editing && editing >= today()) {
-    throwError(403, "Past bookings can't be modified");
   }
 };
 
