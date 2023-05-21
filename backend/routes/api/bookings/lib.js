@@ -10,11 +10,10 @@ const { today, remapToAddSpotImage } = require("../../../utils");
 
 const getValidBooking = async (req) => {
   const booking = await Booking.findOne({
-    attributes: ["id"],
+    attributes: ["id", "userId", "startDate", "endDate"],
     where: { id: req.params.bookingId },
   });
   invariant(booking, "Booking couldn't be found");
-  console.log("booking found, checking auth...");
   checkAuthorization(booking.userId === req.user.id);
 
   return booking;
@@ -30,8 +29,8 @@ const deleteBookingById = async (req, res) => {
       throwError(402, "Bookings that have been started can't be deleted");
     }
 
-    await booking.destroy();
-    res.json({ message: "Successfully deleted" });
+    await Booking.destroy({ where: { id: req.params.bookingId } });
+    return res.json({ message: "Successfully deleted" });
   } catch (err) {
     returnError(err, res);
   }
@@ -40,7 +39,6 @@ const deleteBookingById = async (req, res) => {
 const editBookingById = async (req, res) => {
   const { startDate, endDate } = req.body;
   try {
-    console.log("trying...");
     const booking = await getValidBooking(req);
 
     await Promise.all([
