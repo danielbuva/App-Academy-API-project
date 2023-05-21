@@ -52,7 +52,7 @@ const setOptions = ({
     options.where.price = { [Op.lte]: maxPrice };
   }
 
-  return options;
+  return { options, page, size };
 };
 
 const remapToAddSpotImage = (table, spotImages) => {
