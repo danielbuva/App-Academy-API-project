@@ -181,7 +181,15 @@ const createBooking = async (req, res) => {
     await newBooking.reload({
       attributes: { include: ["id"] },
     });
-
+    // res.json({
+    //   id: newBooking.id,
+    //   spotId: newBooking.spotId,
+    //   userId: newBooking.userId,
+    //   startDate,
+    //   endDate,
+    //   createdAt: newBooking.createdAt,
+    //   updatedAt: newBooking.updatedAt,
+    // });
     res.json(newBooking);
   } catch (err) {
     returnError(err, res);
@@ -232,7 +240,7 @@ const getSpot = async (req, res) => {
 };
 
 const getAllSpots = async (req, res) => {
-  const options = validateQuery(req.query);
+  const { options, page, size } = validateQuery(req.query);
 
   try {
     const [spots, avgRatings, spotImages] = await Promise.all([
@@ -267,7 +275,7 @@ const getAllSpots = async (req, res) => {
       };
     });
 
-    res.json({ Spots });
+    res.json({ Spots, page, size });
   } catch (err) {
     returnError(err, res);
   }
