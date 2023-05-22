@@ -62,13 +62,13 @@ const validSpot = ({
   if (!country) {
     errorResult.errors.country = "Country is required";
   }
-  if (!lat) {
+  if (!lat && isNaN(lat)) {
     errorResult.errors.lat = "Latitude is not valid";
   }
-  if (!lng) {
+  if (!lng && isNaN(lng)) {
     errorResult.errors.lng = "Longitude is not valid";
   }
-  if (!name) {
+  if (!name && name.length < 50) {
     errorResult.errors.name = "Name must be less than 50 characters";
   }
   if (!description) {
