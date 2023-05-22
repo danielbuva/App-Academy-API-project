@@ -68,13 +68,13 @@ const validSpot = ({
   if (!lng || isNaN(lng)) {
     errorResult.errors.lng = "Longitude is not valid";
   }
-  if (!name && name.length < 50) {
+  if (!name || (name && name.length > 50)) {
     errorResult.errors.name = "Name must be less than 50 characters";
   }
   if (!description) {
     errorResult.errors.description = "Description is required";
   }
-  if (!price) {
+  if (!price || (price && price < 0)) {
     errorResult.errors.price = "Price per day is required";
   }
   throwIfError(errorResult);

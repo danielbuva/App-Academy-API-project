@@ -23,7 +23,6 @@ const getValidBooking = async (req) => {
     where: { id: req.params.bookingId },
   });
   invariant(booking, "Booking couldn't be found");
-  checkAuthorization(booking.userId === req.user.id);
 
   return booking;
 };
@@ -31,6 +30,11 @@ const getValidBooking = async (req) => {
 const deleteBookingById = async (req, res) => {
   try {
     const booking = await getValidBooking(req);
+    const spot = await Spot.findByPk(booking.spotId);
+    invariant(spot);
+    checkAuthorization(
+      spot.ownerId === req.user.id || booking.userId === req.user.id
+    );
     const bookingConflicts =
       booking.startDate <= today() && booking.endDate >= today();
 
@@ -48,6 +52,7 @@ const deleteBookingById = async (req, res) => {
 const editBookingById = async (req, res) => {
   try {
     const booking = await getValidBooking(req);
+    checkAuthorization(booking.userId === req.user.id);
 
     await validateBooking(
       booking.startDate,

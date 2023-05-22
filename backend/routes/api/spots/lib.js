@@ -51,9 +51,7 @@ const editSpot = async (req, res) => {
     invariant(spot);
     checkAuthorization(spot.ownerId === req.user.id);
 
-    await spot.update({
-      ...validSpot(req.body),
-    });
+    await spot.update(validSpot(req.body));
 
     res.json(spot);
   } catch (err) {
@@ -76,7 +74,6 @@ const deleteSpot = async (req, res) => {
 
 const getReview = async (req, res) => {
   try {
-    console.log("TRYING");
     const spot = await Spot.findByPk(req.params.spotId, {
       attributes: ["id"],
     });
@@ -95,14 +92,13 @@ const getReview = async (req, res) => {
 
     res.json({ Reviews });
   } catch (err) {
-    console.log("CATCHING");
     returnError(err, res);
   }
 };
 
 const createReview = async (req, res, next) => {
   const { review, stars } = req.body;
-  const spotId = parseInt(req.params.spotId);
+  const spotId = req.params.spotId;
   const userId = req.user.id;
   try {
     reviewInvariant({ review, stars });
@@ -215,21 +211,21 @@ const getSpot = async (req, res) => {
       }),
       User.findOne({
         where: { id: spot.ownerId },
-        attributes: ["id", "username", "email"],
+        attributes: ["id", "firstName", "lastName"],
         as: "Owner",
       }),
     ]);
 
-    const numRating = reviews.length;
+    const numReviews = reviews.length;
     const avgStarRating =
-      numRating > 0
+      numReviews > 0
         ? reviews.reduce((sum, review) => sum + review.stars, 0) /
-          numRating
+          numReviews
         : 0;
 
     res.json({
       ...spot.toJSON(),
-      numRating,
+      numReviews,
       avgStarRating,
       SpotImages,
       Owner,
@@ -261,12 +257,10 @@ const getAllSpots = async (req, res) => {
       const avgRatingObj = avgRatings.find(
         (rating) => rating.spotId === spotId
       );
-      const avgRating = avgRatingObj
-        ? avgRatingObj.get("avgRating")
-        : null;
+      const avgRating = avgRatingObj ? avgRatingObj.avgRating : null;
 
       const imageObj = spotImages.find((image) => image.spotId === spotId);
-      const previewImage = imageObj ? imageObj.get("url") : null;
+      const previewImage = imageObj ? imageObj.url : null;
 
       return {
         ...spot.toJSON(),
