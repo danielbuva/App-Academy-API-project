@@ -16,9 +16,7 @@ const { remapToAddSpotImage } = require("../../../utils");
 
 const addReviewImageByReviewId = async (req, res) => {
   const reviewId = req.params.reviewId;
-  console.log("adding review...");
   try {
-    console.log("trying...");
     const review = await Review.findByPk(reviewId, {
       attributes: ["userId"],
     });
@@ -26,7 +24,7 @@ const addReviewImageByReviewId = async (req, res) => {
     checkAuthorization(review.userId === req.user.id);
 
     const images = await ReviewImage.count({ where: { reviewId } });
-    if (images === 10) {
+    if (images >= 10) {
       throwError(
         403,
         "Maximum number of images for this resource was reached"
@@ -40,7 +38,6 @@ const addReviewImageByReviewId = async (req, res) => {
 
     res.json({ id: newReview.id, url: newReview.url });
   } catch (err) {
-    console.log("catching...");
     returnError(err, res);
   }
 };

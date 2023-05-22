@@ -10,7 +10,6 @@ module.exports = {
   up: async (queryInterface) => {
     options.tableName = "Users";
     try {
-      console.log("Start seeding...");
       await queryInterface.bulkInsert(
         options,
         [
@@ -46,7 +45,6 @@ module.exports = {
         {}
       );
     } catch (err) {
-      console.log(err);
       console.error(err);
     }
   },
@@ -56,7 +54,12 @@ module.exports = {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       email: {
-        [Op.in]: ["demo@user.io", "user1@user.io", "user2@user.io", "lilykay@gmail.com"],
+        [Op.in]: [
+          "demo@user.io",
+          "user1@user.io",
+          "user2@user.io",
+          "lilykay@gmail.com",
+        ],
       },
     });
   },
