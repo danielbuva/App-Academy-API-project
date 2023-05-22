@@ -62,10 +62,10 @@ const validSpot = ({
   if (!country) {
     errorResult.errors.country = "Country is required";
   }
-  if (!lat && isNaN(lat)) {
+  if (!lat || isNaN(lat)) {
     errorResult.errors.lat = "Latitude is not valid";
   }
-  if (!lng && isNaN(lng)) {
+  if (!lng || isNaN(lng)) {
     errorResult.errors.lng = "Longitude is not valid";
   }
   if (!name && name.length < 50) {
