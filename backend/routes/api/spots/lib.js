@@ -1,9 +1,9 @@
 const {
   invariant,
   checkAuthorization,
-  reviewInvariant,
   throwError,
   returnError,
+  validReview,
 } = require("../../../services/error.server");
 
 const {
@@ -96,12 +96,10 @@ const getReview = async (req, res) => {
   }
 };
 
-const createReview = async (req, res, next) => {
-  const { review, stars } = req.body;
+const createReview = async (req, res) => {
   const spotId = req.params.spotId;
   const userId = req.user.id;
   try {
-    reviewInvariant({ review, stars });
     const spot = await Spot.findByPk(spotId, {
       attributes: ["id"],
     });
@@ -115,8 +113,7 @@ const createReview = async (req, res, next) => {
     }
 
     const newReview = await Review.create({
-      review,
-      stars,
+      ...validReview(req.body),
       spotId,
       userId,
     });
