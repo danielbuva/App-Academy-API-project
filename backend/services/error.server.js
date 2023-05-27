@@ -91,7 +91,7 @@ const validSpot = ({
   };
 };
 
-const validReview = ({ review, stars }) => {
+const reviewInvariant = ({ review, stars }) => {
   let errorResult = { errors: {}, message: "Bad Request", status: 400 };
   if (!review || review.trim() === "") {
     errorResult.errors.review = "Review text is required";
@@ -100,7 +100,6 @@ const validReview = ({ review, stars }) => {
     errorResult.errors.stars = "Stars must be an integer from 1 to 5";
   }
   throwIfError(errorResult);
-  return { review, stars };
 };
 
 const checkAuthorization = (condition) => {
@@ -144,7 +143,7 @@ module.exports = {
   invariant,
   notFoundHandler,
   returnError,
-  validReview,
+  reviewInvariant,
   sqlValidationHandler,
   validSpot,
 };
