@@ -125,6 +125,29 @@ const validateBooking = async (startDate, endDate, spotId, bookingId) => {
   }
 };
 
+const checkIfAvailable = async ({ email, username }) => {
+  let errorResult = {
+    message: "User already exists",
+    errors: {},
+    status: 500,
+  };
+  const [emailExists, usernameExists] = await Promise.all([
+    User.findOne({ where: { email } }),
+    User.findOne({ where: { username } }),
+  ]);
+
+  if (emailExists) {
+    errorResult.errors.email = "User with that email already exists";
+  }
+
+  if (usernameExists) {
+    errorResult.errors.username = "User with that username already exists";
+  }
+
+  throwIfError(errorResult);
+  return { email, username };
+};
+
 module.exports = {
   handleValidationErrors,
   validateBooking,
