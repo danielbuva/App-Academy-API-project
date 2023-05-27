@@ -177,15 +177,7 @@ const createBooking = async (req, res) => {
     await newBooking.reload({
       attributes: { include: ["id"] },
     });
-    // res.json({
-    //   id: newBooking.id,
-    //   spotId: newBooking.spotId,
-    //   userId: newBooking.userId,
-    //   startDate,
-    //   endDate,
-    //   createdAt: newBooking.createdAt,
-    //   updatedAt: newBooking.updatedAt,
-    // });
+    
     res.json(newBooking);
   } catch (err) {
     returnError(err, res);
