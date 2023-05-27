@@ -1,4 +1,4 @@
-const { user } = require("./index");
+const { user } = require("../../../services/auth.server");
 const router = require("express").Router();
 
 router.get("/", user.getAllUsers);
