@@ -177,15 +177,7 @@ const createBooking = async (req, res) => {
     await newBooking.reload({
       attributes: { include: ["id"] },
     });
-    // res.json({
-    //   id: newBooking.id,
-    //   spotId: newBooking.spotId,
-    //   userId: newBooking.userId,
-    //   startDate,
-    //   endDate,
-    //   createdAt: newBooking.createdAt,
-    //   updatedAt: newBooking.updatedAt,
-    // });
+
     res.json(newBooking);
   } catch (err) {
     returnError(err, res);
@@ -257,7 +249,10 @@ const getAllSpots = async (req, res) => {
       const avgRatingObj = avgRatings.find(
         (rating) => rating.spotId === spotId
       );
-      const avgRating = avgRatingObj ? avgRatingObj.avgRating : null;
+
+      const avgRating = avgRatingObj
+        ? avgRatingObj.get("avgRating")
+        : null;
 
       const imageObj = spotImages.find((image) => image.spotId === spotId);
       const previewImage = imageObj ? imageObj.url : null;
