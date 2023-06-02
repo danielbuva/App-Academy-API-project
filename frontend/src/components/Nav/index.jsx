@@ -4,13 +4,8 @@ import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 
 import "./Nav.css";
-import useIsLoaded from "../../hooks/useIsLoaded";
-import useSessionUser from "../../hooks/useSessionUser";
 
 function Nav() {
-  const currentUser = useSessionUser();
-  const isLoaded = useIsLoaded();
-
   return (
     <ul>
       <li>
@@ -18,7 +13,9 @@ function Nav() {
           Home
         </NavLink>
       </li>
-      <li>{isLoaded && <ProfileButton currentUser={currentUser} />}</li>
+      <li>
+        <ProfileButton />
+      </li>
     </ul>
   );
 }
