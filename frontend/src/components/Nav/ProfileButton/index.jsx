@@ -8,7 +8,7 @@ import OpenModalButton from "../../Modal/OpenModalButton";
 import LoginForm from "../../LoginForm";
 import SignupForm from "../../SignUpForm";
 
-function ProfileButton({ user }) {
+function ProfileButton({ currentUser }) {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const profileButton = useRef(null);
@@ -33,13 +33,13 @@ function ProfileButton({ user }) {
     dispatch(sessionActions.logout());
   };
 
-  const Menu = user ? (
+  const Menu = currentUser ? (
     <ul className="profile-dropdown">
-      <li>{user.username}</li>
+      <li>{currentUser.username}</li>
       <li>
-        {user.firstName} {user.lastName}
+        {currentUser.firstName} {currentUser.lastName}
       </li>
-      <li>{user.email}</li>
+      <li>{currentUser.email}</li>
       <li>
         <button onClick={logout}>Log Out</button>
       </li>

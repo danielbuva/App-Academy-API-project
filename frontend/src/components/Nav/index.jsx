@@ -1,14 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import ProfileButton from "./ProfileButton";
 
 import "./Nav.css";
 import useIsLoaded from "../../hooks/useIsLoaded";
+import useSessionUser from "../../hooks/useSessionUser";
 
 function Nav() {
-  const sessionUser = useSelector((state) => state.session.user);
+  const currentUser = useSessionUser();
   const isLoaded = useIsLoaded();
 
   return (
@@ -18,7 +18,7 @@ function Nav() {
           Home
         </NavLink>
       </li>
-      <li>{isLoaded && <ProfileButton user={sessionUser} />}</li>
+      <li>{isLoaded && <ProfileButton currentUser={currentUser} />}</li>
     </ul>
   );
 }
