@@ -5,8 +5,9 @@ import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 
 import "./SignUpForm.css";
+import { useModalContext } from "../../hooks/useModalContext";
 
-function SignupFormPage() {
+function SignupForm() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -16,6 +17,9 @@ function SignupFormPage() {
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
+  const { closeModal } = useModalContext();
+
+  console.log("aAAAAAaaaaaaaaaaa");
 
   if (sessionUser) return <Redirect to="/" />;
 
@@ -31,12 +35,14 @@ function SignupFormPage() {
           lastName,
           password,
         })
-      ).catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
-        }
-      });
+      )
+        .then(closeModal)
+        .catch(async (res) => {
+          const data = await res.json();
+          if (data && data.errors) {
+            setErrors(data.errors);
+          }
+        });
     }
     return setErrors({
       confirmPassword:
@@ -114,4 +120,4 @@ function SignupFormPage() {
   );
 }
 
-export default SignupFormPage;
+export default SignupForm;

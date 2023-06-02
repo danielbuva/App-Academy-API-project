@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import OpenModalButton from "../Modal/OpenModalButton";
 import ProfileButton from "./ProfileButton";
+import SignUpForm from "../SignUpForm";
 import LoginForm from "../LoginForm";
 
 import "./Nav.css";
@@ -18,8 +19,7 @@ function Nav({ isLoaded }) {
   ) : (
     <li>
       <OpenModalButton text="Log In" content={<LoginForm />} />
-      <NavLink to="/login">Log In</NavLink>
-      <NavLink to="/signup">Sign Up</NavLink>
+      <OpenModalButton text="Sign Up" content={<SignUpForm />} />
     </li>
   );
 
