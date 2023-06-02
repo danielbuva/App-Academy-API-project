@@ -1,10 +1,10 @@
-import ProfileIcon from "./ProfileIcon.svg";
-
 import useProfileMenu from "../../../hooks/useProfileMenu";
 import useIsLoaded from "../../../hooks/useIsLoaded";
+
+import ProfileIconButton from "./ProfileIconButton";
 import Menu from "./Menu/Index";
 
-function ProfileButton() {
+function UserMenu() {
   const { profileButton, setShow, show } = useProfileMenu();
   const isLoaded = useIsLoaded();
 
@@ -12,17 +12,14 @@ function ProfileButton() {
 
   return (
     <>
-      <div
-        style={{ width: "35px", height: "35px", cursor: "pointer" }}
-        onClick={() => setShow(!show)}
+      <ProfileIconButton
         ref={profileButton}
-      >
-        <img src={ProfileIcon} alt="Profile" />
-      </div>
-
+        setShow={setShow}
+        show={show}
+      />
       {show && <Menu />}
     </>
   );
 }
 
-export default ProfileButton;
+export default UserMenu;

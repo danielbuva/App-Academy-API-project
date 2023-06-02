@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import ProfileButton from "./ProfileButton";
+import UserMenu from "./UserMenu";
 
 import "./Nav.css";
 
@@ -14,7 +14,7 @@ function Nav() {
         </NavLink>
       </li>
       <li>
-        <ProfileButton />
+        <UserMenu />
       </li>
     </ul>
   );
