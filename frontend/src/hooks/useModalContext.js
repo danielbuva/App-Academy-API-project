@@ -8,4 +8,5 @@ export function useModalContext() {
       "Modal.* component muse be rendered as a child of Tile component"
     );
   }
+  return context;
 }
