@@ -2,7 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import OpenModalButton from "../Modal/OpenModalButton";
 import ProfileButton from "./ProfileButton";
+import LoginForm from "../LoginForm";
 
 import "./Nav.css";
 
@@ -15,6 +17,7 @@ function Nav({ isLoaded }) {
     </li>
   ) : (
     <li>
+      <OpenModalButton text="Log In" content={<LoginForm />} />
       <NavLink to="/login">Log In</NavLink>
       <NavLink to="/signup">Sign Up</NavLink>
     </li>

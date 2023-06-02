@@ -5,15 +5,13 @@ export const ModalContext = createContext(null);
 export function ModalProvider({ children }) {
   const [content, setContent] = useState(null);
   const [onClose, setOnClose] = useState(null);
-  const modalRef = useRef();
+  const modalRef = useRef(null);
 
   const closeModal = () => {
-    setContent(null); // clear the modal contents
-    // If callback function is truthy, call the callback function and reset it
-    // to null:
-    if (typeof onModalClose === "function") {
-      setOnClose(null);
+    setContent(null);
+    if (typeof onClose === "function") {
       onClose();
+      setOnClose(null);
     }
   };
 
@@ -35,5 +33,3 @@ export function ModalProvider({ children }) {
     </>
   );
 }
-
-

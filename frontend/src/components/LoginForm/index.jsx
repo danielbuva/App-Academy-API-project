@@ -5,24 +5,26 @@ import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 
 import "./LoginForm.css";
+import { useModalContext } from "../../hooks/useModalContext";
 
-function LoginFormPage() {
+function LoginForm() {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
+  const { closeModal } = useModalContext();
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
+    return dispatch(sessionActions.login({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
-      }
-    );
+      });
   };
 
   return (
@@ -54,4 +56,4 @@ function LoginFormPage() {
   );
 }
 
-export default LoginFormPage;
+export default LoginForm;
