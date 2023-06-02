@@ -67,9 +67,7 @@ const verifyAuth = (req, _, next) => {
 const restoreCsrf = (req, res) => {
   const csrfToken = req.csrfToken();
   res.cookie("XSRF-TOKEN", csrfToken);
-  res.status(200).json({
-    "XSRF-Token": csrfToken,
-  });
+  res.json({ "XSRF-Token": csrfToken });
 };
 
 const getAllUsers = async (_, res) => {
@@ -126,7 +124,7 @@ const login = async (req, res) => {
         },
       },
     });
-    
+
     let passwordMatch;
     if (data) {
       passwordMatch = compareSync(
