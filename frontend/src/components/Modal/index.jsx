@@ -4,12 +4,14 @@ import { useModalContext } from "../../hooks/useModalContext";
 import "./Modal.css";
 
 function Modal() {
-  const { modalRef, modalContent, closeModal } = useModalContext();
+  const { closeModal, content, modalRef } = useModalContext();
+
+  if (!content || !modalRef || !modalRef.current) return null;
 
   return ReactDOM.createPortal(
     <div id="modal">
       <div id="modal-background" onClick={closeModal} />
-      <div id="modal-content">{modalContent}</div>
+      <div id="modal-content">{content}</div>
     </div>,
     modalRef.current
   );

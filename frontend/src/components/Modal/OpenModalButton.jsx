@@ -1,24 +1,24 @@
 import React from "react";
-import { useModal } from "../../context/Modal";
+import { useModalContext } from "../../hooks/useModalContext";
 
 function OpenModalButton({ content, onClick, onClose, text }) {
-  const { setContent, setOnClose } = useModal();
+  const { setContent, setOnClose } = useModalContext();
 
-  if (typeof onClick !== "function") {
+  if (typeof onClick !== "function" && onClick) {
     throw new TypeError(
       `Expected 'onClick' prop to be a function, but received ${typeof onClick}.`
     );
   }
 
-  if (typeof onClose !== "function") {
+  if (typeof onClose !== "function" && onClose) {
     throw new TypeError(
       `Expected 'onClose' prop to be a function, but received ${typeof onClose}.`
     );
   }
 
   const handleClick = () => {
-    onClick();
-    setOnClose(onClose);
+    if (onClick) onClick();
+    if (onClose) setOnClose(onClose);
     setContent(content);
   };
 
