@@ -5,9 +5,11 @@ import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 
 import "./Nav.css";
+import useIsLoaded from "../../hooks/useIsLoaded";
 
-function Nav({ isLoaded }) {
+function Nav() {
   const sessionUser = useSelector((state) => state.session.user);
+  const isLoaded = useIsLoaded();
 
   return (
     <ul>
