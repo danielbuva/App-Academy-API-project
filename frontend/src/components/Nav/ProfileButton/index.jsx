@@ -1,7 +1,8 @@
 import ProfileIcon from "./ProfileIcon.svg";
 
-import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+
+import useProfileMenu from "../../../hooks/useProfileMenu";
 
 import * as sessionActions from "../../../store/session";
 import OpenModalButton from "../../Modal/OpenModalButton";
@@ -9,24 +10,8 @@ import LoginForm from "../../LoginForm";
 import SignupForm from "../../SignUpForm";
 
 function ProfileButton({ currentUser }) {
-  const [show, setShow] = useState(false);
+  const { profileButton, setShow, show } = useProfileMenu();
   const dispatch = useDispatch();
-  const profileButton = useRef(null);
-
-  useEffect(() => {
-    const closeMenu = (e) => {
-      if (
-        profileButton.current &&
-        !profileButton.current.contains(e.target)
-      ) {
-        setShow(false);
-      }
-    };
-
-    document.addEventListener("click", closeMenu);
-
-    return () => document.removeEventListener("click", closeMenu);
-  }, []);
 
   const logout = (e) => {
     e.preventDefault();
