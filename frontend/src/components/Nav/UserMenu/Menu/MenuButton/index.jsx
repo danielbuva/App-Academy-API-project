@@ -1,7 +1,7 @@
 import Hambuger from "./icons/Hambuerger";
 import ProfileIcon from "./icons/ProfileIcon";
 
-function MeniButton({ ref, setShow, show }) {
+function MenuButton({ ref, setShow, show }) {
   return (
     <div
       style={{
@@ -23,4 +23,4 @@ function MeniButton({ ref, setShow, show }) {
   );
 }
 
-export default MeniButton;
+export default MenuButton;
