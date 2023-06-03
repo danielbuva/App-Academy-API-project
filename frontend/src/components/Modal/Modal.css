@@ -22,3 +22,13 @@
   position: absolute;
   background-color: white;
 }
+
+.button {
+  all: unset;
+  height: 40px;
+  font-size: 14px;
+  padding: 2px 0px 2px 20px;
+}
+.button:hover {
+  background-color: #f7f7f7;
+}

@@ -1,6 +1,8 @@
 import React from "react";
 import { useModalContext } from "../../hooks/useModalContext";
 
+import "./Modal.css";
+
 function OpenModalButton({ content, onClick, onClose, text }) {
   const { setContent, setOnClose } = useModalContext();
 
@@ -23,7 +25,11 @@ function OpenModalButton({ content, onClick, onClose, text }) {
   };
 
   return (
-    <button onClick={handleClick} style={{ all: "unset" }}>
+    <button
+      onClick={handleClick}
+      // style={{ all: "unset" }}
+      className="button"
+    >
       {text}
     </button>
   );
