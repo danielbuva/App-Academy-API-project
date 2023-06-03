@@ -1,7 +1,10 @@
 import Hambuger from "./icons/Hambuerger";
 import ProfileIcon from "./icons/ProfileIcon";
 
-function MenuButton({ ref, setShow, show }) {
+function MenuButton({ buttonRef, setShow, show }) {
+  if (buttonRef) {
+    console.log({ buttonRef, current: buttonRef.current });
+  }
   return (
     <div
       style={{
@@ -15,7 +18,7 @@ function MenuButton({ ref, setShow, show }) {
         borderRadius: "21px",
       }}
       onClick={() => setShow(!show)}
-      ref={ref}
+      ref={buttonRef}
     >
       <Hambuger />
       <ProfileIcon />

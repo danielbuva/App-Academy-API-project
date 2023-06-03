@@ -2,14 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 export default function useProfileMenu() {
   const [show, setShow] = useState(false);
-  const profileButton = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
     const closeMenu = (e) => {
-      if (
-        profileButton.current &&
-        !profileButton.current.contains(e.target)
-      ) {
+      if (buttonRef.current && !buttonRef.current.contains(e.target)) {
         setShow(false);
       }
     };
@@ -19,5 +16,5 @@ export default function useProfileMenu() {
     return () => document.removeEventListener("click", closeMenu);
   }, []);
 
-  return { profileButton, setShow, show };
+  return { buttonRef, setShow, show };
 }
