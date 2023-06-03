@@ -2,9 +2,6 @@ import Hambuger from "./icons/Hambuerger";
 import ProfileIcon from "./icons/ProfileIcon";
 
 function MenuButton({ buttonRef, setShow, show }) {
-  if (buttonRef) {
-    console.log({ buttonRef, current: buttonRef.current });
-  }
   return (
     <div
       style={{
