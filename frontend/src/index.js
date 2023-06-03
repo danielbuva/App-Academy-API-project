@@ -12,6 +12,7 @@ import { csrfFetch, restoreCSRF } from "./store/csrf";
 import * as sessionActions from "./store/session";
 import { ModalProvider } from "./context/Modal";
 import Modal from "./components/Modal";
+import { ThemeProvider } from "./context/Theme";
 
 const store = configureStore();
 
@@ -24,13 +25,15 @@ if (process.env.NODE_ENV !== "production") {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ModalProvider>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-          <Modal />
-        </BrowserRouter>
-      </Provider>
-    </ModalProvider>
+    <ThemeProvider>
+      <ModalProvider>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+            <Modal />
+          </BrowserRouter>
+        </Provider>
+      </ModalProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
