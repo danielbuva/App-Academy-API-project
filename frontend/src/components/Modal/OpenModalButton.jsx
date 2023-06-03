@@ -22,7 +22,11 @@ function OpenModalButton({ content, onClick, onClose, text }) {
     setContent(content);
   };
 
-  return <button onClick={handleClick}>{text}</button>;
+  return (
+    <button onClick={handleClick} style={{ all: "unset" }}>
+      {text}
+    </button>
+  );
 }
 
 export default OpenModalButton;
