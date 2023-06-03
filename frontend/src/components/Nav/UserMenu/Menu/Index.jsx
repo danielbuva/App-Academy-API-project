@@ -36,8 +36,8 @@ function UserMenu() {
 function AuthMenu() {
   return (
     <div className="profile-dropdown">
-      <OpenModalButton text="Log In" content={<LoginForm />} />
-      <OpenModalButton text="Sign Up" content={<SignupForm />} />
+      <OpenModalButton text="Sign up" content={<SignupForm />} />
+      <OpenModalButton text="Log in" content={<LoginForm />} />
     </div>
   );
 }
