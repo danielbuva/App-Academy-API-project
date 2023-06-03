@@ -1,13 +1,12 @@
-import YCSHIYPLogo from "./YCSHIYPLogo.png";
+import ycshiyp from "./ycshiyp.svg";
 import { NavLink } from "react-router-dom";
 
-import "./ycshiyp.css"
+import "./ycshiyp.css";
 
 function YCSHIYP() {
   return (
     <NavLink exact to="/" className="ycshiyp">
-      <img src={YCSHIYPLogo} alt="YCSHIYP logo" />
-      YCSHIYP
+      <img src={ycshiyp} alt="YCSHIYP logo" />
     </NavLink>
   );
 }
