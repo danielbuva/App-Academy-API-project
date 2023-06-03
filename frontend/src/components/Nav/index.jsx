@@ -1,22 +1,16 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 
+import YCSHIYP from "./YCSHIYP";
 import UserMenu from "./UserMenu";
 
 import "./Nav.css";
 
 function Nav() {
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <UserMenu />
-      </li>
-    </ul>
+    <div className="nav">
+      <YCSHIYP />
+      <UserMenu />
+    </div>
   );
 }
 

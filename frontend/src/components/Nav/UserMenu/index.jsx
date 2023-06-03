@@ -1,8 +1,8 @@
 import useProfileMenu from "../../../hooks/useProfileMenu";
 import useIsLoaded from "../../../hooks/useIsLoaded";
 
-import ProfileIconButton from "./ProfileIconButton";
 import Menu from "./Menu/Index";
+import MenuButton from "./Menu/MenuButton";
 
 function UserMenu() {
   const { profileButton, setShow, show } = useProfileMenu();
@@ -11,14 +11,10 @@ function UserMenu() {
   if (!isLoaded) return null;
 
   return (
-    <>
-      <ProfileIconButton
-        ref={profileButton}
-        setShow={setShow}
-        show={show}
-      />
+    <div style={{ position: "relative" }}>
+      <MenuButton ref={profileButton} setShow={setShow} show={show} />
       {show && <Menu />}
-    </>
+    </div>
   );
 }
 

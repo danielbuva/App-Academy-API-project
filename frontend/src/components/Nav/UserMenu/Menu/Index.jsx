@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 
 import { logout } from "../../../../store/session";
 
+import "./menu.css";
+
 function UserMenu() {
   const currentUser = useSessionUser();
   const dispatch = useDispatch();
@@ -18,29 +20,25 @@ function UserMenu() {
   };
 
   return (
-    <ul className="profile-dropdown">
-      <li>{currentUser.username}</li>
-      <li>
+    <div className="profile-dropdown">
+      <p>{currentUser.username}</p>
+      <p>
         {currentUser.firstName} {currentUser.lastName}
-      </li>
-      <li>{currentUser.email}</li>
-      <li>
+      </p>
+      <p>{currentUser.email}</p>
+      <p>
         <button onClick={handleLogOut}>Log Out</button>
-      </li>
-    </ul>
+      </p>
+    </div>
   );
 }
 
 function AuthMenu() {
   return (
-    <ul className="profile-dropdown">
-      <li>
-        <OpenModalButton text="Log In" content={<LoginForm />} />
-      </li>
-      <li>
-        <OpenModalButton text="Sign Up" content={<SignupForm />} />
-      </li>
-    </ul>
+    <div className="profile-dropdown">
+      <OpenModalButton text="Log In" content={<LoginForm />} />
+      <OpenModalButton text="Sign Up" content={<SignupForm />} />
+    </div>
   );
 }
 
