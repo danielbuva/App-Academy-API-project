@@ -1,11 +1,11 @@
 .nav {
-  height: 100px;
+  height: 80px;
   position: sticky;
   text-decoration: none;
   list-style-type: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: solid grey;
-  margin: 0px 115px 0px 115px;
+  border-bottom: solid #ebebeb;
+  padding: 0px 80px 0px 80px;
 }
