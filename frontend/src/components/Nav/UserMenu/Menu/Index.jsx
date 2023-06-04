@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../../../store/session";
 
 import "./menu.css";
+import Divider from "../../../Divider";
 
 function UserMenu() {
   const currentUser = useSessionUser();
@@ -26,9 +27,10 @@ function UserMenu() {
         {currentUser.firstName} {currentUser.lastName}
       </p>
       <p>{currentUser.email}</p>
-      <p>
-        <button onClick={handleLogOut}>Log Out</button>
-      </p>
+      <Divider />
+      <button onClick={handleLogOut} id="logout-button">
+        Log Out
+      </button>
     </div>
   );
 }
