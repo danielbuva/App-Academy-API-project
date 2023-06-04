@@ -5,6 +5,7 @@ export const ModalContext = createContext(null);
 export function ModalProvider({ children }) {
   const [content, setContent] = useState(null);
   const [onClose, setOnClose] = useState(null);
+  const [title, setTitle] = useState("Title");
   const modalRef = useRef(null);
 
   const closeModal = () => {
@@ -22,6 +23,8 @@ export function ModalProvider({ children }) {
     onClose,
     setContent,
     setOnClose,
+    setTitle,
+    title,
   };
 
   return (
