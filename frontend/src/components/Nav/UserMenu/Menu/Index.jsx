@@ -27,7 +27,7 @@ function UserMenu() {
         {currentUser.firstName} {currentUser.lastName}
       </p>
       <p>{currentUser.email}</p>
-      <Divider />
+      <Divider margin={7} />
       <button onClick={handleLogOut} id="logout-button">
         Log Out
       </button>

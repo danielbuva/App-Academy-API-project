@@ -4,7 +4,7 @@ function Divider({ margin = 0, color = "#ebebeb" }) {
       id="divider"
       style={{
         margin: `${margin}px 0px ${margin}px 0px`,
-        borderTop: `solid 1px color`,
+        borderTop: `solid 1px ${color}`,
       }}
     />
   );
