@@ -26,29 +26,29 @@ function SignupForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      setErrors({});
-      return dispatch(
-        signup({
-          email,
-          username,
-          firstName,
-          lastName,
-          password,
-        })
-      )
-        .then(closeModal)
-        .catch(async (res) => {
-          const data = await res.json();
-          if (data && data.errors) {
-            setErrors(data.errors);
-          }
-        });
+    if (password !== confirmPassword) {
+      return setErrors({
+        confirmPassword:
+          "Confirm password field must be the same as the Password field",
+      });
     }
-    return setErrors({
-      confirmPassword:
-        "Confirm password field must be the same as the Password field",
-    });
+
+    dispatch(
+      signup({
+        email,
+        username,
+        firstName,
+        lastName,
+        password,
+      })
+    )
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
   };
 
   return (
@@ -64,7 +64,6 @@ function SignupForm() {
           required
           placeholder="Email"
         />
-        {errors.email && <p>{errors.email}</p>}
         <label htmlFor="username" className="hidden-label" />
         <input
           id="username"
@@ -74,7 +73,6 @@ function SignupForm() {
           required
           placeholder="Username"
         />
-        {errors.username && <p>{errors.username}</p>}
         <label htmlFor="first-name" className="hidden-label" />
         <input
           id="first-name"
@@ -84,7 +82,6 @@ function SignupForm() {
           required
           placeholder="First name"
         />
-        {errors.firstName && <p>{errors.firstName}</p>}
         <label htmlFor="last-name" className="hidden-label" />
         <input
           id="last-name"
@@ -94,7 +91,6 @@ function SignupForm() {
           required
           placeholder="Last name"
         />
-        {errors.lastName && <p>{errors.lastName}</p>}
         <label htmlFor="new-password" className="hidden-label" />
         <input
           id="new-password"
@@ -104,7 +100,6 @@ function SignupForm() {
           required
           placeholder="Password"
         />
-        {errors.password && <p>{errors.password}</p>}
         <label htmlFor="confirm-password" className="hidden-label" />
         <input
           id="confirm-password"

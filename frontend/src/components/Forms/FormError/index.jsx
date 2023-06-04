@@ -5,11 +5,11 @@ function FormError({ errors }) {
   const errorKeys = Object.keys(errors);
   const errorsLength = errorKeys.length;
 
-  console.log({ errors });
-
   if (errorsLength < 1) return null;
 
   for (let i = 0; i < errorsLength; i++) {
+    let error = errors[errorKeys[i]];
+    error = error.message ?? error;
     messages.push(
       <p
         key={i}
@@ -19,12 +19,11 @@ function FormError({ errors }) {
           margin: 0,
         }}
       >
-        {errors[errorKeys[i]]}
+        {error}
       </p>
     );
   }
 
-  console.log({ messages });
   return (
     <div
       style={{
