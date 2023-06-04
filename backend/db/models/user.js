@@ -30,7 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [4, 30],
+          len: {
+            args: [4, 30],
+            msg: "Username must be at least 4 characters",
+          },
           isNotEmailC(value) {
             if (Validator.isEmail(value)) {
               throw new Error("Cannot be an email.");
@@ -42,8 +45,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [3, 256],
-          isEmail: true,
+          len: {
+            args: [3, 256],
+            msg: "Email must be at least 3 characters",
+          },
+          isEmail: {
+            args: true,
+            msg: "Please provide a valid email address",
+          },
         },
       },
       hashedPassword: {
