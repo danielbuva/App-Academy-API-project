@@ -1,5 +1,8 @@
 const router = require("express").Router();
-const { serveHtml } = require("../services/production.server");
+const {
+  serveHtml,
+  staticAssets,
+} = require("../services/production.server");
 const apiRouter = require("./api");
 
 router.use("/api", apiRouter);
