@@ -1,0 +1,60 @@
+#signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 0px 30px 10px;
+  width: 100%;
+}
+
+#email {
+  border: solid 1px #b0b0b0b0;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  height: 53px;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+#username {
+  border: solid 1px #b0b0b0b0;
+  border-top: none;
+  height: 53px;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+#first-name {
+  border: solid 1px #b0b0b0b0;
+  border-top: none;
+  height: 53px;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+#last-name {
+  border: solid 1px #b0b0b0b0;
+  border-top: none;
+  height: 53px;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+#new-password {
+  border: solid 1px #b0b0b0b0;
+  border-top: none;
+  height: 53px;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+#confirm-password {
+  border: solid 1px #b0b0b0b0;
+  border-top: none;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+  height: 53px;
+  font-size: 16px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}

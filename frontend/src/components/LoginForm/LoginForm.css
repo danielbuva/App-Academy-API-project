@@ -54,9 +54,3 @@ form {
   border-radius: 7px;
   padding: 14px 24px 34px 24px;
 }
-
-.hidden-label {
-  position: absolute;
-  left: -9999px;
-  visibility: hidden;
-}

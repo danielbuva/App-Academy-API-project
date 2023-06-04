@@ -4,9 +4,10 @@ import { Redirect } from "react-router-dom";
 
 import { signup } from "../../store/session";
 
-import "./SignUpForm.css";
 import { useModalContext } from "../../hooks/useModalContext";
 import useSessionUser from "../../hooks/useSessionUser";
+
+import "./SignUpForm.css";
 
 function SignupForm() {
   const [email, setEmail] = useState("");
@@ -50,72 +51,74 @@ function SignupForm() {
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
+    <div id="signup">
       <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
+        <h2 id="welcome">Welcome to ycshiyp</h2>
+        <label htmlFor="email" className="hidden-label" />
+        <input
+          id="email"
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Email"
+        />
         {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
+        <label htmlFor="username" className="hidden-label" />
+        <input
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          placeholder="Username"
+        />
         {errors.username && <p>{errors.username}</p>}
-        <label>
-          First Name
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </label>
+        <label htmlFor="first-name" className="hidden-label" />
+        <input
+          id="first-name"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+          placeholder="First name"
+        />
         {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
-          Last Name
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </label>
+        <label htmlFor="last-name" className="hidden-label" />
+        <input
+          id="last-name"
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+          placeholder="Last name"
+        />
         {errors.lastName && <p>{errors.lastName}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+        <label htmlFor="new-password" className="hidden-label" />
+        <input
+          id="new-password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="Password"
+        />
         {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </label>
+        <label htmlFor="confirm-password" className="hidden-label" />
+        <input
+          id="confirm-password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          placeholder="Confirm password"
+        />
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Continue</button>
+        <button type="submit" className="continue">
+          Continue
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 
