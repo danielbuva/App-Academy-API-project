@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import { signup } from "../../store/session";
+import { signup } from "../../../store/session";
 
-import { useModalContext } from "../../hooks/useModalContext";
-import useSessionUser from "../../hooks/useSessionUser";
+import { useModalContext } from "../../../hooks/useModalContext";
+import useSessionUser from "../../../hooks/useSessionUser";
 
 import "./SignUpForm.css";
+import FormError from "../FormError";
 
 function SignupForm() {
   const [email, setEmail] = useState("");
@@ -46,7 +47,7 @@ function SignupForm() {
     }
     return setErrors({
       confirmPassword:
-        "Confirm Password field must be the same as the Password field",
+        "Confirm password field must be the same as the Password field",
     });
   };
 
@@ -113,7 +114,7 @@ function SignupForm() {
           required
           placeholder="Confirm password"
         />
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        <FormError errors={errors} />
         <button type="submit" className="continue">
           Continue
         </button>

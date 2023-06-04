@@ -1,8 +1,8 @@
 import useSessionUser from "../../../../hooks/useSessionUser";
 
 import OpenModalButton from "../../../Modal/OpenModalButton";
-import SignupForm from "../../../SignUpForm";
-import LoginForm from "../../../LoginForm";
+import SignupForm from "../../../Forms/SignUpForm";
+import LoginForm from "../../../Forms/LoginForm";
 
 import { useDispatch } from "react-redux";
 

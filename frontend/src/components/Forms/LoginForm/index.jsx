@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import { login } from "../../store/session";
+import { login } from "../../../store/session";
 
-import { useModalContext } from "../../hooks/useModalContext";
-import useSessionUser from "../../hooks/useSessionUser";
+import { useModalContext } from "../../../hooks/useModalContext";
+import useSessionUser from "../../../hooks/useSessionUser";
 
 import "./LoginForm.css";
+import FormError from "../FormError";
 
 function LoginForm() {
   const [credential, setCredential] = useState("");
@@ -51,7 +52,7 @@ function LoginForm() {
           required
           placeholder="password"
         />
-        {errors.credential && <p>{errors.credential}</p>}
+        <FormError errors={errors} />
         <button type="submit" className="continue">
           Continue
         </button>
