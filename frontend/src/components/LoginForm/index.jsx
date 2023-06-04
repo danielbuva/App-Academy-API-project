@@ -4,9 +4,10 @@ import { Redirect } from "react-router-dom";
 
 import { login } from "../../store/session";
 
-import "./LoginForm.css";
 import { useModalContext } from "../../hooks/useModalContext";
 import useSessionUser from "../../hooks/useSessionUser";
+
+import "./LoginForm.css";
 
 function LoginForm() {
   const [credential, setCredential] = useState("");
@@ -29,31 +30,33 @@ function LoginForm() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
+    <div id="login">
       <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
-          <input
-            type="text"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+        <h2 id="welcome">Welcome to ycshiyp</h2>
+        <label htmlFor="username-or-email" className="hidden-label" />
+        <input
+          type="text"
+          id="username-or-email"
+          value={credential}
+          onChange={(e) => setCredential(e.target.value)}
+          required
+          placeholder="username or email"
+        />
+        <label htmlFor="password" className="password" />
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="password"
+        />
         {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        <button type="submit" className="continue">
+          Continue
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 
