@@ -14,7 +14,7 @@ function Modal() {
     <div id="modal">
       <div id="modal-background" onClick={closeModal} />
       <div id="modal-content">
-        <div id={"login-header"}>
+        <div id="login-header">
           <button className="close-button" onClick={closeModal}>
             <img
               src={X}

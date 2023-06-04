@@ -82,6 +82,24 @@ function SignupForm() {
           required
           placeholder="First name"
         />
+        <label htmlFor="first-name" className="hidden-label" />
+        <input
+          id="first-name"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+          placeholder="First name"
+        />
+        <label htmlFor="first-name" className="hidden-label" />
+        <input
+          id="first-name"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+          placeholder="First name"
+        />
         <label htmlFor="last-name" className="hidden-label" />
         <input
           id="last-name"
