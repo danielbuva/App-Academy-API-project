@@ -31,33 +31,31 @@ function LoginForm() {
   };
 
   return (
-    <div id="login">
-      <form onSubmit={handleSubmit}>
-        <h2 id="welcome">Welcome to ycshiyp</h2>
-        <label htmlFor="username-or-email" className="hidden-label" />
-        <input
-          type="text"
-          id="username-or-email"
-          value={credential}
-          onChange={(e) => setCredential(e.target.value)}
-          required
-          placeholder="username or email"
-        />
-        <label htmlFor="password" className="password" />
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          placeholder="password"
-        />
-        <FormError errors={errors} />
-        <button type="submit" className="continue">
-          Continue
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h2 id="welcome">Welcome to ycshiyp</h2>
+      <label htmlFor="username-or-email" className="hidden-label" />
+      <input
+        type="text"
+        id="username-or-email"
+        value={credential}
+        onChange={(e) => setCredential(e.target.value)}
+        required
+        placeholder="username or email"
+      />
+      <label htmlFor="password" className="password" />
+      <input
+        type="password"
+        id="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        placeholder="password"
+      />
+      <FormError errors={errors} />
+      <button type="submit" className="continue">
+        Continue
+      </button>
+    </form>
   );
 }
 

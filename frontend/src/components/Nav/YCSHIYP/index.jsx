@@ -5,7 +5,7 @@ import "./ycshiyp.css";
 
 function YCSHIYP() {
   return (
-    <NavLink exact to="/" className="ycshiyp">
+    <NavLink exact to="/" id="ycshiyp">
       <img src={ycshiyp} alt="YCSHIYP logo" />
     </NavLink>
   );
