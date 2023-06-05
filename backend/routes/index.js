@@ -1,10 +1,6 @@
+const { isProduction } = require("../config");
 const express = require("express");
 const router = express.Router();
-const { isProduction } = require("../config");
-const {
-  // serveHtml,
-  // staticAssets,
-} = require("../services/production.server");
 const apiRouter = require("./api");
 
 router.use("/api", apiRouter);
