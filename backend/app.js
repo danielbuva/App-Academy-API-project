@@ -36,10 +36,6 @@ app.use(
   })
 );
 app.use(routes);
-app.get("/", (_, res) => {
-  res.json("ola mundo");
-});
-
 app.use(notFoundHandler);
 app.use(sqlValidationHandler);
 app.use(errorFormatter);
