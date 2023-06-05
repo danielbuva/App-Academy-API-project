@@ -10,6 +10,7 @@ const router = require("express").Router();
 const { usersRouter } = require("./auth");
 const imagesRouter = require("./images");
 const spotsRouter = require("./spots");
+const { isProduction } = require("../../config");
 
 router.use(restoreSession);
 router.use("/bookings", bookingsRouter);
@@ -20,7 +21,9 @@ router.use("/spots", spotsRouter);
 router.use(imagesRouter);
 
 router.get("/require-auth", returnUser);
-router.get("/csrf/restore", restoreCsrf);
+if (!isProduction) {
+  router.get("/csrf/restore", restoreCsrf);
+}
 router.post("/test", function (req, res) {
   res.json({ requestBody: req.body });
 });
