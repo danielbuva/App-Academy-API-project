@@ -47,3 +47,15 @@ form {
   padding: 14px 24px 34px 24px;
   cursor: pointer;
 }
+
+#demo {
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid;
+  background-color: white;
+  cursor: pointer;
+}
+
+#demo:hover {
+  background-color: #f2f2f2;
+}

@@ -1,0 +1,10 @@
+#or {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.divider {
+  border-bottom: solid 1px #a8a8a8;
+  width: 46%;
+}

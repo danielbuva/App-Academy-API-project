@@ -9,6 +9,7 @@ import useSessionUser from "../../../hooks/useSessionUser";
 
 import "./LoginForm.css";
 import FormError from "../FormError";
+import Or from "../Or";
 
 function LoginForm() {
   const [credential, setCredential] = useState("");
@@ -23,6 +24,16 @@ function LoginForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     return dispatch(login({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.message) setErrors({ credentials: data.message });
+      });
+  };
+
+  const handleDemo = (e) => {
+    e.preventDefault();
+    dispatch(login({ credential: "demo@user.io", password: "password" }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
@@ -54,6 +65,10 @@ function LoginForm() {
       <FormError errors={errors} />
       <button type="submit" className="continue">
         Continue
+      </button>
+      <Or />
+      <button id="demo" onClick={(e) => handleDemo(e)}>
+        Continue as Demo User
       </button>
     </form>
   );
