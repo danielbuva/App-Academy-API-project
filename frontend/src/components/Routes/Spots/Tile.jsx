@@ -1,9 +1,9 @@
 import Preview from "./Preview";
 import Star from "./Star.svg";
 
-function Tile({ images, location, rating, price }) {
+function Tile({ images, location, rating, price, id }) {
   const preview =
-    images.length > 0 ? <Preview images={images} /> : "no preview";
+    images.length > 0 ? <Preview images={images} id={id} /> : "no preview";
   return (
     <div
       style={{

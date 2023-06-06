@@ -26,6 +26,7 @@ function Spots() {
             return (
               <Tile
                 key={id}
+                id={id}
                 price={price}
                 location={`${city}, ${state}`}
                 rating={avgRating}

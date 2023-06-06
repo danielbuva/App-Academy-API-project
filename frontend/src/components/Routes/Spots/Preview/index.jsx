@@ -4,11 +4,13 @@ import ChevronLeft from "./ChevronIcons/ChevronLeft";
 import ChevronRight from "./ChevronIcons/ChevronRight";
 
 import "./Preview.css";
+import { useHistory } from "react-router-dom";
 
-function Preview({ images }) {
+function Preview({ images, id }) {
   const [page, setPage] = useState(0);
   const [leftOpacity, setLeftOpacity] = useState(0);
   const [rightOpacity, setRightOpacity] = useState(0);
+  const history = useHistory();
 
   if (!images || images.length < 1) return null;
 
@@ -43,11 +45,16 @@ function Preview({ images }) {
     setRightOpacity(1);
   };
 
+  const handleClick = () => {
+    history.push(`/spots/${id}`);
+  };
+
   return (
     <div
       id="preview"
       onMouseEnter={showButtons}
       onMouseLeave={hideButtons}
+      onClick={handleClick}
     >
       <button
         onClick={pageLeft}
