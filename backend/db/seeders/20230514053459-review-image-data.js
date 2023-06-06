@@ -49,30 +49,30 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up() {
-    for (let i = 0; i < data.length; i++) {
-      const review = await Review.findOne({
-        attributes: ["id"],
-        where: { review: data[i].review },
-      });
-      await ReviewImage.create({ reviewId: review.id, url: data[i].url });
-    }
+    // for (let i = 0; i < data.length; i++) {
+    //   const review = await Review.findOne({
+    //     attributes: ["id"],
+    //     where: { review: data[i].review },
+    //   });
+    //   await ReviewImage.create({ reviewId: review.id, url: data[i].url });
+    // }
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete(options, {
-      url: {
-        [Sequelize.Op.in]: [
-          "https://imgur.com/XaxjQUm",
-          "https://imgur.com/oPR4BiX",
-          "https://imgur.com/mX6tqVa",
-          "https://imgur.com/pqggrK0",
-          "https://imgur.com/TEMGYjY",
-          "https://imgur.com/Uschheg",
-          "https://imgur.com/StkDcOy",
-          "https://imgur.com/1U1Zr7I",
-          "https://imgur.com/zMyxoiN",
-        ],
-      },
-    });
+    // await queryInterface.bulkDelete(options, {
+    //   url: {
+    //     [Sequelize.Op.in]: [
+    //       "https://imgur.com/XaxjQUm",
+    //       "https://imgur.com/oPR4BiX",
+    //       "https://imgur.com/mX6tqVa",
+    //       "https://imgur.com/pqggrK0",
+    //       "https://imgur.com/TEMGYjY",
+    //       "https://imgur.com/Uschheg",
+    //       "https://imgur.com/StkDcOy",
+    //       "https://imgur.com/1U1Zr7I",
+    //       "https://imgur.com/zMyxoiN",
+    //     ],
+    //   },
+    // });
   },
 };

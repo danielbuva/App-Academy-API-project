@@ -67,37 +67,37 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up() {
-    for (let i = 0; i < data.length; i++) {
-      const user = await User.findOne({
-        attributes: ["id"],
-        where: { email: data[i].email },
-      });
-      const spot = await Spot.findOne({
-        attributes: ["id"],
-        where: { address: data[i].address },
-      });
-      await Booking.create({
-        spotId: spot.id,
-        userId: user.id,
-        startDate: data[i].startDate,
-        endDate: data[i].endDate,
-      });
-    }
+    // for (let i = 0; i < data.length; i++) {
+    //   const user = await User.findOne({
+    //     attributes: ["id"],
+    //     where: { email: data[i].email },
+    //   });
+    //   const spot = await Spot.findOne({
+    //     attributes: ["id"],
+    //     where: { address: data[i].address },
+    //   });
+    //   await Booking.create({
+    //     spotId: spot.id,
+    //     userId: user.id,
+    //     startDate: data[i].startDate,
+    //     endDate: data[i].endDate,
+    //   });
+    // }
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete(options, {
-      startDate: {
-        [Sequelize.Op.in]: [
-          "2027-11-30",
-          "2027-12-06",
-          "2027-12-14",
-          "2029-03-03",
-          "2028-11-30",
-          "2028-01-14",
-          "2029-01-01",
-        ],
-      },
-    });
+    // await queryInterface.bulkDelete(options, {
+    //   startDate: {
+    //     [Sequelize.Op.in]: [
+    //       "2027-11-30",
+    //       "2027-12-06",
+    //       "2027-12-14",
+    //       "2029-03-03",
+    //       "2028-11-30",
+    //       "2028-01-14",
+    //       "2029-01-01",
+    //     ],
+    //   },
+    // });
   },
 };

@@ -67,39 +67,39 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up() {
-    for (let i = 0; i < data.length; i++) {
-      const user = await User.findOne({
-        attributes: ["id"],
-        where: { email: data[i].email },
-      });
-      const spot = await Spot.findOne({
-        attributes: ["id"],
-        where: { address: data[i].address },
-      });
-      await Review.create({
-        spotId: spot.id,
-        userId: user.id,
-        review: data[i].review,
-        stars: data[i].stars,
-      });
-    }
+    // for (let i = 0; i < data.length; i++) {
+    //   const user = await User.findOne({
+    //     attributes: ["id"],
+    //     where: { email: data[i].email },
+    //   });
+    //   const spot = await Spot.findOne({
+    //     attributes: ["id"],
+    //     where: { address: data[i].address },
+    //   });
+    //   await Review.create({
+    //     spotId: spot.id,
+    //     userId: user.id,
+    //     review: data[i].review,
+    //     stars: data[i].stars,
+    //   });
+    // }
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete(options, {
-      review: {
-        [Sequelize.Op.in]: [
-          "peachy place",
-          "warm place",
-          "chill place",
-          "dope place",
-          "homey",
-          "burr",
-          "cozy place",
-          "cool place",
-          "sick place",
-        ],
-      },
-    });
+    // await queryInterface.bulkDelete(options, {
+    //   review: {
+    //     [Sequelize.Op.in]: [
+    //       "peachy place",
+    //       "warm place",
+    //       "chill place",
+    //       "dope place",
+    //       "homey",
+    //       "burr",
+    //       "cozy place",
+    //       "cool place",
+    //       "sick place",
+    //     ],
+    //   },
+    // });
   },
 };
