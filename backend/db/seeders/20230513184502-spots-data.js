@@ -9,6 +9,7 @@ if (process.env.NODE_ENV === "production") {
 
 const spots = [
   {
+    username: "Even",
     address: "550 Second St, 95060",
     city: "Santa Cruz",
     state: "California",
@@ -22,6 +23,7 @@ const spots = [
     price: 1465,
   },
   {
+    username: "Jeffy",
     address: "5606 Carpinteria Ave, 93013",
     city: "Carpinteria",
     state: "California",
@@ -34,6 +36,7 @@ const spots = [
     price: 575,
   },
   {
+    username: "TheKyle",
     address: "450 N Meadow Dr, 84783",
     city: "Dammeron Valley",
     state: "Utah",
@@ -48,6 +51,7 @@ const spots = [
     price: 99,
   },
   {
+    username: "Andrés",
     address: "R. do Alto da Veiga 4910, 4910-339",
     city: "Caminha",
     state: "Seixas",
@@ -63,6 +67,7 @@ const spots = [
     price: 1070,
   },
   {
+    username: "Mike&Ike",
     address: "2555 Savannah Ave, 77640",
     city: "Port Arthur",
     state: "Texas",
@@ -74,6 +79,7 @@ const spots = [
     price: 94,
   },
   {
+    username: "JoshyB",
     address: "3101 Watson Lake Park Rd, 86301",
     city: "Prescott",
     state: "Arizona",
@@ -90,11 +96,11 @@ const spots = [
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up() {
-    const user = await User.findOne({
-      attributes: ["id"],
-      where: { email: "lilykay@gmail.com" },
-    });
     for (let i = 0; i < spots.length; i++) {
+      const user = await User.findOne({
+        attributes: ["id"],
+        where: { username: spots[i].username },
+      });
       await Spot.create({
         ownerId: user.id,
         address: spots[i].address,
