@@ -1,0 +1,34 @@
+#new-spot-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+  height: 90%;
+}
+
+#pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  width: 640px;
+  height: 100%;
+}
+
+#page-layout {
+  width: 100%;
+  height: 93%;
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+#page-layout::-webkit-scrollbar {
+  display: none;
+}
+
+#page-layout {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
