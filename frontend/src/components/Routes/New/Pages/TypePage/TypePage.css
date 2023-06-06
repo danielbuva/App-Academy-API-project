@@ -1,0 +1,29 @@
+#type-page {
+  width: 100%;
+}
+
+.type-tile {
+  border: solid 1px #d8d8d8;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding-left: 20px;
+  height: 90px;
+  cursor: pointer;
+}
+
+.type-tile:hover {
+  border: solid 1px #000 !important;
+}
+
+.type-tile:active {
+  background-color: #d8d8d8;
+}
+
+#type-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  user-select: none;
+}
