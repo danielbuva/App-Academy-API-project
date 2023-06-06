@@ -10,9 +10,10 @@ const setSpots = (spots) => {
   };
 };
 
-const setSpot = () => {
+const setSpot = (spot) => {
   return {
     type: GET_SPOT,
+    payload: spot,
   };
 };
 
@@ -22,6 +23,14 @@ export const getAllSpots = () => async (dispatch) => {
 
   if (data.Spots) {
     dispatch(setSpots(data.Spots));
+  }
+};
+
+export const getSpot = (id) => async (dispatch) => {
+  const data = await (await csrfFetch(`/api/spots/${id}`)).json();
+
+  if (data) {
+    dispatch(setSpot(data));
   }
 };
 
@@ -35,7 +44,7 @@ const spotReducer = (state = initialState, action) => {
       newState.allSpots = action.payload;
       return newState;
     case GET_SPOT:
-      newState = Object.assign({}, state);
+      newState = { ...state.allSpots, spot: {} };
       newState.spot = action.payload;
       return newState;
     default:

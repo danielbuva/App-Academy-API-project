@@ -20,7 +20,7 @@ function Nav() {
         <YCSHIYP />
         <UserMenu />
       </div>
-      <Divider width="100vw" alignSelf="center" />
+      <Divider width="99vw" alignSelf="center" />
     </div>
   );
 }

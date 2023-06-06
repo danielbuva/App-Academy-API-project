@@ -9,6 +9,7 @@ function Layout({ children }) {
         height: "100%",
         width: "100%",
         alignItems: "center",
+        overflowX: "none",
       }}
     >
       <Nav />
