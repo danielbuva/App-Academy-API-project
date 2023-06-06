@@ -9,40 +9,81 @@ if (process.env.NODE_ENV === "production") {
 
 const spots = [
   {
-    address: "101 Snake Eyes Dr.",
-    city: "Denver",
-    state: "Colorado",
-    country: "US",
-    lat: 39.7392,
-    lng: 104.9903,
-    name: "Pair of Dice",
-    description:
-      "Welcome to Pair of Dice. You will enjoy your stay! （￣︶￣）↗",
-    price: 1000000,
-  },
-  {
-    address: "420 W Riverside Ave #113",
-    city: "Seattle",
-    state: "Washington",
-    country: "US",
-    lat: 47.6062,
-    lng: 122.3321,
-    name: "Home Away From Home",
-    description:
-      "Welcome to your Home Away From Home. You will enjoy your stay! (✿◡‿◡)",
-    price: 690000,
-  },
-  {
-    address: "1969 Isabel St",
-    city: "Los Angeles",
+    address: "550 Second St, 95060",
+    city: "Santa Cruz",
     state: "California",
-    country: "US",
-    lat: 34.0522,
-    lng: 118.2437,
-    name: "cool house",
+    country: "United States",
+    lat: 39.7392,
+    lng: -104.9903,
+    name: "180° OceanView+HotTub+EBikes+Surfboards+SUPS+Kayak",
+    description: `Incredible beach home with sweeping views of the ocean. Watch the waves crash from your bed. Directly in front of Pleasure Point, a world class surf spot.
+      180° upstairs decks to lounge & enjoy the ocean and views of the ocean from every room in the home.
+      Hot tub, cedar sauna, 4 electric bikes, surfboards, stand-up paddle boards, sea kayak, ping pong table, basketball arcade game, dart board, and ping pong robot.`,
+    price: 1465,
+  },
+  {
+    address: "5606 Carpinteria Ave, 93013",
+    city: "Carpinteria",
+    state: "California",
+    country: "United States",
+    lat: 34.3989,
+    lng: -119.5185,
+    name: "New Beach Loft at Padero Beach. On the water in SB",
     description:
-      "Welcome to cool house. You will enjoy your stay! (*^_^*)",
-    price: 10,
+      "Welcome the the newly completed Sea Lofts at Padaro Beach. This is Santa Barbara's most exclusive beach. You won't find closer accommodations to the water for miles. Not only are you a few feet from the sea, you are a hundred yards from surf shops, restaurants and boutiques. The Sea Lofts are the premier beach destination for Santa Barbara. You can walk for miles at low tide, or just sit on the deck or beach and watch the sunset. The lofts are well appointed with kitchenettes.",
+    price: 575,
+  },
+  {
+    address: "450 N Meadow Dr, 84783",
+    city: "Dammeron Valley",
+    state: "Utah",
+    country: "United States",
+    lat: 37.3045,
+    lng: -113.672,
+    name: "Coziest barn in town!",
+    description: `Our dream barnhouse located in beautiful Dammeron Valley Utah.
+      Only 17 miles from Saint George Ut with Many options just a drive away from your greatest adventures. 10 to 15 degrees cooler than St. George.
+      Minutes away from endless trails for hiking, biking, horse back, or ATV, there is so much to do.
+      Enjoy the awesome views from the deck, cook you up a burger on the BBQ and watch the sunset. Spacious inside that will sleep up to 5. Full kitchen and bath. Come enjoy, it will not disappoint.`,
+    price: 99,
+  },
+  {
+    address: "R. do Alto da Veiga 4910, 4910-339",
+    city: "Caminha",
+    state: "Seixas",
+    country: "Portugal",
+    lat: 41.899,
+    lng: -8.8164,
+    name: "Victorian House with Garden and Pool",
+    description: `Full house rental with garden, pool, play area, 1000 m2 + 6000 m2 garden.
+      It does not have a kitchen for guest use, but breakfast is included and is served in the elegant rooms of the house.
+      There is daily room service.
+      It is rented exclusively for groups from 4 to 12 people.
+      Next to the house there are several restaurants with a very low price and high quality traditional Portuguese food.`,
+    price: 1070,
+  },
+  {
+    address: "2555 Savannah Ave, 77640",
+    city: "Port Arthur",
+    state: "Texas",
+    country: "United States",
+    lat: 29.884951,
+    lng: -93.939949,
+    name: "END OF THE RAINBOW ON THE WATER",
+    description: `50 foot retired shrimp boat converted into a unique tiny house, on the Neches River. Located on a quiet private road under the historic Rainbow Bridge, half mile joins Sabine Lake, the intracoastal waterway, and beyond. Great fishing, crabbing, and a private boat dock just steps away. Parking for your vehicle and boat trailer. Communal green space with grill. Relax on the deck, fish, and watch as the big ships travel up river.`,
+    price: 94,
+  },
+  {
+    address: "3101 Watson Lake Park Rd, 86301",
+    city: "Prescott",
+    state: "Arizona",
+    country: "United States",
+    lat: 34.0522,
+    lng: -118.2437,
+    name: "Treehouse",
+    description:
+      "Stay in a treehouse!  It has a twin bed, a desk, and a dresser. There is a space heater for cold weather. You also have access to the common areas in the shared house which includes WiFi, kitchen, two bathrooms, laundry room, and living and dining areas.",
+    price: 50,
   },
 ];
 
@@ -73,9 +114,12 @@ module.exports = {
     await queryInterface.bulkDelete(options, {
       address: {
         [Sequelize.Op.in]: [
-          "1969 Isabel St",
-          "420 W Riverside Ave #113",
-          "101 Snake Eyes Dr.",
+          "550 Second St, 95060",
+          "5606 Carpinteria Ave, 93013",
+          "450 N Meadow Dr, 84783",
+          "R. do Alto da Veiga 4910, 4910-339",
+          "2555 Savannah Ave, 77640",
+          "3101 Watson Lake Park Rd, 86301",
         ],
       },
     });
