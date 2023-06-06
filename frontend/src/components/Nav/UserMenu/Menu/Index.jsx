@@ -10,6 +10,7 @@ import { logout } from "../../../../store/session";
 
 import "./menu.css";
 import Divider from "../../../Divider";
+import { NavLink } from "react-router-dom";
 
 function UserMenu() {
   const currentUser = useSessionUser();
@@ -27,6 +28,10 @@ function UserMenu() {
         {currentUser.firstName} {currentUser.lastName}
       </p>
       <p>{currentUser.email}</p>
+      <Divider margin={7} />
+      <NavLink exact to="/spots/current">
+        Manage Spots
+      </NavLink>
       <Divider margin={7} />
       <button onClick={handleLogOut} id="logout-button">
         Log Out
