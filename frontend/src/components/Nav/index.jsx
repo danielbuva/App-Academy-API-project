@@ -14,6 +14,7 @@ function Nav() {
         width: "100%",
         display: "flex",
         flexDirection: "column",
+        zIndex: 1,
       }}
     >
       <div className="nav">
