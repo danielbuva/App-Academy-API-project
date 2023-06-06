@@ -1,31 +1,9 @@
+import Preview from "./Preview";
 import Star from "./Star.svg";
 
-function Tile({ image, location, rating, price }) {
+function Tile({ images, location, rating, price }) {
   const preview =
-    image !== null ? (
-      <img
-        src={"https://i.imgur.com/IsAlUfg.png"}
-        alt={image}
-        style={{
-          maxWidth: "100%",
-          height: "100%",
-          borderRadius: "12px",
-          objectFit: "cover",
-        }}
-      />
-    ) : (
-      // "no preview"
-      <img
-        src={"https://i.imgur.com/IsAlUfg.png"}
-        alt={image}
-        style={{
-          maxWidth: "100%",
-          height: "100%",
-          borderRadius: "12px",
-          objectFit: "cover",
-        }}
-      />
-    );
+    images.length > 0 ? <Preview images={images} /> : "no preview";
   return (
     <div
       style={{

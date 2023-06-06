@@ -22,14 +22,14 @@ function Spots() {
     >
       {spots &&
         spots.map(
-          ({ id, price, city, state, avgRating, previewImage }) => {
+          ({ id, price, city, state, avgRating, previewImages }) => {
             return (
               <Tile
                 key={id}
                 price={price}
                 location={`${city}, ${state}`}
                 rating={avgRating}
-                image={previewImage}
+                images={previewImages}
               />
             );
           }
