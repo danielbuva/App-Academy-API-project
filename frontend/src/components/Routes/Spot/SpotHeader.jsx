@@ -1,16 +1,16 @@
-import { useSelector } from "react-redux";
+import useSpot from "../../../hooks/useSpot";
 
 function SpotHeader() {
-  const spot = useSelector((state) => state.spots.spot);
+  const spot = useSpot();
 
   if (!spot) return null;
 
   return (
     <>
-      <p>{spot.name}</p>
-      <p>{spot.city}</p>
-      <p>{spot.state}</p>
-      <p>{spot.country}</p>
+      <h2>{spot.name}</h2>
+      <p style={{ marginBottom: "30px" }}>
+        {spot.city}, {spot.state}, {spot.country}
+      </p>
     </>
   );
 }

@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
+import useSpot from "../../../hooks/useSpot";
 
 import "./Spot.css";
 
 function SpotImages() {
-  const spot = useSelector((state) => state.spots.spot);
+  const spot = useSpot();
 
   if (!spot || !spot.SpotImages) return null;
 
