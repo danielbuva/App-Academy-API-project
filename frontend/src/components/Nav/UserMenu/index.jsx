@@ -11,7 +11,7 @@ function UserMenu() {
   if (!isLoaded) return null;
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", userSelect: "none" }}>
       <MenuButton buttonRef={buttonRef} setShow={setShow} show={show} />
       {show && <Menu />}
     </div>
