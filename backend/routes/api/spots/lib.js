@@ -254,13 +254,18 @@ const getAllSpots = async (req, res) => {
         ? avgRatingObj.get("avgRating")
         : null;
 
-      const imageObj = spotImages.find((image) => image.spotId === spotId);
-      const previewImage = imageObj ? imageObj.url : null;
+      const previewImages = [];
+
+      for (let i = 0; i < spotImages.length; i++) {
+        if (spotImages[i].spotId === spotId) {
+          previewImages.push(spotImages[i].url);
+        }
+      }
 
       return {
         ...spot.toJSON(),
         avgRating,
-        previewImage,
+        previewImages,
       };
     });
 
