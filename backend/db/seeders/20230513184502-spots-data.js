@@ -49,6 +49,7 @@ const spots = [
       Minutes away from endless trails for hiking, biking, horse back, or ATV, there is so much to do.
       Enjoy the awesome views from the deck, cook you up a burger on the BBQ and watch the sunset. Spacious inside that will sleep up to 5. Full kitchen and bath. Come enjoy, it will not disappoint.`,
     price: 99,
+    type: "Barn",
   },
   {
     username: "Andrés",
@@ -65,6 +66,7 @@ const spots = [
       It is rented exclusively for groups from 4 to 12 people.
       Next to the house there are several restaurants with a very low price and high quality traditional Portuguese food.`,
     price: 1070,
+    type: "Castle",
   },
   {
     username: "Mike&Ike",
@@ -77,6 +79,7 @@ const spots = [
     name: "END OF THE RAINBOW ON THE WATER",
     description: `50 foot retired shrimp boat converted into a unique tiny house, on the Neches River. Located on a quiet private road under the historic Rainbow Bridge, half mile joins Sabine Lake, the intracoastal waterway, and beyond. Great fishing, crabbing, and a private boat dock just steps away. Parking for your vehicle and boat trailer. Communal green space with grill. Relax on the deck, fish, and watch as the big ships travel up river.`,
     price: 94,
+    type: "Boat",
   },
   {
     username: "JoshyB",
@@ -90,6 +93,8 @@ const spots = [
     description:
       "Stay in a treehouse!  It has a twin bed, a desk, and a dresser. There is a space heater for cold weather. You also have access to the common areas in the shared house which includes WiFi, kitchen, two bathrooms, laundry room, and living and dining areas.",
     price: 50,
+    type: "Treehouse",
+    place: "A room",
   },
 ];
 
