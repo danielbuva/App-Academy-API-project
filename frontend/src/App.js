@@ -1,10 +1,11 @@
-import Nav from "./components/Nav";
+import Spots from "./components/Home/Spots/Spots";
+import Layout from "./components/Layout";
 
 function App() {
   return (
-    <>
-      <Nav />
-    </>
+    <Layout>
+      <Spots />
+    </Layout>
   );
 }
 
