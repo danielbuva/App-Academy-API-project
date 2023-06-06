@@ -8,13 +8,20 @@ import Divider from "../Divider";
 
 function Nav() {
   return (
-    <>
+    <div
+      style={{
+        marginBottom: "30px",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <div className="nav">
         <YCSHIYP />
         <UserMenu />
       </div>
-      <Divider />
-    </>
+      <Divider width="100vw" alignSelf="center" />
+    </div>
   );
 }
 
