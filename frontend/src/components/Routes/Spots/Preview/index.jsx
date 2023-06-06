@@ -16,33 +16,35 @@ function Preview({ images, id }) {
 
   const showButtons = () => {
     if (page > 0) {
-      setLeftOpacity(1);
+      setLeftOpacity(0.8);
     }
     if (page < images.length - 1) {
-      setRightOpacity(1);
+      setRightOpacity(0.8);
     }
   };
   const hideButtons = () => {
     setLeftOpacity(0);
     setRightOpacity(0);
   };
-  const pageRight = () => {
+  const pageRight = (e) => {
+    e.stopPropagation();
     if (page < images.length - 1) {
       setPage(page + 1);
     }
     if (page === images.length - 2) {
       setRightOpacity(0);
     }
-    setLeftOpacity(1);
+    setLeftOpacity(0.8);
   };
-  const pageLeft = () => {
+  const pageLeft = (e) => {
+    e.stopPropagation();
     if (page > 0) {
       setPage(page - 1);
     }
     if (page === 1) {
       setLeftOpacity(0);
     }
-    setRightOpacity(1);
+    setRightOpacity(0.8);
   };
 
   const handleClick = () => {
