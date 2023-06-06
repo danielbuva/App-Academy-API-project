@@ -17,3 +17,13 @@
     padding: 0px 10px 0px 10px;
   }
 }
+
+#new-spot {
+  margin-right: 20px;
+  text-decoration: none;
+  color: unset;
+}
+
+#new-spot:hover {
+  text-decoration: underline;
+}
