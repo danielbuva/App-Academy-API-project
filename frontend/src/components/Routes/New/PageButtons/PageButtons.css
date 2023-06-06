@@ -1,0 +1,35 @@
+#page-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.page-buttons {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.back {
+  text-decoration: underline;
+  border: unset;
+  border-radius: 8px;
+  background-color: unset;
+  width: 60px;
+  height: 40px;
+}
+
+.back:hover {
+  background-color: #f7f7f7;
+}
+
+.next {
+  color: #fff;
+  background-color: #222222;
+  width: 100px;
+  height: 50px;
+  border-radius: 8px;
+}
+
+.next:hover {
+  background-color: #000;
+}
