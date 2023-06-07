@@ -126,6 +126,7 @@ module.exports = {
         place: spots[i].place,
         price: spots[i].price,
         type: spots[i].type,
+        zipcode: spots[i].zipcode,
       });
     }
   },
