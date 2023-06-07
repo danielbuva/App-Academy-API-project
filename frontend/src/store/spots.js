@@ -15,6 +15,13 @@ export const getAllSpots = () => async (dispatch) => {
   if (data.Spots) dispatch(setSpots(data.Spots));
 };
 
+export const getAllCurrentUsersSpots = () => async (dispatch) => {
+  const res = await csrfFetch("/api/spots/current");
+  const data = await res.json();
+
+  if (data.Spots) dispatch(setSpots(data.Spots));
+};
+
 export const getSpot = (id) => async (dispatch) => {
   const data = await (await csrfFetch(`/api/spots/${id}`)).json();
 
