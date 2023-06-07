@@ -277,19 +277,36 @@ const getAllSpots = async (req, res) => {
 
 const getCurrentUsersSpots = async (req, res) => {
   try {
-    const Spots = await Spot.findAll({
-      where: { ownerId: req.user.id },
-      attributes: {
-        include: [
-          [fn("AVG", col("Reviews.stars")), "avgRating"],
-          [fn("MAX", col("SpotImages.url")), "previewImage"],
-        ],
-      },
-      include: [
-        { model: SpotImage, attributes: [] },
-        { model: Review, attributes: [] },
-      ],
-      group: ["Spot.id"],
+    const [spots, spotImages] = await Promise.all([
+      Spot.findAll({
+        where: { ownerId: req.user.id },
+        attributes: {
+          include: [[fn("AVG", col("Reviews.stars")), "avgRating"]],
+        },
+        include: [{ model: Review, attributes: [] }],
+        group: ["Spot.id"],
+      }),
+      SpotImage.findAll({
+        attributes: ["spotId", "url"],
+        order: [["createdAt", "DESC"]],
+      }),
+    ]);
+
+    const Spots = spots.map((spot) => {
+      const spotId = spot.id;
+
+      const previewImages = [];
+
+      for (let i = 0; i < spotImages.length; i++) {
+        if (spotImages[i].spotId === spotId) {
+          previewImages.push(spotImages[i].url);
+        }
+      }
+
+      return {
+        ...spot.toJSON(),
+        previewImages,
+      };
     });
 
     res.json({ Spots });
