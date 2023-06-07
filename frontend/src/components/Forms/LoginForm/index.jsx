@@ -66,7 +66,7 @@ function LoginForm() {
       <button
         type="submit"
         className="spot-button"
-        disabled={credential.length < 4 || password < 6}
+        disabled={credential.length < 4 || password.length < 6}
       >
         Continue
       </button>
