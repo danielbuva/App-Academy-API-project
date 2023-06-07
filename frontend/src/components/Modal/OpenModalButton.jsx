@@ -3,7 +3,7 @@ import { useModalContext } from "../../hooks/useModalContext";
 
 import "./Modal.css";
 
-function OpenModalButton({ content, onClick, onClose, text }) {
+function OpenModalButton({ content, onClick, onClose, text, title }) {
   const { setContent, setOnClose, setTitle } = useModalContext();
 
   if (typeof onClick !== "function" && onClick) {
@@ -21,7 +21,11 @@ function OpenModalButton({ content, onClick, onClose, text }) {
   const handleClick = () => {
     if (onClick) onClick();
     if (onClose) setOnClose(onClose);
-    if (text) setTitle(text);
+    if (title) {
+      setTitle(title);
+    } else if (text) {
+      setTitle(text);
+    }
     setContent(content);
   };
 

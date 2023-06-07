@@ -13,8 +13,6 @@ function CurrentUserSpots() {
     dispatch(getAllCurrentUsersSpots());
   }, [dispatch]);
 
-  console.log({ SpotsFromCurrUser: spots });
-
   if (!spots) return null;
 
   return (

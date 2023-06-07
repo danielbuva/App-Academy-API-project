@@ -23,8 +23,6 @@ function Spot() {
 
   if (!spot || !spot.Owner) return null;
 
-  console.log({ spot });
-
   return (
     <div id="spot">
       <SpotHeader />

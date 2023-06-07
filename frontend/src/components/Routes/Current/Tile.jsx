@@ -1,8 +1,10 @@
 import Tooltip from "../../Tooltip";
 import Preview from "./Preview";
 import Star from "./Star.svg";
+import OpenModalButton from "../../Modal/OpenModalButton";
 
 import { useHistory } from "react-router-dom";
+import Delete from "./Delete";
 
 function Tile({ spot }) {
   const history = useHistory();
@@ -88,7 +90,11 @@ function Tile({ spot }) {
       </Tooltip>
       <div style={{ display: "flex", width: "100%" }}>
         <button onClick={handleUpdate}>update</button>
-        <button>delete</button>
+        <OpenModalButton
+          text="Delete"
+          title="Confirm Delete"
+          content={<Delete id={spot.id} />}
+        />
       </div>
     </div>
   );
