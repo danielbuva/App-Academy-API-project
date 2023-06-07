@@ -39,7 +39,8 @@ function Spot() {
       >
         <div>
           <h3>
-            Hosted by {spot.Owner.firstName}, {spot.Owner.lastName}
+            {spot.place} in a {spot.type} hosted by {spot.Owner.firstName},{" "}
+            {spot.Owner.lastName}
           </h3>
           <Divider marginBottom="40px" />
           <p>{spot.description}</p>
