@@ -25,3 +25,14 @@
   background-color: #ececec;
   cursor: pointer;
 }
+
+#manage-spots-button {
+  text-decoration: none;
+  color: #000;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#manage-spots-button:hover {
+  background-color: #ececec;
+}
