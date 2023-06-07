@@ -19,7 +19,7 @@ function randomDescription() {
     `Get cozy and settle into this rustic space.`,
     `You'll love this unique and romantic escape.`,
     `Reconnect with nature at this unforgettable escape.`,
-    `You’ll have plenty to enjoy at this historic place in a picturesque setting.`,
+    `You'll have plenty to enjoy at this historic place in a picturesque setting.`,
     `Enjoy the sounds of nature when you stay in this unique place.`,
   ];
 
