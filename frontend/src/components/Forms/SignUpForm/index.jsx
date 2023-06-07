@@ -109,7 +109,7 @@ function SignupForm() {
         placeholder="Confirm password"
       />
       <FormError errors={errors} />
-      <button type="submit" className="continue">
+      <button type="submit" className="spot-button">
         Continue
       </button>
     </form>
