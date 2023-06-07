@@ -10,22 +10,25 @@ import { logout } from "../../../../store/session";
 
 import "./menu.css";
 import Divider from "../../../Divider";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
-function UserMenu() {
+function UserMenu({ setShow, userMenuRef }) {
   const currentUser = useSessionUser();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleLogOut = (e) => {
     e.preventDefault();
     dispatch(logout());
+    history.push("/");
+    setShow(false);
   };
 
   return (
-    <div className="profile-dropdown">
+    <div className="profile-dropdown" ref={userMenuRef}>
       <p>{currentUser.username}</p>
       <p>
-        {currentUser.firstName} {currentUser.lastName}
+        Hello {currentUser.firstName} {currentUser.lastName} :)
       </p>
       <p>{currentUser.email}</p>
       <Divider margin={7} />
@@ -40,19 +43,32 @@ function UserMenu() {
   );
 }
 
-function AuthMenu() {
+function AuthMenu({ setShow }) {
+  const handleClick = () => setShow(false);
   return (
     <div className="profile-dropdown">
-      <OpenModalButton text="Sign up" content={<SignupForm />} />
-      <OpenModalButton text="Log in" content={<LoginForm />} />
+      <OpenModalButton
+        text="Sign up"
+        content={<SignupForm />}
+        onClick={handleClick}
+      />
+      <OpenModalButton
+        text="Log in"
+        content={<LoginForm />}
+        onClick={handleClick}
+      />
     </div>
   );
 }
 
-function Menu() {
+function Menu({ setShow, userMenuRef }) {
   const currentUser = useSessionUser();
 
-  return currentUser ? <UserMenu /> : <AuthMenu />;
+  return currentUser ? (
+    <UserMenu userMenuRef={userMenuRef} setShow={setShow} />
+  ) : (
+    <AuthMenu setShow={setShow} />
+  );
 }
 
 export default Menu;

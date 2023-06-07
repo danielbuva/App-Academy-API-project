@@ -7,7 +7,7 @@ import CreateANewSpot from "../CreateANewSpot";
 import useSessionUser from "../../../hooks/useSessionUser";
 
 function UserMenu() {
-  const { buttonRef, setShow, show } = useProfileMenu();
+  const { buttonRef, setShow, show, userMenuRef } = useProfileMenu();
   const isLoaded = useIsLoaded();
   const user = useSessionUser();
 
@@ -24,7 +24,7 @@ function UserMenu() {
     >
       {user && <CreateANewSpot />}
       <MenuButton buttonRef={buttonRef} setShow={setShow} show={show} />
-      {show && <Menu />}
+      {show && <Menu userMenuRef={userMenuRef} setShow={setShow} />}
     </div>
   );
 }
