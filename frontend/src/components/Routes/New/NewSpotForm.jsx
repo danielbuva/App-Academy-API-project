@@ -61,6 +61,7 @@ function NewSpotForm() {
     name &&
     description &&
     place &&
+    previewUrl &&
     price &&
     type;
 
@@ -112,20 +113,31 @@ function NewSpotForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (dataExists) {
-      const spot = await dispatch(
-        createNewSpot({
-          address: `${address} ${addressNumber ?? ""} ${zipcode}`,
-          city,
-          state: stateOrTerritory,
-          country,
-          name,
-          description,
-          place,
-          price,
-          type,
-        })
+      const imageData = [
+        { url: previewUrl },
+        { url: url1 },
+        { url: url2 },
+        { url: url3 },
+        { url: url4 },
+      ];
+
+      const spotId = await dispatch(
+        createNewSpot(
+          {
+            address: `${address} ${addressNumber ?? ""} ${zipcode}`,
+            city,
+            state: stateOrTerritory,
+            country,
+            name,
+            description,
+            place,
+            price,
+            type,
+          },
+          imageData
+        )
       );
-      if (spot) history.push(`/spots/${spot.id}`);
+      if (spotId) history.push(`/spots/${spotId}`);
     }
   };
 
@@ -146,10 +158,6 @@ function NewSpotForm() {
         stateOrTerritory={stateOrTerritory}
         zipcode={zipcode}
         previewUrl={previewUrl}
-        url1={url1}
-        url2={url2}
-        url3={url3}
-        url4={url4}
         name={name}
         description={description}
         price={price}

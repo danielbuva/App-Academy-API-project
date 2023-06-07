@@ -21,7 +21,7 @@ export const getSpot = (id) => async (dispatch) => {
   if (data) dispatch(setSpot(data));
 };
 
-export const createNewSpot = (formData) => async (dispatch) => {
+export const createNewSpot = (formData, imageData) => async (dispatch) => {
   const data = await (
     await csrfFetch(`/api/spots`, {
       method: "POST",
@@ -32,8 +32,31 @@ export const createNewSpot = (formData) => async (dispatch) => {
   ).json();
 
   if (data) {
-    dispatch(newSpot(data));
-    return data;
+    return dispatch(addSpotImage(data, imageData));
+  }
+};
+
+export const addSpotImage = (spotData, imageData) => async (dispatch) => {
+  if (spotData) {
+    if (imageData) {
+      spotData.SpotImages = [];
+      for (let i = 0; i < imageData.length; i++) {
+        if (imageData[i].url) {
+          spotData.SpotImages.push(
+            await (
+              await csrfFetch(`/api/spots/${spotData.id}/images`, {
+                method: "POST",
+                body: JSON.stringify({
+                  url: imageData[i].url,
+                }),
+              })
+            ).json()
+          );
+        }
+      }
+    }
+    dispatch(newSpot(spotData));
+    return spotData.id;
   }
 };
 

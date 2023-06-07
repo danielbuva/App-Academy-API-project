@@ -11,10 +11,6 @@ function PageButtons({
   stateOrTerritory,
   zipcode,
   previewUrl,
-  url1,
-  url2,
-  url3,
-  url4,
   name,
   description,
   handleSubmit,
@@ -36,7 +32,7 @@ function PageButtons({
     ) {
       setPage(3);
     }
-    if (page === 3 && previewUrl && url1 && url2 && url3 && url4) {
+    if (page === 3 && previewUrl) {
       setPage(4);
     }
     if (page === 4 && name) {
