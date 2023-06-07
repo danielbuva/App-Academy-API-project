@@ -32,7 +32,12 @@ function UserMenu({ setShow, userMenuRef }) {
       </p>
       <p>{currentUser.email}</p>
       <Divider margin={7} />
-      <NavLink exact to="/spots/current" id="manage-spots-button">
+      <NavLink
+        exact
+        to="/spots/current"
+        id="manage-spots-button"
+        onClick={() => setShow(false)}
+      >
         Manage Spots
       </NavLink>
       <Divider margin={7} />
