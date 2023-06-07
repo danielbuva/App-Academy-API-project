@@ -4,10 +4,12 @@ import useIsLoaded from "../../../hooks/useIsLoaded";
 import Menu from "./Menu/Index";
 import MenuButton from "./Menu/MenuButton";
 import CreateANewSpot from "../CreateANewSpot";
+import useSessionUser from "../../../hooks/useSessionUser";
 
 function UserMenu() {
   const { buttonRef, setShow, show } = useProfileMenu();
   const isLoaded = useIsLoaded();
+  const user = useSessionUser();
 
   if (!isLoaded) return null;
 
@@ -20,7 +22,7 @@ function UserMenu() {
         alignItems: "center",
       }}
     >
-      <CreateANewSpot />
+      {user && <CreateANewSpot />}
       <MenuButton buttonRef={buttonRef} setShow={setShow} show={show} />
       {show && <Menu />}
     </div>

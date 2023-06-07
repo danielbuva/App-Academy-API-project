@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createNewSpot } from "../../../store/spots";
+import useSessionUser from "../../../hooks/useSessionUser";
 
 import TypePage from "./Pages/TypePage";
 import PlacePage from "./Pages/PlacePage";
@@ -27,6 +28,10 @@ function randomDescription() {
 }
 
 function NewSpotForm() {
+  const user = useSessionUser();
+  const history = useHistory();
+  if (!user) history.push(`/`);
+
   const [type, setType] = useState(null);
   const [place, setPlace] = useState("An entire place");
   const [country, setCountry] = useState("");
@@ -46,7 +51,6 @@ function NewSpotForm() {
   const [page, setPage] = useState(0);
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const dataExists =
     address &&
