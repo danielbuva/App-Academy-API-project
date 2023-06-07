@@ -28,7 +28,7 @@ function randomDescription() {
 
 function NewSpotForm() {
   const [type, setType] = useState(null);
-  const [place, setPlace] = useState(null);
+  const [place, setPlace] = useState("An entire place");
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [addressNumber, setAddressNumber] = useState("");
