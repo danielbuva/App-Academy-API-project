@@ -4,6 +4,7 @@ import Star from "./Star.svg";
 function Tile({ images, location, rating, price, id }) {
   const preview =
     images.length > 0 ? <Preview images={images} id={id} /> : "no preview";
+  const stars = rating ?? "New";
   return (
     <div
       style={{
@@ -29,7 +30,7 @@ function Tile({ images, location, rating, price, id }) {
             alt="star"
             style={{ width: "12px", marginRight: "5px" }}
           />
-          <p>{rating}</p>
+          <p>{stars}</p>
         </div>
       </div>
       <p>
