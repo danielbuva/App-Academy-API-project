@@ -5,6 +5,31 @@ function Rating({ size = 0 }) {
   const spot = useSpot();
   if (!spot) return null;
 
+  const text = spot.numReviews > 1 ? "reviews" : "review";
+
+  const reviews =
+    spot.numReviews && spot.numReviews > 0 ? (
+      <p>
+        {spot.avgStarRating} ·{" "}
+        <span style={{ color: "#797979" }}>
+          {spot.numReviews} {text}
+        </span>
+      </p>
+    ) : (
+      "New"
+    );
+  const reviews1 =
+    spot.numReviews && spot.numReviews > 0 ? (
+      <p style={{ fontSize: "20px" }}>
+        {spot.avgStarRating} ·{" "}
+        <span style={{ color: "#797979" }}>
+          {spot.numReviews} {text}
+        </span>
+      </p>
+    ) : (
+      "New"
+    );
+
   return size === 0 ? (
     <div style={{ display: "flex" }}>
       <img
@@ -12,10 +37,7 @@ function Rating({ size = 0 }) {
         alt="star"
         style={{ width: "12px", marginRight: "5px" }}
       />
-      <p>
-        {spot.avgStarRating} ·{" "}
-        <span style={{ color: "#797979" }}>{spot.numReviews} reviews</span>
-      </p>
+      {reviews}
     </div>
   ) : (
     <div style={{ display: "flex" }}>
@@ -24,10 +46,7 @@ function Rating({ size = 0 }) {
         alt="star"
         style={{ width: "24px", marginRight: "5px" }}
       />
-      <p style={{ fontSize: "20px" }}>
-        {spot.avgStarRating} ·{" "}
-        <span style={{ color: "#797979" }}>{spot.numReviews} reviews</span>
-      </p>
+      {reviews1}
     </div>
   );
 }
