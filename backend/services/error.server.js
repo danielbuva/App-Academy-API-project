@@ -39,12 +39,12 @@ const errorFormatter = (err, _, res, __) => {
 };
 
 const validSpot = ({
+  type,
+  place,
   address,
   city,
   state,
   country,
-  lat,
-  lng,
   name,
   description,
   price,
@@ -79,7 +79,9 @@ const validSpot = ({
     country,
     name,
     description,
+    place,
     price,
+    type,
   };
 };
 
