@@ -39,15 +39,17 @@ const errorFormatter = (err, _, res, __) => {
 };
 
 const validSpot = ({
-  type,
-  place,
   address,
+  addressNumber,
   city,
   state,
   country,
   name,
   description,
+  place,
   price,
+  type,
+  zipcode,
 }) => {
   let errorResult = { errors: {}, message: "Bad Request", status: 400 };
   if (!address) {
@@ -71,9 +73,13 @@ const validSpot = ({
   if (!price || (price && price < 10)) {
     errorResult.errors.price = "Price per day is required";
   }
+  if (!zipcode || isNaN(zipcode)) {
+    errorResult.errors.price = "Zipcode is required";
+  }
   throwIfError(errorResult);
   return {
     address,
+    addressNumber,
     city,
     state,
     country,
@@ -82,6 +88,7 @@ const validSpot = ({
     place,
     price,
     type,
+    zipcode,
   };
 };
 

@@ -10,7 +10,8 @@ if (process.env.NODE_ENV === "production") {
 const spots = [
   {
     username: "Even",
-    address: "550 Second St, 95060",
+    address: "550 Second St",
+    zipcode: 95060,
     city: "Santa Cruz",
     state: "California",
     country: "United States",
@@ -24,7 +25,8 @@ const spots = [
   },
   {
     username: "Jeffy",
-    address: "5606 Carpinteria Ave, 93013",
+    address: "5606 Carpinteria Ave",
+    zipcode: "93013",
     city: "Carpinteria",
     state: "California",
     country: "United States",
@@ -37,7 +39,8 @@ const spots = [
   },
   {
     username: "TheKyle",
-    address: "450 N Meadow Dr, 84783",
+    address: "450 N Meadow Dr",
+    zipcode: "84783",
     city: "Dammeron Valley",
     state: "Utah",
     country: "United States",
@@ -53,7 +56,9 @@ const spots = [
   },
   {
     username: "Andrés",
-    address: "R. do Alto da Veiga 4910, 4910-339",
+    address: "R. do Alto da Veiga",
+    addressNumber: "4910",
+    zipcode: "4910-339",
     city: "Caminha",
     state: "Seixas",
     country: "Portugal",
@@ -70,7 +75,8 @@ const spots = [
   },
   {
     username: "Mike&Ike",
-    address: "2555 Savannah Ave, 77640",
+    address: "2555 Savannah Ave",
+    zipcode: "77640",
     city: "Port Arthur",
     state: "Texas",
     country: "United States",
@@ -83,7 +89,8 @@ const spots = [
   },
   {
     username: "JoshyB",
-    address: "3101 Watson Lake Park Rd, 86301",
+    address: "3101 Watson Lake Park Rd",
+    zipcode: "86301",
     city: "Prescott",
     state: "Arizona",
     country: "United States",
@@ -127,12 +134,12 @@ module.exports = {
     await queryInterface.bulkDelete(options, {
       address: {
         [Sequelize.Op.in]: [
-          "550 Second St, 95060",
-          "5606 Carpinteria Ave, 93013",
+          "550 Second St",
+          "5606 Carpinteria Ave",
           "450 N Meadow Dr, 84783",
-          "R. do Alto da Veiga 4910, 4910-339",
-          "2555 Savannah Ave, 77640",
-          "3101 Watson Lake Park Rd, 86301",
+          "R. do Alto da Veiga",
+          "2555 Savannah Ave",
+          "3101 Watson Lake Park Rd",
         ],
       },
     });
