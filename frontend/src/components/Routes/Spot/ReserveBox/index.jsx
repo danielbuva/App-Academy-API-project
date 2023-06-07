@@ -32,7 +32,7 @@ function ReserveBox() {
         </p>
         <Rating />
       </div>
-      <button className="continue" style={{ width: "100%" }}>
+      <button className="spot-button" style={{ width: "100%" }}>
         Reserve
       </button>
       <p style={{ color: "#696969", fontSize: "14px" }}>
