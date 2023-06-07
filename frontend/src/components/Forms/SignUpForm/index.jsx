@@ -57,7 +57,9 @@ function SignupForm() {
     !firstName ||
     !lastName ||
     !password ||
-    !confirmPassword;
+    !confirmPassword ||
+    username.length < 4 ||
+    password.length < 6;
 
   return (
     <form onSubmit={handleSubmit}>
