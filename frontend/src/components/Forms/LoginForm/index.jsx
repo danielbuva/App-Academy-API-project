@@ -63,7 +63,11 @@ function LoginForm() {
         placeholder="password"
       />
       <FormError errors={errors} />
-      <button type="submit" className="spot-button">
+      <button
+        type="submit"
+        className="spot-button"
+        disabled={credential.length < 4 || password < 6}
+      >
         Continue
       </button>
       <Or />
