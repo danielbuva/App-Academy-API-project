@@ -1,0 +1,32 @@
+#place-page {
+  width: 100%;
+}
+
+.place-box {
+  border: solid 1px #e7e7e7;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.place-box:hover {
+  border: solid 1px #000 !important;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 400px;
+  text-align: left;
+}
+
+.main-text {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: -10px;
+}
