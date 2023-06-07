@@ -62,19 +62,13 @@ const validSpot = ({
   if (!country) {
     errorResult.errors.country = "Country is required";
   }
-  if (!lat || isNaN(lat)) {
-    errorResult.errors.lat = "Latitude is not valid";
-  }
-  if (!lng || isNaN(lng)) {
-    errorResult.errors.lng = "Longitude is not valid";
-  }
   if (!name || (name && name.length > 50)) {
     errorResult.errors.name = "Name must be less than 50 characters";
   }
   if (!description) {
     errorResult.errors.description = "Description is required";
   }
-  if (!price || (price && price < 0)) {
+  if (!price || (price && price < 10)) {
     errorResult.errors.price = "Price per day is required";
   }
   throwIfError(errorResult);
@@ -83,8 +77,6 @@ const validSpot = ({
     city,
     state,
     country,
-    lat,
-    lng,
     name,
     description,
     price,
