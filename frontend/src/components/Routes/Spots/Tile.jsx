@@ -19,7 +19,7 @@ function Tile({ images, location, rating, price, id, name }) {
       <div
         style={{
           width: "370px",
-          height: "350px",
+          height: "100%",
           cursor: "pointer",
         }}
         onClick={handleClick}

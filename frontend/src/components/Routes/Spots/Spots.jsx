@@ -15,8 +15,10 @@ function Spots() {
     <div
       style={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "left",
+        gap: "40px",
         width: "100%",
+        height: "max-content",
         flexWrap: "wrap",
       }}
     >
