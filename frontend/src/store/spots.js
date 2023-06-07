@@ -19,6 +19,10 @@ export const getAllCurrentUsersSpots = () => async (dispatch) => {
   const res = await csrfFetch("/api/spots/current");
   const data = await res.json();
 
+  if (data) {
+    console.log({ data });
+  }
+
   if (data.Spots) dispatch(setSpots(data.Spots));
 };
 
@@ -42,6 +46,22 @@ export const createNewSpot = (formData, imageData) => async (dispatch) => {
     return dispatch(addSpotImage(data, imageData));
   }
 };
+
+export const updateSpot =
+  (formData, imageData, id) => async (dispatch) => {
+    const data = await (
+      await csrfFetch(`/api/spots/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          ...formData,
+        }),
+      })
+    ).json();
+
+    if (data) {
+      return dispatch(addSpotImage(data, imageData));
+    }
+  };
 
 export const addSpotImage = (spotData, imageData) => async (dispatch) => {
   if (spotData) {

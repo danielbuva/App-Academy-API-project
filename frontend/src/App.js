@@ -10,6 +10,7 @@ function App() {
     <Layout>
       <Switch>
         <Route exact path="/" component={Spots} />
+        <Route path="/spots/:id/edit" component={NewSpotForm} />
         <Route path="/spots/new" component={NewSpotForm} />
         <Route path="/spots/current" component={CurrentUserSpots} />
         <Route path="/spots/:id" component={Spot} />

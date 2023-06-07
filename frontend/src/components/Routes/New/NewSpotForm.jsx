@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { createNewSpot } from "../../../store/spots";
+import { useHistory, useLocation } from "react-router-dom";
+import { createNewSpot, updateSpot } from "../../../store/spots";
 import useSessionUser from "../../../hooks/useSessionUser";
 
 import TypePage from "./Pages/TypePage";
@@ -32,24 +32,55 @@ function NewSpotForm() {
   const history = useHistory();
   if (!user) history.push(`/`);
 
-  const [type, setType] = useState(null);
-  const [place, setPlace] = useState("An entire place");
-  const [country, setCountry] = useState("");
-  const [address, setAddress] = useState("");
-  const [addressNumber, setAddressNumber] = useState("");
-  const [city, setCity] = useState("");
-  const [stateOrTerritory, setStateOrTerritory] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [previewUrl, setPreviewUrl] = useState("");
-  const [url1, setUrl1] = useState("");
-  const [url2, setUrl2] = useState("");
-  const [url3, setUrl3] = useState("");
-  const [url4, setUrl4] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState(randomDescription());
-  const [price, setPrice] = useState(52);
-  const [page, setPage] = useState(0);
+  const location = useLocation();
+  const initialState = location.state;
 
+  const {
+    id,
+    initialType,
+    initialPlace,
+    initialCountry,
+    initialAddress,
+    initialAddressNumber,
+    initialCity,
+    initialStateOrTerritory,
+    initialZipcode,
+    initialPreviewUrl,
+    initialUrl1,
+    initialUrl2,
+    initialUrl3,
+    initialUrl4,
+    initialName,
+    initialDescription,
+    initialPrice,
+  } = initialState ?? {};
+
+  const isUpdating = !!initialType;
+
+  const [type, setType] = useState(initialType ?? null);
+  const [place, setPlace] = useState(initialPlace ?? "An entire place");
+  const [country, setCountry] = useState(initialCountry ?? "");
+  const [address, setAddress] = useState(initialAddress ?? "");
+  const [addressNumber, setAddressNumber] = useState(
+    initialAddressNumber ?? ""
+  );
+  const [city, setCity] = useState(initialCity ?? "");
+  const [stateOrTerritory, setStateOrTerritory] = useState(
+    initialStateOrTerritory ?? ""
+  );
+  const [zipcode, setZipcode] = useState(initialZipcode ?? "");
+  const [previewUrl, setPreviewUrl] = useState(initialPreviewUrl ?? "");
+  const [url1, setUrl1] = useState(initialUrl1 ?? "");
+  const [url2, setUrl2] = useState(initialUrl2 ?? "");
+  const [url3, setUrl3] = useState(initialUrl3 ?? "");
+  const [url4, setUrl4] = useState(initialUrl4 ?? "");
+  const [name, setName] = useState(initialName ?? "");
+  const [description, setDescription] = useState(
+    initialDescription ?? randomDescription()
+  );
+  const [price, setPrice] = useState(initialPrice ?? 52);
+  const [page, setPage] = useState(0);
+  const [isAnyStateSet, setIsAnyStateSet] = useState(false);
   const dispatch = useDispatch();
 
   const dataExists =
@@ -65,49 +96,88 @@ function NewSpotForm() {
     price &&
     type;
 
+  const updateState = (setState, initialValue) => (newValue) => {
+    if (!isAnyStateSet && newValue !== initialValue) {
+      setIsAnyStateSet(true);
+    }
+    setState(newValue);
+  };
+
+  const setType1 = updateState(setType, initialType ?? null);
+  const setPlace1 = updateState(
+    setPlace,
+    initialPlace ?? "An entire place"
+  );
+  const setCountry1 = updateState(setCountry, initialCountry ?? null);
+  const setAddress1 = updateState(setAddress, initialAddress ?? "");
+  const setAddressNumber1 = updateState(
+    setAddressNumber,
+    initialAddressNumber ?? ""
+  );
+  const setCity1 = updateState(setCity, initialCity ?? "");
+  const setStateOrTerritory1 = updateState(
+    setStateOrTerritory,
+    initialStateOrTerritory ?? null
+  );
+  const setZipcode1 = updateState(setZipcode, initialZipcode ?? "");
+  const setPreviewUrl1 = updateState(
+    setPreviewUrl,
+    initialPreviewUrl ?? null
+  );
+  const setUrl11 = updateState(setUrl1, initialUrl1 ?? "");
+  const setUrl21 = updateState(setUrl2, initialUrl2 ?? "");
+  const setUrl31 = updateState(setUrl3, initialUrl3 ?? "");
+  const setUrl41 = updateState(setUrl4, initialUrl4 ?? "");
+  const setName1 = updateState(setName, initialName ?? "");
+  const setDescription1 = updateState(
+    setDescription,
+    initialDescription ?? ""
+  );
+  const setPrice1 = updateState(setPrice, initialPrice ?? 52);
+
   const pageToRender =
     page === 0 ? (
-      <TypePage type={type} setType={setType} />
+      <TypePage type={type} setType={setType1} />
     ) : page === 1 ? (
-      <PlacePage place={place} setPlace={setPlace} />
+      <PlacePage place={place} setPlace={setPlace1} />
     ) : page === 2 ? (
       <LocationPage
         country={country}
-        setCountry={setCountry}
+        setCountry={setCountry1}
         address={address}
-        setAddress={setAddress}
+        setAddress={setAddress1}
         addressNumber={addressNumber}
-        setAddressNumber={setAddressNumber}
+        setAddressNumber={setAddressNumber1}
         city={city}
-        setCity={setCity}
+        setCity={setCity1}
         stateOrTerritory={stateOrTerritory}
-        setStateOrTerritory={setStateOrTerritory}
+        setStateOrTerritory={setStateOrTerritory1}
         zipcode={zipcode}
-        setZipcode={setZipcode}
+        setZipcode={setZipcode1}
       />
     ) : page === 3 ? (
       <ImagesPage
         type={type}
         previewUrl={previewUrl}
-        setPreviewUrl={setPreviewUrl}
+        setPreviewUrl={setPreviewUrl1}
         url1={url1}
-        setUrl1={setUrl1}
+        setUrl1={setUrl11}
         url2={url2}
-        setUrl2={setUrl2}
+        setUrl2={setUrl21}
         url3={url3}
-        setUrl3={setUrl3}
+        setUrl3={setUrl31}
         url4={url4}
-        setUrl4={setUrl4}
+        setUrl4={setUrl41}
       />
     ) : page === 4 ? (
-      <TitlePage type={type} name={name} setName={setName} />
+      <TitlePage type={type} name={name} setName={setName1} />
     ) : page === 5 ? (
       <DescriptionPage
         description={description}
-        setDescription={setDescription}
+        setDescription={setDescription1}
       />
     ) : page === 6 ? (
-      <PricePage price={price} setPrice={setPrice} />
+      <PricePage price={price} setPrice={setPrice1} />
     ) : null;
 
   const handleSubmit = async (e) => {
@@ -120,24 +190,31 @@ function NewSpotForm() {
         { url: url3 },
         { url: url4 },
       ];
+      const spotData = {
+        address,
+        addressNumber,
+        city,
+        state: stateOrTerritory,
+        country,
+        name,
+        description,
+        place,
+        price,
+        type,
+        zipcode,
+      };
 
-      const spotId = await dispatch(
-        createNewSpot(
-          {
-            address: `${address} ${addressNumber ?? ""} ${zipcode}`,
-            city,
-            state: stateOrTerritory,
-            country,
-            name,
-            description,
-            place,
-            price,
-            type,
-          },
-          imageData
-        )
-      );
-      if (spotId) history.push(`/spots/${spotId}`);
+      if (!isUpdating) {
+        dispatch(createNewSpot(spotData, imageData)).then((id) => {
+          console.log("dispatch: ", { id });
+
+          return history.push(`/spots/${id}`);
+        });
+      } else if (isAnyStateSet) {
+        dispatch(updateSpot(spotData, imageData, id)).then(() =>
+          history.push(`/spots/${id}`)
+        );
+      } else history.push(`/spots/${id}`);
     }
   };
 
@@ -162,6 +239,8 @@ function NewSpotForm() {
         description={description}
         price={price}
         handleSubmit={handleSubmit}
+        isUpdating={isUpdating}
+        isAnyStateSet={isAnyStateSet}
       />
     </div>
   );

@@ -14,6 +14,8 @@ function PageButtons({
   name,
   description,
   handleSubmit,
+  isUpdating,
+  isAnyStateSet,
 }) {
   const nextPage = () => {
     if (page === 0 && type) {
@@ -48,10 +50,16 @@ function PageButtons({
     }
   };
 
+  const finishButtonText = isUpdating
+    ? isAnyStateSet
+      ? "Update"
+      : "Cancel"
+    : "Publish";
+
   const buttonRight =
     page === 6 ? (
       <button onClick={handleSubmit} className="spot-button">
-        Publish
+        {finishButtonText}
       </button>
     ) : (
       <button className="page-buttons next" onClick={nextPage}>
