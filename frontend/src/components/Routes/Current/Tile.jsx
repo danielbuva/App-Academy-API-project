@@ -6,18 +6,19 @@ import { useHistory } from "react-router-dom";
 
 function Tile({ spot }) {
   const history = useHistory();
-  console.log("tile spot: ", spot);
+
+  const handleClick = () => {
+    history.push(`/spots/${spot.id}`);
+  };
+
   const preview =
     spot.previewImages.length > 0 ? (
       <Preview images={spot.previewImages} id={spot.id} />
     ) : (
       "no preview"
     );
-  const stars = spot.rating ?? "New";
 
-  const handleClick = () => {
-    history.push(`/spots/${spot.id}`);
-  };
+  const stars = spot.rating ?? "New";
 
   const handleUpdate = () => {
     const spotProps = {
