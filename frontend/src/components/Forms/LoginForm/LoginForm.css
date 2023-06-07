@@ -48,6 +48,10 @@ form {
   cursor: pointer;
 }
 
+.spot-button:disabled {
+  cursor: not-allowed;
+}
+
 #demo {
   height: 40px;
   border-radius: 6px;

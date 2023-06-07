@@ -51,6 +51,14 @@ function SignupForm() {
       });
   };
 
+  const disabled =
+    !email ||
+    !username ||
+    !firstName ||
+    !lastName ||
+    !password ||
+    !confirmPassword;
+
   return (
     <form onSubmit={handleSubmit}>
       <h2 id="welcome">Welcome to ycshiyp</h2>
@@ -109,7 +117,7 @@ function SignupForm() {
         placeholder="Confirm password"
       />
       <FormError errors={errors} />
-      <button type="submit" className="spot-button">
+      <button type="submit" className="spot-button" disabled={disabled}>
         Continue
       </button>
     </form>
