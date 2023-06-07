@@ -52,15 +52,24 @@ function PageButtons({
     }
   };
 
+  const buttonRight =
+    page === 6 ? (
+      <button onClick={handleSubmit} className="spot-button">
+        Publish
+      </button>
+    ) : (
+      <button className="page-buttons next" onClick={nextPage}>
+        Next
+      </button>
+    );
+
   return (
     <div id="page-buttons">
       <button className="page-buttons back" onClick={prevPage}>
         Back
       </button>
-      <button onClick={handleSubmit}>submit</button>
-      <button className="page-buttons next" onClick={nextPage}>
-        Next
-      </button>
+
+      {buttonRight}
     </div>
   );
 }
