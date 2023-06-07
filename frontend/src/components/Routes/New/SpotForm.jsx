@@ -27,7 +27,7 @@ function randomDescription() {
   return descriptions[Math.floor(Math.random() * descriptions.length)];
 }
 
-function NewSpotForm() {
+function SpotForm() {
   const user = useSessionUser();
   const history = useHistory();
   if (!user) history.push(`/`);
@@ -205,11 +205,9 @@ function NewSpotForm() {
       };
 
       if (!isUpdating) {
-        dispatch(createNewSpot(spotData, imageData)).then((id) => {
-          console.log("dispatch: ", { id });
-
-          return history.push(`/spots/${id}`);
-        });
+        dispatch(createNewSpot(spotData, imageData)).then((id) =>
+          history.push(`/spots/${id}`)
+        );
       } else if (isAnyStateSet) {
         dispatch(updateSpot(spotData, imageData, id)).then(() =>
           history.push(`/spots/${id}`)
@@ -246,4 +244,4 @@ function NewSpotForm() {
   );
 }
 
-export default NewSpotForm;
+export default SpotForm;
