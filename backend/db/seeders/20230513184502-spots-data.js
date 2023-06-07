@@ -116,7 +116,9 @@ module.exports = {
         lng: spots[i].lng,
         name: spots[i].name,
         description: spots[i].description,
+        place: spots[i].place,
         price: spots[i].price,
+        type: spots[i].type,
       });
     }
   },
