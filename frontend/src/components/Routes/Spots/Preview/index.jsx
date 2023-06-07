@@ -7,7 +7,7 @@ import "./Preview.css";
 import { useHistory } from "react-router-dom";
 
 function Preview({ images, id }) {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(images.length - 1);
   const [leftOpacity, setLeftOpacity] = useState(0);
   const [rightOpacity, setRightOpacity] = useState(0);
   const history = useHistory();
@@ -26,7 +26,7 @@ function Preview({ images, id }) {
     setLeftOpacity(0);
     setRightOpacity(0);
   };
-  const pageRight = (e) => {
+  const pageLeft = (e) => {
     e.stopPropagation();
     if (page < images.length - 1) {
       setPage(page + 1);
@@ -36,7 +36,7 @@ function Preview({ images, id }) {
     }
     setLeftOpacity(0.8);
   };
-  const pageLeft = (e) => {
+  const pageRight = (e) => {
     e.stopPropagation();
     if (page > 0) {
       setPage(page - 1);
@@ -61,14 +61,14 @@ function Preview({ images, id }) {
       <button
         onClick={pageLeft}
         className="page-button left"
-        style={{ opacity: leftOpacity }}
+        style={{ opacity: rightOpacity }}
       >
         <ChevronLeft />
       </button>
       <button
         onClick={pageRight}
         className="page-button right"
-        style={{ opacity: rightOpacity }}
+        style={{ opacity: leftOpacity }}
       >
         <ChevronRight />
       </button>
