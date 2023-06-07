@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { createNewSpot } from "../../../store/spots";
 
 import TypePage from "./Pages/TypePage";
 import PlacePage from "./Pages/PlacePage";
@@ -7,9 +10,9 @@ import ImagesPage from "./Pages/ImagesPage";
 import TitlePage from "./Pages/TitlePage";
 import DescriptionPage from "./Pages/DescriptionPage/index.jsx";
 import PageButtons from "./PageButtons";
+import PricePage from "./Pages/PricePage";
 
 import "./NewSpot.css";
-import PricePage from "./Pages/PricePage";
 
 function randomDescription() {
   const descriptions = [
@@ -40,49 +43,114 @@ function NewSpotForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState(randomDescription());
   const [price, setPrice] = useState(52);
+  const [page, setPage] = useState(0);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const dataExists =
+    address &&
+    zipcode &&
+    city &&
+    stateOrTerritory &&
+    country &&
+    name &&
+    description &&
+    place &&
+    price &&
+    type;
+
+  const pageToRender =
+    page === 0 ? (
+      <TypePage type={type} setType={setType} />
+    ) : page === 1 ? (
+      <PlacePage place={place} setPlace={setPlace} />
+    ) : page === 2 ? (
+      <LocationPage
+        country={country}
+        setCountry={setCountry}
+        address={address}
+        setAddress={setAddress}
+        addressNumber={addressNumber}
+        setAddressNumber={setAddressNumber}
+        city={city}
+        setCity={setCity}
+        stateOrTerritory={stateOrTerritory}
+        setStateOrTerritory={setStateOrTerritory}
+        zipcode={zipcode}
+        setZipcode={setZipcode}
+      />
+    ) : page === 3 ? (
+      <ImagesPage
+        type={type}
+        previewUrl={previewUrl}
+        setPreviewUrl={setPreviewUrl}
+        url1={url1}
+        setUrl1={setUrl1}
+        url2={url2}
+        setUrl2={setUrl2}
+        url3={url3}
+        setUrl3={setUrl3}
+        url4={url4}
+        setUrl4={setUrl4}
+      />
+    ) : page === 4 ? (
+      <TitlePage type={type} name={name} setName={setName} />
+    ) : page === 5 ? (
+      <DescriptionPage
+        description={description}
+        setDescription={setDescription}
+      />
+    ) : page === 6 ? (
+      <PricePage price={price} setPrice={setPrice} />
+    ) : null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (dataExists) {
+      const spot = await dispatch(
+        createNewSpot({
+          address: `${address} ${addressNumber ?? ""} ${zipcode}`,
+          city,
+          state: stateOrTerritory,
+          country,
+          name,
+          description,
+          place,
+          price,
+          type,
+        })
+      );
+      if (spot) history.push(`/spots/${spot.id}`);
+    }
+  };
 
   return (
     <div id="new-spot-form">
       <div id="page-layout">
-        <div id="pages">
-          <TypePage type={type} setType={setType} />
-          <PlacePage place={place} setPlace={setPlace} />
-          <LocationPage
-            country={country}
-            setCountry={setCountry}
-            address={address}
-            setAddress={setAddress}
-            addressNumber={addressNumber}
-            setAddressNumber={setAddressNumber}
-            city={city}
-            setCity={setCity}
-            stateOrTerritory={stateOrTerritory}
-            setStateOrTerritory={setStateOrTerritory}
-            zipcode={zipcode}
-            setZipcode={setZipcode}
-          />
-          <ImagesPage
-            type={type}
-            previewUrl={previewUrl}
-            setPreviewUrl={setPreviewUrl}
-            url1={url1}
-            setUrl1={setUrl1}
-            url2={url2}
-            setUrl2={setUrl2}
-            url3={url3}
-            setUrl3={setUrl3}
-            url4={url4}
-            setUrl4={setUrl4}
-          />
-          <TitlePage type={type} name={name} setName={setName} />
-          <DescriptionPage
-            description={description}
-            setDescription={setDescription}
-          />
-          <PricePage price={price} setPrice={setPrice} />
-        </div>
+        <div id="pages">{pageToRender}</div>
       </div>
-      <PageButtons />
+      <PageButtons
+        page={page}
+        setPage={setPage}
+        type={type}
+        place={place}
+        country={country}
+        address={address}
+        addressNumber={addressNumber}
+        city={city}
+        stateOrTerritory={stateOrTerritory}
+        zipcode={zipcode}
+        previewUrl={previewUrl}
+        url1={url1}
+        url2={url2}
+        url3={url3}
+        url4={url4}
+        name={name}
+        description={description}
+        price={price}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 }

@@ -15,7 +15,7 @@ function PlacePage({ place, setPlace }) {
       <PlaceButton
         place={place}
         setPlace={setPlace}
-        main="An Entire place"
+        main="An entire place"
         sub="Guests have the whole place to themselves."
         icon={<img src={House} alt={House} />}
       />
