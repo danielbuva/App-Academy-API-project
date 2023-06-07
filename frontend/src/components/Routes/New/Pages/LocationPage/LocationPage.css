@@ -1,0 +1,10 @@
+#location-page {
+  width: 100%;
+}
+
+#location-form {
+  display: flex;
+  flex-direction: column;
+  width: 98%;
+  padding: 0;
+}
