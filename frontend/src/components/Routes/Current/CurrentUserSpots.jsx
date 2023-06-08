@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getAllCurrentUsersSpots } from "../../../store/spots";
 
+import House from "./House.svg";
+
 import Tile from "./Tile";
+
+import "./CurrentUserSpots.css";
 
 function CurrentUserSpots() {
   const dispatch = useDispatch();
@@ -16,12 +20,20 @@ function CurrentUserSpots() {
   if (!spots) return null;
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <p>Manage your spots</p>
+    <div id="current-spots-page">
+      <p id="spots-header">Manage your spots</p>
       {spots.length === 0 ? (
-        <NavLink exact to="/spots/new" id="new-spot">
-          Create a New Spot
-        </NavLink>
+        <div id="create-new-listing-box">
+          <img src={House} alt="house" id="house-icon" />
+          <p id="create-new-spot-header">Create a New Spot</p>
+          <p style={{ marginTop: 0 }}>
+            You don’t have any spots on ycshiyp right now. Create a new
+            spot to start getting bookings.
+          </p>
+          <NavLink exact to="/spots/new" id="new-spot-page-link">
+            Create a New Spot
+          </NavLink>
+        </div>
       ) : (
         <div
           style={{

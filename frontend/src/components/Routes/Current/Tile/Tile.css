@@ -1,0 +1,35 @@
+#manage-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  gap: 20px;
+  align-items: center;
+}
+
+#update-button {
+  width: 30%;
+  height: 30px;
+  border-radius: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+}
+
+#update-button:hover {
+  text-decoration: underline;
+  background-color: #e3e3e3;
+}
+
+#delete-button {
+  width: 30%;
+  border-radius: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: solid 1px #ababab;
+}
+#delete-button:hover {
+  border: solid 1px #000;
+}

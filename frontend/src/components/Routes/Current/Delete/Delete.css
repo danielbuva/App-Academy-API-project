@@ -1,0 +1,19 @@
+#delete-content {
+  padding-bottom: 40px;
+}
+
+#delete-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+#no-option {
+  border-radius: 8px;
+  border: solid 1px #ababab;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+#no-option:hover {
+  background-color: #f7f7f7;
+}
