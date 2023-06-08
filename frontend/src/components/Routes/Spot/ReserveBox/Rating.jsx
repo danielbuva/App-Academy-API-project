@@ -40,7 +40,15 @@ function Rating({ size = 0 }) {
       {reviews}
     </div>
   ) : (
-    <div style={{ display: "flex" }}>
+    <div
+      style={{
+        alignItems: "center",
+        display: "flex",
+        gap: "10px",
+        marginBottom: "10px",
+        marginTop: "10px",
+      }}
+    >
       <img
         src={Star}
         alt="star"
