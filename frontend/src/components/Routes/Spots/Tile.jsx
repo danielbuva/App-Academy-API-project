@@ -42,7 +42,7 @@ function Tile({ images, location, rating, price, id, name }) {
               alt="star"
               style={{ width: "12px", marginRight: "5px" }}
             />
-            <p>{stars}</p>
+            <p>{stars.toFixed(2)}</p>
           </div>
         </div>
         <p>

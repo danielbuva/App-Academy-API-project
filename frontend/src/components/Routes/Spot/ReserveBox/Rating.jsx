@@ -10,7 +10,7 @@ function Rating({ size = 0 }) {
   const reviews =
     spot.numReviews && spot.numReviews > 0 ? (
       <p>
-        {spot.avgStarRating} ·{" "}
+        {spot.avgStarRating.toFixed(2)} ·{" "}
         <span style={{ color: "#797979" }}>
           {spot.numReviews} {text}
         </span>
@@ -21,7 +21,7 @@ function Rating({ size = 0 }) {
   const reviews1 =
     spot.numReviews && spot.numReviews > 0 ? (
       <p style={{ fontSize: "20px" }}>
-        {spot.avgStarRating} ·{" "}
+        {spot.avgStarRating.toFixed(2)} ·{" "}
         <span style={{ color: "#797979" }}>
           {spot.numReviews} {text}
         </span>
