@@ -20,7 +20,7 @@
 .text {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   width: 400px;
   text-align: left;
 }
