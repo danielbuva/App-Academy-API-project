@@ -6,6 +6,8 @@ import OpenModalButton from "../../Modal/OpenModalButton";
 import { useHistory } from "react-router-dom";
 import Delete from "./Delete";
 
+import "./Tile.css";
+
 function Tile({ spot }) {
   const history = useHistory();
 
@@ -89,7 +91,9 @@ function Tile({ spot }) {
         </div>
       </Tooltip>
       <div style={{ display: "flex", width: "100%" }}>
-        <button onClick={handleUpdate}>update</button>
+        <button onClick={handleUpdate} id="update-button">
+          update
+        </button>
         <OpenModalButton
           text="Delete"
           title="Confirm Delete"
