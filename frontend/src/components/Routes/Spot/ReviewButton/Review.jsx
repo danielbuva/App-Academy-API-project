@@ -29,8 +29,13 @@ function Review({ id }) {
         value={review}
         onChange={(e) => setReview(e.target.value)}
       />
+
       <Stars stars={stars} setStars={setStars} />
-      <button className="spot-button" onClick={handleClick}>
+      <button
+        className="spot-button"
+        onClick={handleClick}
+        disabled={review.length < 10 || stars === 0}
+      >
         Submit your review
       </button>
     </div>

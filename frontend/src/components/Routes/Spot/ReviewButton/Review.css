@@ -40,3 +40,7 @@
   padding-bottom: 14px;
   padding-top: 14px;
 }
+
+.spot-button:disabled {
+  cursor: not-allowed;
+}
