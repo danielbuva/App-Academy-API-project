@@ -6,8 +6,7 @@ function Rating({ size = 0 }) {
   if (!spot) return null;
 
   const avgStars = spot.avgStarRating.toFixed(2);
-  const rating =
-    avgStars[avgStars.length - 1] === "0" ? avgStars[0] : avgStars;
+  const rating = avgStars.endsWith("0") ? avgStars.slice(0, -1) : avgStars;
 
   const text = spot.numReviews > 1 ? "reviews" : "review";
 
