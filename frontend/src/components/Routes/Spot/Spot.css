@@ -26,3 +26,41 @@
   height: 276px;
   object-fit: cover;
 }
+
+#reviews {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.review {
+  border: solid #f7f7f7;
+  border-radius: 12px;
+  margin-top: 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  grid-column: span 2;
+  background-color: #f7f7f7;
+  height: 150px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 10px;
+
+  @media (max-width: 768px) {
+    grid-column: span 1;
+  }
+}
+
+.review ::-webkit-scrollbar {
+  display: none;
+}
