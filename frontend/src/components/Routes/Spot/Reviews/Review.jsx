@@ -22,9 +22,11 @@ function Review({ date, id, name, review, spotId, stars, userId }) {
   return (
     <div className="review">
       <div className="review-content">
-        <div>
-          <p style={{ fontWeight: 600, marginBottom: 0 }}>{name}</p>
-          <p style={{ marginTop: 0 }}> {monthYear}</p>
+        <div id="review-header">
+          <div>
+            <p style={{ fontWeight: 600, marginBottom: 0 }}>{name}</p>
+            <p style={{ marginTop: 0 }}> {monthYear}</p>
+          </div>
           {isReviewOwner && (
             <EditReviewButton
               onClick={editButtonClick}
@@ -33,7 +35,7 @@ function Review({ date, id, name, review, spotId, stars, userId }) {
             />
           )}
         </div>
-        <p>{review}</p>
+        <p className="review-text">{review}</p>
       </div>
     </div>
   );

@@ -55,6 +55,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 10px;
+  word-wrap: break-word;
 
   @media (max-width: 768px) {
     grid-column: span 1;
@@ -63,4 +64,29 @@
 
 .review ::-webkit-scrollbar {
   display: none;
+}
+
+#review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#review-edit-button {
+  border: solid #f7f7f7;
+  width: 100px;
+  height: fit-content;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.review-text {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
