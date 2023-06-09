@@ -98,19 +98,19 @@ const initialState = { allSpots: [], spot: {} };
 const spotReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_SPOTS:
-      return { allSpots: action.payload, ...state.spot };
+      return { allSpots: action.payload, spot: state.spot };
     case GET_SPOT:
-      return { ...state.allSpots, spot: action.payload };
+      return { allSpots: state.allSpots, spot: action.payload };
     case DELETE_SPOT:
       return {
         allSpots: state.allSpots.filter(
           (spot) => spot.id !== action.payload
         ),
-        ...state.spot,
+        spot: state.spot,
       };
     case UPDATE_REVIEWS:
       return {
-        ...state.allSpots,
+        allSpots: state.allSpots,
         spot: {
           ...state.spot,
           numReviews: state.spot.numReviews + 1,
