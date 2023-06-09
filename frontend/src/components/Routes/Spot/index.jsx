@@ -12,6 +12,7 @@ import useSpot from "../../../hooks/useSpot";
 import "./Spot.css";
 import Rating from "./ReserveBox/Rating";
 import ReviewButton from "./ReviewButton";
+import Reviews from "./Reviews";
 
 function Spot() {
   const { id } = useParams();
@@ -49,6 +50,7 @@ function Spot() {
       <Divider marginTop="40px" />
       <Rating size={1} />
       <ReviewButton />
+      <Reviews />
     </div>
   );
 }
