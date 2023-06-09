@@ -8,7 +8,7 @@ function Tile({ images, location, rating, price, id, name }) {
   const history = useHistory();
   const preview =
     images.length > 0 ? <Preview images={images} id={id} /> : "no preview";
-  const stars = rating ?? "New";
+  const stars = rating?.toFixed(2) ?? "New";
 
   const handleClick = () => {
     history.push(`/spots/${id}`);
@@ -42,7 +42,7 @@ function Tile({ images, location, rating, price, id, name }) {
               alt="star"
               style={{ width: "12px", marginRight: "5px" }}
             />
-            <p>{stars.toFixed(2)}</p>
+            <p>{stars}</p>
           </div>
         </div>
         <p>
