@@ -1,8 +1,10 @@
 import LocationForm from "./LocationForm";
+import FormError from "../../../../Forms/FormError";
 
 import "./LocationPage.css";
 
 function LocationPage({
+  errors,
   country,
   setCountry,
   address,
@@ -16,6 +18,7 @@ function LocationPage({
   zipcode,
   setZipcode,
 }) {
+  console.log({ errors });
   return (
     <div id="location-page">
       <p style={{ fontSize: "30px", fontWeight: 500 }}>
@@ -39,6 +42,7 @@ function LocationPage({
         zipcode={zipcode}
         setZipcode={setZipcode}
       />
+      <FormError errors={errors} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
+import FormError from "../../../../Forms/FormError";
 import "./DescriptionPage.css";
 
-function DescriptionPage({ description, setDescription }) {
+function DescriptionPage({ errors, description, setDescription }) {
   const counter = `${description.length} / 500`;
   const color = description.length >= 500 ? "#ff0000" : "#000";
 
@@ -17,6 +18,7 @@ function DescriptionPage({ description, setDescription }) {
         style={{ height: "250px" }}
       />
       <p style={{ color }}>{counter}</p>
+      <FormError errors={errors} />
     </div>
   );
 }

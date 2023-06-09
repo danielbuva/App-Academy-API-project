@@ -5,7 +5,9 @@ import Plus from "./icons/Plus.svg";
 
 function PricePage({ price, setPrice }) {
   const incrementPrice = () => {
-    if (price <= 9995) {
+    if (price < 10) {
+      setPrice(10);
+    } else if (price <= 9995) {
       setPrice(price + 5);
     } else if (price > 9995) {
       setPrice(10000);
@@ -13,7 +15,9 @@ function PricePage({ price, setPrice }) {
   };
 
   const decrementPrice = () => {
-    if (price >= 15) {
+    if (price > 10000) {
+      setPrice(10000);
+    } else if (price >= 15) {
       setPrice(price - 5);
     } else if (price > 10) {
       setPrice(10);

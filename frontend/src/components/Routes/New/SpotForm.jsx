@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { createNewSpot, updateSpot } from "../../../store/spots";
-import useSessionUser from "../../../hooks/useSessionUser";
 
 import TypePage from "./Pages/TypePage";
 import PlacePage from "./Pages/PlacePage";
@@ -28,9 +27,7 @@ function randomDescription() {
 }
 
 function SpotForm() {
-  const user = useSessionUser();
   const history = useHistory();
-  if (!user) history.push(`/`);
 
   const location = useLocation();
   const initialState = location.state;
@@ -81,6 +78,7 @@ function SpotForm() {
   const [price, setPrice] = useState(initialPrice ?? 52);
   const [page, setPage] = useState(0);
   const [isAnyStateSet, setIsAnyStateSet] = useState(false);
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
 
   const dataExists =
@@ -142,6 +140,7 @@ function SpotForm() {
       <PlacePage place={place} setPlace={setPlace1} />
     ) : page === 2 ? (
       <LocationPage
+        errors={errors}
         country={country}
         setCountry={setCountry1}
         address={address}
@@ -157,6 +156,8 @@ function SpotForm() {
       />
     ) : page === 3 ? (
       <ImagesPage
+        errors={errors}
+        setErrors={setErrors}
         type={type}
         previewUrl={previewUrl}
         setPreviewUrl={setPreviewUrl1}
@@ -170,9 +171,15 @@ function SpotForm() {
         setUrl4={setUrl41}
       />
     ) : page === 4 ? (
-      <TitlePage type={type} name={name} setName={setName1} />
+      <TitlePage
+        type={type}
+        name={name}
+        setName={setName1}
+        errors={errors}
+      />
     ) : page === 5 ? (
       <DescriptionPage
+        errors={errors}
         description={description}
         setDescription={setDescription1}
       />
@@ -182,7 +189,10 @@ function SpotForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (dataExists) {
+    if (price && (price < 10 || price > 10000)) {
+      setErrors({ price: "Price must be between $10 and $10,000" });
+    }
+    if (dataExists && (price > 10 || price < 10000)) {
       const imageData = [
         { url: previewUrl },
         { url: url1 },
@@ -239,6 +249,11 @@ function SpotForm() {
         handleSubmit={handleSubmit}
         isUpdating={isUpdating}
         isAnyStateSet={isAnyStateSet}
+        setErrors={setErrors}
+        url1={url1}
+        url2={url2}
+        url3={url3}
+        url4={url4}
       />
     </div>
   );

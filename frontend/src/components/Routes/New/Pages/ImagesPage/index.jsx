@@ -1,3 +1,5 @@
+import FormError from "../../../../Forms/FormError";
+
 function ImagesPage({
   type,
   previewUrl,
@@ -10,6 +12,7 @@ function ImagesPage({
   setUrl3,
   url4,
   setUrl4,
+  errors,
 }) {
   if (!type || typeof type !== "string") return null;
   return (
@@ -25,7 +28,7 @@ function ImagesPage({
       <input
         id="preview-url"
         className="top-input"
-        type="text"
+        type="url"
         value={previewUrl}
         onChange={(e) => setPreviewUrl(e.target.value)}
         required
@@ -35,7 +38,7 @@ function ImagesPage({
       <input
         id="url-one"
         className="middle-input"
-        type="text"
+        type="url"
         value={url1}
         onChange={(e) => setUrl1(e.target.value)}
         required
@@ -45,7 +48,7 @@ function ImagesPage({
       <input
         id="url-two"
         className="middle-input"
-        type="text"
+        type="url"
         value={url2}
         onChange={(e) => setUrl2(e.target.value)}
         required
@@ -55,7 +58,7 @@ function ImagesPage({
       <input
         id="url-three"
         className="middle-input"
-        type="text"
+        type="url"
         value={url3}
         onChange={(e) => setUrl3(e.target.value)}
         required
@@ -65,12 +68,13 @@ function ImagesPage({
       <input
         id="url-four"
         className="bottom-input"
-        type="text"
+        type="url"
         value={url4}
         onChange={(e) => setUrl4(e.target.value)}
         required
         placeholder="Image url four"
       />
+      <FormError errors={errors} />
     </div>
   );
 }

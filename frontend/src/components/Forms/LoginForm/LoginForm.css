@@ -50,6 +50,7 @@ form {
 
 .spot-button:disabled {
   cursor: not-allowed;
+  background: #3c1010;
 }
 
 #demo {

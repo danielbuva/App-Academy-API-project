@@ -1,10 +1,11 @@
+import FormError from "../../../../Forms/FormError";
 import "./TitlePage.css";
 
-function TitlePage({ type, name, setName }) {
+function TitlePage({ errors, type, name, setName }) {
   if (!type || typeof type !== "string") return null;
 
-  const counter = `${name.length} / 32`;
-  const color = name.length >= 33 ? "#ff0000" : "#000";
+  const counter = `${name.length} / 50`;
+  const color = name.length >= 51 ? "#ff0000" : "#000";
   return (
     <div id="title-page">
       <p style={{ fontSize: "30px", fontWeight: 500 }}>
@@ -21,6 +22,7 @@ function TitlePage({ type, name, setName }) {
         id="name-input"
       />
       <p style={{ color }}>{counter}</p>
+      <FormError errors={errors} />
     </div>
   );
 }
