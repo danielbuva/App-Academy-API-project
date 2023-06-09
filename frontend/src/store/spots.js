@@ -50,9 +50,7 @@ export const updateSpot =
     const data = await (
       await csrfFetch(`/api/spots/${id}`, {
         method: "PUT",
-        body: JSON.stringify({
-          ...formData,
-        }),
+        body: JSON.stringify(formData),
       })
     ).json();
 
