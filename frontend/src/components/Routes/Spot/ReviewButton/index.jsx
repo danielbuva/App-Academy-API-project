@@ -18,6 +18,7 @@ function ReviewButton({ id }) {
       : "Be the first to post a review!";
   return (
     <OpenModalButton
+      id="review-button"
       text={text}
       title="How was your stay?"
       content={<Review id={id} />}
