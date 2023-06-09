@@ -8,7 +8,6 @@ function Delete({ id }) {
   const { closeModal } = useModalContext();
   const dispatch = useDispatch();
   const handleDelete = () => {
-    console.log("clicking");
     dispatch(deleteSpot(id));
     closeModal();
   };

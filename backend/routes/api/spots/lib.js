@@ -106,7 +106,6 @@ const getAvgReviewsBySpotId = (async = async (req, res) => {
     //   attributes: [[fn('avg', col('stars')), 'avgStarRating']],
     //   where: { spotId: req.params.spotId },
     // });
-    console.log("RATING: ", { rating });
     res.json({ avgStarRating: parseFloat(rating[0].avg.toFixed(2)) });
   } catch (err) {
     returnError(err, res);

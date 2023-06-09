@@ -18,8 +18,6 @@ function Reviews() {
 
   if (!reviews) return null;
 
-  console.log({ reviews });
-
   return (
     <div id="reviews">
       {reviews
