@@ -1,9 +1,18 @@
 import useSessionUser from "../../../../hooks/useSessionUser";
 
-function ReviewButton() {
+import OpenModalButton from "../../../Modal/OpenModalButton";
+import Review from "./Review";
+
+function ReviewButton({ id }) {
   const user = useSessionUser();
   if (!user) return null;
-  return <button>Post your review</button>;
+  return (
+    <OpenModalButton
+      text="Post a review"
+      title="How was your stay?"
+      content={<Review id={id} />}
+    />
+  );
 }
 
 export default ReviewButton;

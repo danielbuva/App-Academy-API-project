@@ -49,7 +49,7 @@ function Spot() {
       </div>
       <Divider marginTop="40px" />
       <Rating size={1} />
-      <ReviewButton />
+      <ReviewButton id={id} />
       <Reviews />
     </div>
   );
