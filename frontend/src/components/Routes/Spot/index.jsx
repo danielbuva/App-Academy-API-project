@@ -13,11 +13,13 @@ import "./Spot.css";
 import Rating from "./ReserveBox/Rating";
 import ReviewButton from "./ReviewButton";
 import Reviews from "./Reviews";
+import useSessionUser from "../../../hooks/useSessionUser";
 
 function Spot() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const spot = useSpot();
+  const user = useSessionUser();
 
   useEffect(() => {
     dispatch(getSpot(id));
@@ -49,7 +51,7 @@ function Spot() {
       </div>
       <Divider marginTop="40px" />
       <Rating size={1} />
-      <ReviewButton id={id} />
+      {spot.Owner.id !== user.id && <ReviewButton id={id} />}
       <Reviews />
     </div>
   );
