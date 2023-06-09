@@ -56,3 +56,53 @@
 #review-button:hover {
   background-color: #f7f7f7;
 }
+
+#review-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#delete-review-button {
+  border: solid 1px #f7f7f7;
+  border-radius: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+#delete-review-button:hover {
+  text-decoration: underline;
+  border: solid 1px #ccc;
+}
+
+#confirm-delete-review {
+  border: solid 1px #ccc;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 200px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  gap: 10px;
+}
+
+#confirm-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#confirm-no {
+  height: 50px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+#confirm-no:hover {
+  cursor: pointer;
+  border: solid 1px #ccc;
+}
