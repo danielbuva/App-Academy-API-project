@@ -28,9 +28,13 @@ function Reviews() {
         .map((r) => (
           <Review
             key={r.id}
+            id={r.id}
             name={r.User.firstName}
             date={r.updatedAt}
             review={r.review}
+            spotId={r.spotId ?? id}
+            stars={r.stars}
+            userId={r.User.id}
           />
         ))}
     </div>

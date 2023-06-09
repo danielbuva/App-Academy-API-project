@@ -3,15 +3,45 @@ import { csrfFetch } from "./csrf";
 const GET_ALL_SPOTS = "spot/getAllSpots";
 const GET_SPOT = "spot/getSpot";
 const DELETE_SPOT = "spot/deleteSpot";
-const UPDATE_REVIEWS = "spot/updateReviews";
+const ADD_REVIEWS = "spot/addStarsAndNumReviews";
+const UPDATE_REVIEWS = "spot/updateStarsAndNumReviews";
+const DELETE_REVIEW = "spot/deleteStarsAndNumReviews";
 
 const setSpots = (spots) => ({ type: GET_ALL_SPOTS, payload: spots });
 const setSpot = (spot) => ({ type: GET_SPOT, payload: spot });
 const removeSpot = (id) => ({ type: DELETE_SPOT, payload: id });
-export const updateReviews = (stars) => ({
+const setStarsAndNumReviews = (avgStars) => ({
   type: UPDATE_REVIEWS,
-  payload: stars,
+  payload: avgStars,
 });
+const revertStarsAndNumReviews = (avgStars) => ({
+  type: DELETE_REVIEW,
+  payload: avgStars,
+});
+
+export const addStarsAndNumReviews = (avgStars) => ({
+  type: ADD_REVIEWS,
+  payload: avgStars,
+});
+
+export const updateStarsAndNumReviews = (id) => async (dispatch) => {
+  const data = await (
+    await csrfFetch(`/api/spots/${id}/avgreviews`)
+  ).json();
+
+  if (data && data.avgStarRating) {
+    dispatch(setStarsAndNumReviews(data.avgStarRating));
+  }
+};
+
+export const deleteStarsAndNumReviews = (id) => async (dispatch) => {
+  const data = await (
+    await csrfFetch(`/api/spots/${id}/avgreviews`)
+  ).json();
+  if (data && data.avgStarRating) {
+    dispatch(revertStarsAndNumReviews(data.avgStarRating));
+  }
+};
 
 export const getAllSpots = () => async (dispatch) => {
   const res = await csrfFetch("/api/spots");
@@ -108,16 +138,30 @@ const spotReducer = (state = initialState, action) => {
         ),
         spot: state.spot,
       };
+    case ADD_REVIEWS:
+      return {
+        allSpots: state.allSpots,
+        spot: {
+          ...state.spot,
+          avgStarRating: action.payload,
+          numReviews: state.spot.numReviews + 1,
+        },
+      };
     case UPDATE_REVIEWS:
       return {
         allSpots: state.allSpots,
         spot: {
           ...state.spot,
-          numReviews: state.spot.numReviews + 1,
-          avgStarRating:
-            state.spot.avgStarRating !== 0
-              ? (state.spot.avgStarRating + action.payload) / 2
-              : action.payload,
+          avgStarRating: action.payload,
+        },
+      };
+    case DELETE_REVIEW:
+      return {
+        allSpots: state.allSpots,
+        spot: {
+          ...state.spot,
+          avgStarRating: action.payload,
+          numReviews: state.spot.numReviews - 1,
         },
       };
     default:

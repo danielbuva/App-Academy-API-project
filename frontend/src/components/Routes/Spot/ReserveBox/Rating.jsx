@@ -5,15 +5,12 @@ function Rating({ size = 0 }) {
   const spot = useSpot();
   if (!spot) return null;
 
-  const avgStars = spot.avgStarRating.toFixed(2);
-  const rating = avgStars.endsWith("0") ? avgStars.slice(0, -1) : avgStars;
-
   const text = spot.numReviews > 1 ? "reviews" : "review";
 
   const reviews =
     spot.numReviews && spot.numReviews > 0 ? (
       <p>
-        {rating} ·{" "}
+        {spot.avgStarRating} ·{" "}
         <span style={{ color: "#797979" }}>
           {spot.numReviews} {text}
         </span>
@@ -24,7 +21,7 @@ function Rating({ size = 0 }) {
   const reviews1 =
     spot.numReviews && spot.numReviews > 0 ? (
       <p style={{ fontSize: "20px" }}>
-        {rating} ·{" "}
+        {spot.avgStarRating} ·{" "}
         <span style={{ color: "#797979" }}>
           {spot.numReviews} {text}
         </span>
