@@ -22,14 +22,17 @@ function Reviews() {
 
   return (
     <div>
-      {reviews.map((r) => (
-        <Review
-          key={r.id}
-          name={r.User.firstName}
-          date={r.updatedAt}
-          review={r.review}
-        />
-      ))}
+      {reviews
+        .slice()
+        .reverse()
+        .map((r) => (
+          <Review
+            key={r.id}
+            name={r.User.firstName}
+            date={r.updatedAt}
+            review={r.review}
+          />
+        ))}
     </div>
   );
 }
