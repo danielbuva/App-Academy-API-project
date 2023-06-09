@@ -103,10 +103,10 @@ const spotReducer = (state = initialState, action) => {
       return { ...state.allSpots, spot: action.payload };
     case DELETE_SPOT:
       return {
-        ...state,
         allSpots: state.allSpots.filter(
           (spot) => spot.id !== action.payload
         ),
+        ...state.spot,
       };
     case UPDATE_REVIEWS:
       return {
