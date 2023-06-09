@@ -6,6 +6,7 @@ router.put("/", spotId.editSpot);
 router.delete("/", spotId.deleteSpot);
 
 router.get("/reviews", spotId.getReview);
+router.get("/avgreviews", spotId.getAvgReviewsBySpotId);
 router.post("/reviews", spotId.createReview);
 
 router.get("/bookings", spotId.getBooking);

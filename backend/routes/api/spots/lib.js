@@ -96,7 +96,24 @@ const getReview = async (req, res) => {
   }
 };
 
-const createReview = async (req, res, next) => {
+const getAvgReviewsBySpotId = (async = async (req, res) => {
+  try {
+    const rating = await Review.aggregate("stars", "avg", {
+      where: { spotId: req.params.spotId },
+      plain: false,
+    });
+    // const rating = await Review.findOne({
+    //   attributes: [[fn('avg', col('stars')), 'avgStarRating']],
+    //   where: { spotId: req.params.spotId },
+    // });
+    console.log("RATING: ", { rating });
+    res.json({ avgStarRating: parseFloat(rating[0].avg.toFixed(2)) });
+  } catch (err) {
+    returnError(err, res);
+  }
+});
+
+const createReview = async (req, res) => {
   const { review, stars } = req.body;
   const spotId = req.params.spotId;
   const userId = req.user.id;
@@ -214,11 +231,15 @@ const getSpot = async (req, res) => {
         ? reviews.reduce((sum, review) => sum + review.stars, 0) /
           numReviews
         : 0;
+    const avgStarRatingFixed = avgStarRating.toFixed(2);
+    const rating = avgStarRatingFixed.endsWith("0")
+      ? avgStarRatingFixed.slice(0, -1)
+      : avgStarRatingFixed;
 
     res.json({
       ...spot.toJSON(),
       numReviews,
-      avgStarRating,
+      avgStarRating: parseFloat(rating),
       SpotImages,
       Owner,
     });
@@ -264,7 +285,7 @@ const getAllSpots = async (req, res) => {
 
       return {
         ...spot.toJSON(),
-        avgRating,
+        avgRating: parseFloat(parseFloat(avgRating).toFixed(2)),
         previewImages,
       };
     });
@@ -341,5 +362,6 @@ module.exports = {
     getBooking: [verifyAuth, getBooking],
     getReview,
     getSpot,
+    getAvgReviewsBySpotId,
   },
 };
