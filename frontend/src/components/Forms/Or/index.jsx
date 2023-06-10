@@ -3,9 +3,9 @@ import "./Or.css";
 function Or() {
   return (
     <div id="or">
-      <div className="divider" />
+      <div className="dividers" />
       <p>or</p>
-      <div className="divider" />
+      <div className="dividers" />
     </div>
   );
 }
