@@ -51,4 +51,8 @@
     border-top: solid 1px #f7f7f7;
     height: 60px;
   }
+
+  .next {
+    margin-right: 8px;
+  }
 }
