@@ -44,7 +44,7 @@ function Spot() {
       </div>
       <Divider marginTop="40px" />
       <Rating size={1} />
-      {spot.Owner.id !== user.id && <ReviewButton id={id} />}
+      {spot.Owner.id !== user?.id && <ReviewButton id={id} />}
       <Reviews />
     </div>
   );

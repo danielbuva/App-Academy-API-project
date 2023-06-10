@@ -14,7 +14,7 @@ function Review({ date, id, name, review, spotId, stars, userId }) {
   const user = useSessionUser();
   const dispatch = useDispatch();
   const monthYear = getMonthYear(date);
-  const isReviewOwner = userId === user.id;
+  const isReviewOwner = userId === user?.id;
   const editButtonClick = () => {
     dispatch(setReview({ id, review, stars }));
   };

@@ -7,11 +7,8 @@ import Review from "./Review";
 function ReviewButton({ id }) {
   const user = useSessionUser();
   const reviews = useReviews();
-
-  const userHasReview = reviews?.find((r) => r.User.id === user.id);
-
+  const userHasReview = reviews?.find((r) => r.User?.id === user?.id);
   if (!user || userHasReview) return null;
-
   const text =
     reviews?.length > 0
       ? "Post a review"
