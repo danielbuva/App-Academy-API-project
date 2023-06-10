@@ -6,14 +6,22 @@ function Layout({ children }) {
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
-        width: "100%",
         alignItems: "center",
+        justifyContent: "space-between",
+        height: "100%",
         overflowX: "none",
       }}
     >
       <Nav />
-      {children}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "right",
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

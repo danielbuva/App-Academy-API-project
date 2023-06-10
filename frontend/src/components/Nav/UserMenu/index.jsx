@@ -20,6 +20,7 @@ function UserMenu() {
         userSelect: "none",
         display: "flex",
         alignItems: "center",
+        marginRight: "10px",
       }}
     >
       {user && <CreateANewSpot />}

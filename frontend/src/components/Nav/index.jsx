@@ -11,9 +11,11 @@ function Nav() {
     <div
       style={{
         marginBottom: "30px",
-        width: "100%",
+        width: "98vw",
         display: "flex",
         flexDirection: "column",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
         zIndex: 1,
       }}
     >
