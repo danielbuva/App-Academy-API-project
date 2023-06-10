@@ -33,7 +33,7 @@ function Spot() {
       <SpotImages />
       <div id="spot-details">
         <ReserveBox />
-        <div>
+        <div id="spot-description-title">
           <h3>
             {spot.place} in a {spot.type} hosted by {spot.Owner.firstName},{" "}
             {spot.Owner.lastName}

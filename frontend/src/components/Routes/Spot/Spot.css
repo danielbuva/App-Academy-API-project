@@ -11,6 +11,10 @@
   gap: 100px;
 }
 
+#spot-description-title {
+  width: 100%;
+}
+
 #images {
   display: flex;
   border-radius: 12px;
