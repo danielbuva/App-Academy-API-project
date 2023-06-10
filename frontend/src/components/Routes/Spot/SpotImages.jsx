@@ -7,13 +7,15 @@ function SpotImages() {
 
   if (!spot || !spot.SpotImages) return null;
 
+  const hasOneImageOnly = spot.SpotImages.length === 1;
+
   return (
     <div id="images">
       {spot.SpotImages[0] && (
         <img
           src={spot.SpotImages[0].url}
           alt={spot.SpotImages[0].url}
-          id="main-image"
+          id={hasOneImageOnly ? "preview-image" : "main-image"}
         />
       )}
       <div id="right-images">
