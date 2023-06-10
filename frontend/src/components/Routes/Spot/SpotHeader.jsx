@@ -7,8 +7,8 @@ function SpotHeader() {
 
   return (
     <>
-      <h2>{spot.name}</h2>
-      <p style={{ marginBottom: "30px" }}>
+      <h2 id="spot-header">{spot.name}</h2>
+      <p id="spot-subheader">
         {spot.city}, {spot.state}, {spot.country}
       </p>
     </>

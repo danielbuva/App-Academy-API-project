@@ -4,18 +4,7 @@ import Rating from "./Rating";
 function ReserveBox() {
   const spot = useSpot();
   return (
-    <div
-      style={{
-        border: "solid 1px black",
-        minWidth: "310px",
-        height: "fit-content",
-        borderRadius: "12px",
-        padding: "0px 30px 0px 30px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
+    <div id="reserve-container">
       <div
         style={{
           display: "flex",

@@ -31,14 +31,8 @@ function Spot() {
     <div id="spot">
       <SpotHeader />
       <SpotImages />
-      <div
-        style={{
-          display: "flex",
-          marginTop: "40px",
-          width: "100%",
-          gap: "100px",
-        }}
-      >
+      <div id="spot-details">
+        <ReserveBox />
         <div>
           <h3>
             {spot.place} in a {spot.type} hosted by {spot.Owner.firstName},{" "}
@@ -47,7 +41,6 @@ function Spot() {
           <Divider marginBottom="40px" />
           <p>{spot.description}</p>
         </div>
-        <ReserveBox />
       </div>
       <Divider marginTop="40px" />
       <Rating size={1} />
