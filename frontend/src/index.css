@@ -70,7 +70,6 @@ body {
   flex-wrap: wrap;
   overflow-x: hidden;
   max-width: 2458px;
-  border: solid blueviolet;
 }
 
 @media only screen and (max-width: 700px) {
