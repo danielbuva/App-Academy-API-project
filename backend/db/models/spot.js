@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
           "Tiny home",
           "Tower",
           "Treehouse",
-          "Trulio",
+          "Trullo",
           "Windmill",
           "Yurt",
         ],

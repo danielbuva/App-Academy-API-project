@@ -39,7 +39,7 @@ module.exports = {
         "Tiny home",
         "Tower",
         "Treehouse",
-        "Trulio",
+        "Trullo",
         "Windmill",
         "Yurt",
       ],
