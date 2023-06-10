@@ -69,14 +69,11 @@ body {
   height: 100%;
   flex-wrap: wrap;
   overflow-x: hidden;
-  max-width: 2458px;
+  border: solid red;
+  max-width: 96vw;
 }
 
 @media only screen and (max-width: 700px) {
-  #layout {
-    justify-content: space-between;
-  }
-
   #spots-container {
     justify-content: center;
     padding: 0;
