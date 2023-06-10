@@ -1,3 +1,17 @@
 #description-page {
   width: 100%;
 }
+
+@media only screen and (max-width: 700px) {
+  #description-page {
+    margin-top: 0;
+    padding-top: 0;
+    width: 95vw;
+  }
+
+  #name-input {
+    padding-left: 20px;
+    padding-top: 10px;
+    width: 91%;
+  }
+}

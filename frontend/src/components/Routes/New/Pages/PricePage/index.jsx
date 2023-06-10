@@ -26,10 +26,12 @@ function PricePage({ price, setPrice }) {
 
   return (
     <div id="price-page">
-      <p style={{ fontSize: "30px", fontWeight: 500 }}>
-        Now, set your price
-      </p>
-      <p>You can change it anytime.</p>
+      <div>
+        <p style={{ fontSize: "30px", fontWeight: 500, margin: 0 }}>
+          Now, set your price
+        </p>
+        <p style={{ marginTop: 10 }}>You can change it anytime.</p>
+      </div>
       <div id="price-container">
         <button
           onClick={decrementPrice}

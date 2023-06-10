@@ -8,7 +8,7 @@ function TitlePage({ errors, type, name, setName }) {
   const color = name.length >= 51 ? "#ff0000" : "#000";
   return (
     <div id="title-page">
-      <p style={{ fontSize: "30px", fontWeight: 500 }}>
+      <p style={{ fontSize: "30px", fontWeight: 500, marginTop: 0 }}>
         Now, let's give your {type.toLowerCase()}
       </p>
       <p>

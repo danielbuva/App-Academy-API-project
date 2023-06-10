@@ -27,3 +27,27 @@
   gap: 18px;
   user-select: none;
 }
+
+#type-page-header {
+  font-size: 32px;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+@media only screen and (max-width: 700px) {
+  #type-page {
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .type-tile {
+    padding-left: 10px;
+    height: 115px;
+    gap: 8px;
+  }
+
+  #type-page-header {
+    padding-left: 14px;
+  }
+}

@@ -77,7 +77,6 @@ function LocationForm({
         required
         placeholder="ZIP code"
       />
-      {/* <FormError errors={errors} /> */}
     </form>
   );
 }

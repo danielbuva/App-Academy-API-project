@@ -7,7 +7,7 @@ function DescriptionPage({ errors, description, setDescription }) {
 
   return (
     <div id="description-page">
-      <p style={{ fontSize: "30px", fontWeight: 500 }}>
+      <p style={{ fontSize: "30px", fontWeight: 500, marginTop: 0 }}>
         Create your description
       </p>
       <p>Share what makes your place special.</p>

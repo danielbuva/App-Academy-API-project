@@ -21,7 +21,7 @@ function LocationPage({
   console.log({ errors });
   return (
     <div id="location-page">
-      <p style={{ fontSize: "30px", fontWeight: 500 }}>
+      <p style={{ fontSize: "30px", fontWeight: 500, marginTop: 0 }}>
         Where is your place located?
       </p>
       <p>
