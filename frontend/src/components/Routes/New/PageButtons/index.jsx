@@ -46,7 +46,9 @@ function PageButtons({
         if (place) setPage(2);
         break;
       case 2:
-        if (validLocationData) {
+        if (validLocationData && isUpdating) {
+          setPage(4);
+        } else if (validLocationData) {
           setPage(3);
         } else {
           if (!country)
@@ -145,7 +147,9 @@ function PageButtons({
 
   const prevPage = () => {
     setErrors({});
-    if (page > 0 && page <= 6) {
+    if (isUpdating && page === 4) {
+      setPage(2);
+    } else if (page > 0 && page <= 6) {
       setPage(page - 1);
     }
   };

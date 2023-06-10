@@ -42,11 +42,6 @@ function SpotForm() {
     initialCity,
     initialStateOrTerritory,
     initialZipcode,
-    initialPreviewUrl,
-    initialUrl1,
-    initialUrl2,
-    initialUrl3,
-    initialUrl4,
     initialName,
     initialDescription,
     initialPrice,
@@ -66,11 +61,11 @@ function SpotForm() {
     initialStateOrTerritory ?? ""
   );
   const [zipcode, setZipcode] = useState(initialZipcode ?? "");
-  const [previewUrl, setPreviewUrl] = useState(initialPreviewUrl ?? "");
-  const [url1, setUrl1] = useState(initialUrl1 ?? "");
-  const [url2, setUrl2] = useState(initialUrl2 ?? "");
-  const [url3, setUrl3] = useState(initialUrl3 ?? "");
-  const [url4, setUrl4] = useState(initialUrl4 ?? "");
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [url1, setUrl1] = useState("");
+  const [url2, setUrl2] = useState("");
+  const [url3, setUrl3] = useState("");
+  const [url4, setUrl4] = useState("");
   const [name, setName] = useState(initialName ?? "");
   const [description, setDescription] = useState(
     initialDescription ?? randomDescription()
@@ -80,19 +75,6 @@ function SpotForm() {
   const [isAnyStateSet, setIsAnyStateSet] = useState(false);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-
-  const dataExists =
-    address &&
-    zipcode &&
-    city &&
-    stateOrTerritory &&
-    country &&
-    name &&
-    description &&
-    place &&
-    previewUrl &&
-    price &&
-    type;
 
   const updateState = (setState, initialValue) => (newValue) => {
     if (!isAnyStateSet && newValue !== initialValue) {
@@ -118,14 +100,6 @@ function SpotForm() {
     initialStateOrTerritory ?? null
   );
   const setZipcode1 = updateState(setZipcode, initialZipcode ?? "");
-  const setPreviewUrl1 = updateState(
-    setPreviewUrl,
-    initialPreviewUrl ?? null
-  );
-  const setUrl11 = updateState(setUrl1, initialUrl1 ?? "");
-  const setUrl21 = updateState(setUrl2, initialUrl2 ?? "");
-  const setUrl31 = updateState(setUrl3, initialUrl3 ?? "");
-  const setUrl41 = updateState(setUrl4, initialUrl4 ?? "");
   const setName1 = updateState(setName, initialName ?? "");
   const setDescription1 = updateState(
     setDescription,
@@ -160,15 +134,15 @@ function SpotForm() {
         setErrors={setErrors}
         type={type}
         previewUrl={previewUrl}
-        setPreviewUrl={setPreviewUrl1}
+        setPreviewUrl={setPreviewUrl}
         url1={url1}
-        setUrl1={setUrl11}
+        setUrl1={setUrl1}
         url2={url2}
-        setUrl2={setUrl21}
+        setUrl2={setUrl2}
         url3={url3}
-        setUrl3={setUrl31}
+        setUrl3={setUrl3}
         url4={url4}
-        setUrl4={setUrl41}
+        setUrl4={setUrl4}
       />
     ) : page === 4 ? (
       <TitlePage
@@ -189,6 +163,29 @@ function SpotForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const dataExists = isUpdating
+      ? address &&
+        zipcode &&
+        city &&
+        stateOrTerritory &&
+        country &&
+        name &&
+        description &&
+        place &&
+        price &&
+        type
+      : address &&
+        zipcode &&
+        city &&
+        stateOrTerritory &&
+        country &&
+        name &&
+        description &&
+        place &&
+        previewUrl &&
+        price &&
+        type;
+
     if (price && (price < 10 || price > 10000)) {
       setErrors({ price: "Price must be between $10 and $10,000" });
     }
