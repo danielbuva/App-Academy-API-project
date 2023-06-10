@@ -98,20 +98,10 @@ const getReview = async (req, res) => {
 
 const getAvgReviewsBySpotId = (async = async (req, res) => {
   try {
-    // const rating = await Review.aggregate("stars", "avg", {
-    //   where: { spotId: req.params.spotId },
-    //   plain: false,
-    // });
     const rating = await Review.findOne({
       attributes: [[fn("avg", col("stars")), "avgStarRating"]],
       where: { spotId: req.params.spotId },
     });
-    console.log("[DEBUG LOG] rating: ", { rating });
-    console.log(
-      "[DEBUG LOG] rating to json parsed: ",
-      parseFloat(parseFloat(rating.toJSON().avgStarRating).toFixed(2))
-    );
-
     res.json({
       avgStarRating: parseFloat(
         parseFloat(rating.toJSON().avgStarRating).toFixed(2)
