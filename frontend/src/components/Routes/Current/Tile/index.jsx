@@ -47,6 +47,8 @@ function Tile({ spot }) {
     history.push({ pathname: `/spots/${spot.id}/edit`, state: spotProps });
   };
 
+  console.log({ spot });
+
   return (
     <div
       style={{
@@ -71,7 +73,9 @@ function Tile({ spot }) {
               justifyContent: "space-between",
             }}
           >
-            <p style={{ fontWeight: 600 }}>{spot.location}</p>
+            <p style={{ fontWeight: 6006 }}>
+              {spot.city}, ${spot.state}
+            </p>
             <div
               style={{
                 display: "flex",
