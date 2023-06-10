@@ -106,3 +106,14 @@
   cursor: pointer;
   border: solid 1px #ccc;
 }
+
+@media only screen and (max-width: 700px) {
+  #review-input {
+    resize: none;
+    height: 210px;
+    width: 85vw;
+    border: solid 1px #bfbfbf;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+}
