@@ -11,33 +11,25 @@ function Spots() {
     dispatch(getAllSpots());
   }, [dispatch]);
 
+  if (!spots) return null;
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "left",
-        gap: "40px",
-        width: "100%",
-        height: "max-content",
-        flexWrap: "wrap",
-      }}
-    >
-      {spots &&
-        spots.map(
-          ({ id, price, city, state, avgRating, previewImages, name }) => {
-            return (
-              <Tile
-                key={id}
-                id={id}
-                price={price}
-                location={`${city}, ${state}`}
-                rating={avgRating}
-                images={previewImages}
-                name={name}
-              />
-            );
-          }
-        )}
+    <div id="spots-container">
+      {spots.map(
+        ({ id, price, city, state, avgRating, previewImages, name }) => {
+          return (
+            <Tile
+              key={id}
+              id={id}
+              price={price}
+              location={`${city}, ${state}`}
+              rating={avgRating}
+              images={previewImages}
+              name={name}
+            />
+          );
+        }
+      )}
     </div>
   );
 }
