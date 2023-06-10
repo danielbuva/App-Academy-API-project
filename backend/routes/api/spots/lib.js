@@ -107,23 +107,15 @@ const getAvgReviewsBySpotId = (async = async (req, res) => {
       where: { spotId: req.params.spotId },
     });
     console.log("[DEBUG LOG] rating: ", { rating });
-    console.log("[DEBUG LOG] rating to json: ", rating?.toJSON());
-    console.log("[DEBUG LOG] rating datavalues: ", rating?.dataValues);
     console.log(
-      "[DEBUG LOG] rating dv avgR: ",
-      rating?.dataValues?.avgStarRating
-    );
-    console.log(
-      "[DEBUG LOG] rating .toFixed2: ",
-      rating?.dataValues?.avgStarRating?.toFixed(2)
-    );
-    console.log(
-      "[DEBUG LOG] rating parsed: ",
-      parseFloat(rating?.dataValues?.avgStarRating?.toFixed(2))
+      "[DEBUG LOG] rating to json parsed: ",
+      parseFloat(parseFloat(rating.toJSON().avgStarRating).toFixed(2))
     );
 
     res.json({
-      avgStarRating: parseFloat(rating.toJSON().avgStarRating.toFixed(2)),
+      avgStarRating: parseFloat(
+        parseFloat(rating.toJSON().avgStarRating).toFixed(2)
+      ),
     });
   } catch (err) {
     returnError(err, res);
