@@ -91,10 +91,10 @@ function Review({ id, spotId }) {
           <Divider />
           <div id="confirm-buttons">
             <button onClick={handleDelete} className="spot-button">
-              yes (delete)
+              yes (delete review)
             </button>
             <button onClick={() => setShowDelete(false)} id="confirm-no">
-              no (go back)
+              no (keep review)
             </button>
           </div>
         </div>
