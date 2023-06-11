@@ -1,5 +1,4 @@
 import useProfileMenu from "../../../hooks/useProfileMenu";
-import useIsLoaded from "../../../hooks/useIsLoaded";
 
 import Menu from "./Menu/Index";
 import MenuButton from "./Menu/MenuButton";
@@ -8,10 +7,7 @@ import useSessionUser from "../../../hooks/useSessionUser";
 
 function UserMenu() {
   const { buttonRef, setShow, show, userMenuRef } = useProfileMenu();
-  const isLoaded = useIsLoaded();
   const user = useSessionUser();
-
-  if (!isLoaded) return null;
 
   return (
     <div
