@@ -20,7 +20,7 @@ The project also includes a reviews functionality that enables users to leave fe
 To develop this Airbnb clone, the following technologies and tools were utilized:
 
 - Backend: Express
-- Frontend: Create-React-App
+- Frontend: Create-React-App, Redux
 - Database: Sequelize, Sqlite3 (locally), PostgreSQL (live)
 
 ## Project Goals
