@@ -1,5 +1,101 @@
 # YCSHIYP
 
+![image](https://github.com/danielbuva/YCSHIYP/assets/70713396/01da2b57-b321-4e72-8d28-e47579bba063)
+
+
+This project is an Airbnb clone that aims to replicate some of the key features of the popular online accommodation marketplace. The focus of this clone is to provide two main CRUD (Create, Read, Update, Delete) functionalities for listings and reviews.
+
+## Project Features
+
+### Listings CRUD
+
+The project allows users to create, read, update, and delete listings. Users can add details about their properties, such as the location, description, price, type of place, and how much of the place is available. They can also update and delete their listings as needed. The listing data is stored securely in a database and can be easily accessed and managed by users.
+
+### Reviews CRUD
+
+The project also includes a reviews functionality that enables users to leave feedback on listings. Users can read existing reviews, add new reviews, update their own reviews, and delete their reviews if necessary. This feature enhances the user experience by providing valuable insights and recommendations for potential guests.
+
+## Technologies Used
+
+To develop this Airbnb clone, the following technologies and tools were utilized:
+
+- Backend: Express
+- Frontend: Create-React-App
+- Database: Sequelize, Sqlite3 (locally), PostgreSQL (live)
+
+## Project Goals
+
+The primary goals of this project are as follows:
+
+1. To create a user-friendly and intuitive interface for managing property listings.
+2. To implement a robust reviews system that allows users to share their experiences.
+3. To ensure data security and privacy by employing best practices in authentication and authorization.
+4. To deliver a functional and reliable Airbnb clone that provides value to its users.
+
+Feel free to explore the project further and provide feedback on any additional features or improvements you'd like to see.
+
+Happy exploring!
+
+## Launching the Application Locally
+
+To run the Airbnb clone project on your local machine, please follow the steps below:
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone [repository-url]
+   ```
+   
+2. **Install Dependencies:**
+
+  - Navigate to the backend directory:
+    ```bash
+    cd backend
+    npm install
+    ```
+  - Navigate to the frontend directory
+    ```bash
+    cd ../frontend
+    npm install
+    ```
+
+3. **Create a .env file in the backend directory** with the following content:
+
+   ```plaintext
+   PORT=8000
+   DB_FILE=db/dev.db
+   JWT_SECRET=<generate-secret>
+   JWT_EXPIRES_IN=604800
+   ```
+   
+4. **Run database migrations:**
+
+  - In the backend directory, execute the follow command:
+    ```bash
+    npx dotenv sequelize db:migrate
+    ```
+ 
+5. **Seed the database (optional):**
+
+   ```bash
+   npx dotenv sequelize db:seed:all
+   ```
+  
+6. **Start the backend and frontend servers:**
+
+  - In the backend directory run:
+    ```bash
+     npm start
+    ```
+  - In the frontend directory run:
+    ```bash
+    npm start
+    ```
+    
+7. **Access the application:**
+
+  - Open your web browser and visit http://localhost:3000 to access the YCSHIYP.
+
 ## Database Schema Design
 
 ![db-schema]
