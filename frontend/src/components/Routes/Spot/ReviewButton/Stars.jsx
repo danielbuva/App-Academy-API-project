@@ -31,7 +31,6 @@ const Stars = ({ stars, setStars }) => {
           onMouseEnter={() => handleStarHover(star)}
           onMouseDown={() => setIsDragging(true)}
         >
-          {/* &#9733; */}
           {star <= (isDragging ? stars : hoveredRating) ? "★" : "☆"}
         </span>
       ))}
